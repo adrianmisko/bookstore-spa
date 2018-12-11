@@ -1,7 +1,7 @@
 import styles from './index.css';
 import React from 'react';
 import ProductList from '../../components/ProductList';
-import { connect} from 'dva';
+import { connect } from 'dva';
 
 
 const Books = ({dispatch, products}) => {

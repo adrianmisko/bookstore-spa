@@ -3,6 +3,6 @@ import React from 'react';
 
 export default () => {
   return (
-    <h1>glowna oglonie</h1>
+    <h1 style={{ textAlign: 'center', padding: '2em' }}>Główna (index) - nie z layoutu</h1>
   );
 }
