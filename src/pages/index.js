@@ -1,8 +1,16 @@
-import styles from './index.css';
+import styles from '../components/ProductList/ProductList.css';
 import React from 'react';
+import ProductList from '../components/ProductList/ProductList';
+import { connect } from 'dva';
 
-export default () => {
-  return (
-    <h1 style={{ textAlign: 'center', padding: '2em' }}>Główna (index) - nie z layoutu</h1>
+const Index = ({ products, loading }) => {
+  return(
+    <React.Fragment>
+      <h1 className={styles.featured}>Featured books</h1>
+      <ProductList products={products} loading={loading}/>
+    </React.Fragment>
   );
-}
+};
+
+
+export default connect(({ books }) => books)(Index);

@@ -1,20 +1,14 @@
-import styles from './index.css';
 import React from 'react';
-import ProductList from '../../components/ProductList';
+import ProductList from '../../components/ProductList/ProductList';
 import { connect } from 'dva';
 
 
-const Books = ({dispatch, products}) => {
-  function handleDelete(id) {
-    dispatch({
-      type: 'books/delete',
-      payload: id,
-    });
-  };
+const Books = ({ products, loading }) => {
 
   return(
-    <ProductList onDelete={handleDelete} products={products}/>
+    <h1 style={{ textAlign: 'center' }}> Books general? </h1>
   );
+
 };
 
 export default connect(({ books })=> books)(Books)

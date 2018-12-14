@@ -21,14 +21,21 @@
     "umi-plugin-react": "^1.1.1"
   },
   "lint-staged": {
-    "*.{js,jsx}": ["eslint --fix", "git add"]
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "git add"
+    ]
   },
   "engines": {
     "node": ">=8.0.0"
   },
   "dependencies": {
     "antd": "latest",
+    "dva": "latest",
+    "lodash": "^4.17.11",
+    "lodash.throttle": "latest",
+    "prop-types": "latest",
     "react": "latest",
-    "dva": "latest"
+    "react-router-dom": "latest"
   }
 }

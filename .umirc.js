@@ -15,4 +15,7 @@ export default {
       hardSource: false,
     }],
   ],
+  "theme": {
+    "@card-padding-base": "0.5em",
+  },
 }

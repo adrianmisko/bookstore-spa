@@ -1,9 +1,11 @@
-import styles from './search.css';
+import ProductList from '../components/ProductList/ProductList';
+import React from 'react';
+import { connect } from 'dva';
 
-export default function() {
+const Search = ({ products, loading }) => {
   return (
-    <div className={styles.normal}>
-      <h1>Page search</h1>
-    </div>
+    <ProductList onDelete={() => console.log('delete')} products={products} loading={loading}/>
   );
-}
+};
+
+export default connect(({ books }) => books)(Search);
