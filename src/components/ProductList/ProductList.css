@@ -1,0 +1,11 @@
+.featured {
+  text-align: center;
+  font-size: 3em;
+}
+
+@media (max-width: 570px) {
+  .card {
+    margin: 2px !important;
+    width: 170px !important;
+  }
+}

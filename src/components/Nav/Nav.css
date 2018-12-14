@@ -1,0 +1,76 @@
+.navbar-top {
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  left: 0;
+  height: 64px;
+  display: flex;
+}
+
+.navbar-top > .nav-button {
+  height: 64px;
+  font-size: 1.4em;
+  padding-top: 0.35em;
+}
+
+
+.navbar-top > .searchBar {
+  margin-right: 100px;
+  margin-left: 1em;
+  max-width: 500px;
+  width: 100%;
+}
+
+.navbar-top > .navbar-icons {
+  display: none;
+  font-size: 36px;
+  padding-top: 0.27em;
+  padding-left: 0.4em;
+  min-width: 50px;
+  flex-grow: 3;
+}
+
+.navbar-top > .filler {
+  min-width: 20px;
+  flex-grow: 5;
+}
+
+.navbar-top > .filler-left {
+  flex-grow: 3;
+}
+
+.navbar-top > .filler-right {
+  min-width: 20px;
+  flex-grow: 3;
+}
+
+.navbar-top > .cart {
+  font-size: 32px;
+  padding-top: 0.15em;
+  margin-right: 5px;
+  max-width: 60px;
+  min-width: 40px;
+  flex-grow: 3;
+}
+
+@media (max-width: 570px) {
+  .navbar-top > .searchBar {
+    display: none;
+  }
+  .navbar-top > .nav-button {
+    display: none;
+  }
+  .navbar-top > .navbar-icons {
+    display: block;
+  }
+  .navbar-top > .filler-right {
+    max-width: 20px;
+  }
+  .navbar-top > .cart {
+    flex-grow: 0.2;
+  }
+  .navbar-top > .navbar-icons {
+    display: block;
+  }
+}
+
