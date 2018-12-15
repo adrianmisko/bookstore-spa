@@ -22,22 +22,24 @@ let Nav = history => {
         <Menu.Item key="books" className={styles['nav-button']}>
           <Link to='/books'><Icon type="book"/>Books</Link>
         </Menu.Item>
-        <div className={styles['filler-left']}></div>
+        <div className={styles['filler-left']}> </div>
         <SearchBar history={history}/>
-        <div className={styles.filler}></div>
+        <div className={styles.filler}> </div>
         <div className={styles.cart}>
           <Badge count={0} showZero={true} overflowCount={10} title={'Items in cart'} style={{ backgroundColor: '#1890ff' }}>
-            <img src={booksIconPng} alt="shopping cart" style={{ height: 35, width: 35 }}/>
+            <img src={booksIconPng} alt="shopping cart" style={{ height: 29, width: 29 }}/>
           </Badge>
         </div>
         <div>
+          <Link to="/users/1">
           <Badge count={0} showZero={true} overflowCount={5} title={'Notifications'}
-                 style={{ position: 'absolute', top: 8, backgroundColor: '#1890ff' }}
+                 style={{ position: 'absolute', top: 2, backgroundColor: '#1890ff' }}
           >
-            <Icon type="user" style={{ fontSize: 32, marginTop: 20, color: '#7f8287', fontWeight: 600 }}/>
+            <Icon type="user" style={{ fontSize: 26, marginTop: 15, color: '#7f8287', fontWeight: 600 }}/>
           </Badge>
+          </Link>
         </div>
-        <div className={styles['filler-right']}></div>
+        <div className={styles['filler-right']}> </div>
       </Menu>
     );
 };

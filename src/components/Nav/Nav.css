@@ -3,27 +3,27 @@
   z-index: 1;
   width: 100%;
   left: 0;
-  height: 64px;
+  height: 48px;
   display: flex;
 }
 
 .navbar-top > .nav-button {
-  height: 64px;
   font-size: 1.4em;
-  padding-top: 0.35em;
+  width: 128px;
 }
 
 
 .navbar-top > .searchBar {
   margin-right: 100px;
   margin-left: 1em;
+  margin-top: -5px;
   max-width: 500px;
   width: 100%;
 }
 
 .navbar-top > .navbar-icons {
   display: none;
-  font-size: 36px;
+  font-size: 28px;
   padding-top: 0.27em;
   padding-left: 0.4em;
   min-width: 50px;
@@ -46,7 +46,7 @@
 
 .navbar-top > .cart {
   font-size: 32px;
-  padding-top: 0.15em;
+  margin-top: -3px;
   margin-right: 5px;
   max-width: 60px;
   min-width: 40px;
