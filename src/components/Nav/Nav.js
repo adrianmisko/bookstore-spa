@@ -3,7 +3,7 @@ import { Menu, Icon, Badge } from 'antd';
 import styles from './Nav.css'
 import SearchBar from '../SearchBar/SearchBar';
 import { Link } from 'react-router-dom';
-import booksIconPng from '../../assets/basket.png';
+import ShoppingCart from '../ShoppingCart/ShoppingCart';
 
 
 let Nav = history => {
@@ -25,11 +25,7 @@ let Nav = history => {
         <div className={styles['filler-left']}> </div>
         <SearchBar history={history}/>
         <div className={styles.filler}> </div>
-        <div className={styles.cart}>
-          <Badge count={0} showZero={true} overflowCount={10} title={'Items in cart'} style={{ backgroundColor: '#1890ff' }}>
-            <img src={booksIconPng} alt="shopping cart" style={{ height: 29, width: 29 }}/>
-          </Badge>
-        </div>
+        <ShoppingCart/>
         <div>
           <Link to="/users/1">
           <Badge count={0} showZero={true} overflowCount={5} title={'Notifications'}

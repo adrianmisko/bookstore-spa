@@ -52,7 +52,7 @@ const ProductList = ({ onDelete, products, loading }) => {
                     {tag}
                   </Tag>)}
             </div>}
-            actions={[<div><Icon type="shopping-cart"/><span> Dodaj do koszyka</span></div>]}
+            actions={[<div><Icon type="shopping-cart"/><span> add to shopping cart</span></div>]}
           >
             <Meta
               title={product.title}

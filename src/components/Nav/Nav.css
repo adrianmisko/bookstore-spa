@@ -43,15 +43,6 @@
   flex-grow: 3;
 }
 
-.navbar-top > .cart {
-  font-size: 32px;
-  margin-top: -3px;
-  margin-right: 5px;
-  max-width: 60px;
-  min-width: 40px;
-  flex-grow: 3;
-}
-
 @media (max-width: 570px) {
   .navbar-top > .searchBar {
     display: none;
