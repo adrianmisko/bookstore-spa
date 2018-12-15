@@ -20,14 +20,14 @@ const BasicLayout = props => {
           <Nav history={props.history}/>
         </Header>
         <Layout>
-          <Sider>
-            <SideNav history={props.history}></SideNav>
+          <Sider style={{ backgroundColor: 'white' }}>
+            <SideNav history={props.history}> </SideNav>
           </Sider>
+          <Content>
+            {props.children}
+          </Content>
         </Layout>
-        <Content>
-          {props.children}
-        </Content>
-        <Footer style={{ backgroundColor: '#3333'}}>
+        <Footer style={{ backgroundColor: '#3333' }}>
           <h2 style={{ textAlign: 'center' }}>Footer</h2>
         </Footer>
       </Layout>
@@ -35,7 +35,7 @@ const BasicLayout = props => {
   else
     return (
       <Layout>
-        <Header style={{ marginBottom: 20 }}>
+        <Header style={{ height: 48, marginBottom: 20 }}>
           <Nav history={props.history}/>
         </Header>
         <Content>
