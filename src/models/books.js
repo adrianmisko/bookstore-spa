@@ -14,7 +14,7 @@ export default {
   state: {
     products: [],
     loading: false,
-    items: [],
+    itemsInCart: {},
     alreadyFetched: false,
   },
   reducers: {
@@ -33,8 +33,9 @@ export default {
     completeFetch(state) {
       return { ...state, alreadyFetched: true }
     },
-    addToCart(state, { payload: book }) {
-      return { ...state, items: [ ...state.items, book ] }
+    addToCart(state, { payload: id }) {
+      console.log(state.itemsInCart)
+       return { ...state, itemsInCart: { ...state.itemsInCart, ...{ [id]: (state.itemsInCart[id] || 0) + 1 }} }
     },
   },
   effects: {

@@ -55,7 +55,7 @@ const ProductList = ({ dispatch, products, loading }) => {
             actions={[
               <div onClick={() => dispatch({
                 type: 'books/addToCart',
-                payload: product,
+                payload: product.id,
               })
               }>
                 <Icon type="shopping-cart"/>

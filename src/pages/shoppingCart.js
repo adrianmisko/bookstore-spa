@@ -5,7 +5,7 @@ import { connect } from 'dva';
 const ShoppingCart = ({dispatch, items}) => {
 
   return (
-    <ProductList dispatch={dispatch} products={items} loading={false} />
+    <h1>Details</h1>
   );
 
 };

@@ -5,7 +5,7 @@ import basketIcon from '../../assets/basket.png';
 import Link from 'umi/link';
 
 
-const ShoppingCart = ({ items }) => {
+const ShoppingCart = ({ products, itemsInCart }) => {
 
   const title = <span>Your shopping cart</span>;
 
@@ -14,9 +14,9 @@ const ShoppingCart = ({ items }) => {
       marginTop: 5
     }}>
       {
-        items.length ?
+        Object.keys(itemsInCart).length ?
           <React.Fragment>
-            {items.map(item => <p>{item.title}</p>)}
+            {Object.keys(itemsInCart).map(item => <p>{itemsInCart[item]}</p>)}  // todo table or list
             <Divider/>
             <Link to={'/shoppingCart'}>See the details</Link>
           </React.Fragment>
@@ -45,7 +45,7 @@ const ShoppingCart = ({ items }) => {
       >
         <a>
           <Badge
-            count={items.length}
+            count={Object.values(itemsInCart).reduce((a, b) => a + b, 0)}
             showZero={true}
             overflowCount={10}
             title={'Items in cart'}
