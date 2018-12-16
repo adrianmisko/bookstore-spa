@@ -8,7 +8,6 @@ const SideNav = ({ history }) => {
 
     return (
       <Menu
-        style={{ width: 200 }}
         defaultSelectedKeys={['1']}
         defaultOpenKeys={['sub1']}
         mode="inline"

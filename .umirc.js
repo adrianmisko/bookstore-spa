@@ -17,5 +17,6 @@ export default {
   ],
   "theme": {
     "@card-padding-base": "0.5em",
+    "primary-color": "#f44941",
   },
 }

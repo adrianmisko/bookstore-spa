@@ -17,10 +17,17 @@ const BasicLayout = props => {
     return (
       <Layout>
         <Header style={{ height: 48 }}>
-          <Nav history={props.history}/>
+          <Nav currentKey={props.currentKey} dispatch={props.dispatch} history={props.history}/>
         </Header>
         <Layout>
-          <Sider style={{ backgroundColor: 'white' }}>
+          <Sider
+            breakpoint={'sm'}
+            collapsedWidth={0}
+            style={{
+              backgroundColor: 'white'
+            }}
+            trigger={null}
+          >
             <SideNav history={props.history}> </SideNav>
           </Sider>
           <Content>
@@ -36,7 +43,7 @@ const BasicLayout = props => {
     return (
       <Layout>
         <Header style={{ height: 48, marginBottom: 20 }}>
-          <Nav history={props.history}/>
+          <Nav currentKey={props.currentKey} dispatch={props.dispatch} history={props.history}/>
         </Header>
         <Content>
           {props.children}
@@ -48,4 +55,4 @@ const BasicLayout = props => {
     );
 };
 
-export default withRouter(connect()(BasicLayout));
+export default withRouter(connect(({ ui }) => ui)(BasicLayout));

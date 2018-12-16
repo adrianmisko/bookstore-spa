@@ -26,7 +26,7 @@ let UserPage = ({ currentTab, dispatch }) => {
         title={'Hello, user 1'}
         tabList={tabList}
         onTabChange={key => { dispatch({
-          type: 'user/changeTab',
+          type: 'ui/changeTab',
           payload: key,
         }) }}
       >
@@ -38,4 +38,4 @@ let UserPage = ({ currentTab, dispatch }) => {
 };
 
 
-export default connect(({ user }) => user)(UserPage);
+export default connect(({ ui }) => ui)(UserPage);

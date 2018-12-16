@@ -6,11 +6,18 @@ import { Link } from 'react-router-dom';
 import ShoppingCart from '../ShoppingCart/ShoppingCart';
 
 
-let Nav = history => {
+let Nav = ({ currentKey, dispatch, history }) => {
 
     return (
       <Menu
         mode="horizontal"
+        selectedKeys={currentKey}
+        onClick={({ key }) => {
+          dispatch({
+            type: 'ui/changeKey',
+            payload: key,
+          });
+        }}
         className={styles['navbar-top']}
       >
         <div className={styles['navbar-icons']}>
@@ -29,7 +36,7 @@ let Nav = history => {
         <div>
           <Link to="/users/1">
           <Badge count={0} showZero={true} overflowCount={5} title={'Notifications'}
-                 style={{ position: 'absolute', top: 2, backgroundColor: '#1890ff' }}
+                 style={{ position: 'absolute', top: 2, backgroundColor: '#f44941' }}
           >
             <Icon type="user" style={{ fontSize: 26, marginTop: 15, color: '#7f8287', fontWeight: 600 }}/>
           </Badge>

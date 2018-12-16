@@ -23,7 +23,7 @@
 .navbar-top > .navbar-icons {
   display: none;
   font-size: 28px;
-  padding-top: 0.27em;
+  padding-top: 0.07em;
   padding-left: 0.4em;
   min-width: 50px;
   flex-grow: 3;
@@ -43,7 +43,7 @@
   flex-grow: 3;
 }
 
-@media (max-width: 570px) {
+@media (max-width: 576px) {
   .navbar-top > .searchBar {
     display: none;
   }

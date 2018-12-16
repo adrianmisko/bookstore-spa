@@ -13,3 +13,13 @@
   color: white;
   margin: 0;
 }
+
+.sider {
+  background-color: white;
+}
+
+@media (max-width: 570px) {
+  .sider {
+    display: none;
+  }
+}

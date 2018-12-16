@@ -15,7 +15,7 @@ class SearchBar extends React.Component {
             queryString: values.search,
           },
         });
-        this.props.history.history.push('/search?query='+values.search);
+        this.props.history.push('/search?query='+values.search);
       }
     });
   };

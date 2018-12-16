@@ -7,8 +7,6 @@ import Link from 'umi/link';
 
 const ShoppingCart = ({ items }) => {
 
-  console.log(items)
-
   const title = <span>Your shopping cart</span>;
 
   const content = (
@@ -32,7 +30,7 @@ const ShoppingCart = ({ items }) => {
       <Popover placement="bottomLeft" title={title} content={content} trigger="click">
         <a>
         <Badge count={0} showZero={true} overflowCount={10} title={'Items in cart'}
-               style={{ backgroundColor: '#1890ff' }}>
+               style={{ backgroundColor: '#f44941' }}>
           <img src={booksIconPng} alt="shopping cart" style={{ height: 29, width: 29 }}/>
         </Badge>
         </a>
