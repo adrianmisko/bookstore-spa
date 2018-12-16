@@ -3,11 +3,11 @@ import React from 'react';
 import ProductList from '../components/ProductList/ProductList';
 import { connect } from 'dva';
 
-const Index = ({ products, loading }) => {
+const Index = ({ dispatch, products, loading }) => {
   return(
     <React.Fragment>
       <h1 className={styles.featured}>Featured books</h1>
-      <ProductList products={products} loading={loading}/>
+      <ProductList dispatch={dispatch} products={products} loading={loading}/>
     </React.Fragment>
   );
 };

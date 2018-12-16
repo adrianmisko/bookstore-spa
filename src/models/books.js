@@ -11,28 +11,45 @@ function fetchBooks() {
 
 export default {
   namespace: 'books',
-  state: { products: [], loading: false },
+  state: {
+    products: [],
+    loading: false,
+    items: [],
+    alreadyFetched: false,
+  },
   reducers: {
-      search(state, { payload: queryString }) {
+    search(state, { payload: queryString }) {
       return { ...state };
     },
     update(state, { payload: products }) {
       return { ...state, products };
     },
     loadingOn(state) {
-      console.log({ ...state, loading: true });
       return { ...state, loading: true };
     },
     loadingOff(state) {
       return { ...state, loading: false }
-    }
+    },
+    completeFetch(state) {
+      return { ...state, alreadyFetched: true }
+    },
+    addToCart(state, { payload: book }) {
+      return { ...state, items: [ ...state.items, book ] }
+    },
   },
   effects: {
-    *fetchBooks(action, { call, put }) {
-      yield put({ type: 'loadingOn'});
-      const result = yield call(fetchBooks);
-      yield put({ type: 'update', payload: result });
-      yield put({ type: 'loadingOff'})
+    *fetchBooks(action, { call, put, select }) {
+      const alreadyFetched = yield select(state => state.books.alreadyFetched);
+      if (! alreadyFetched) {
+        console.log('start');
+        yield put({ type: 'loadingOn'});
+        const result = yield call(fetchBooks);
+        yield put({ type: 'update', payload: result });
+        yield put({ type: 'loadingOff'});
+        yield put({ type: 'completeFetch'});
+      } else {
+        ;
+      }
     },
   },
   subscriptions: {

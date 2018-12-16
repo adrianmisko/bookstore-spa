@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Icon, Tag } from 'antd';
 import styles from  './ProductList.css'
 
-const ProductList = ({ onDelete, products, loading }) => {
+const ProductList = ({ dispatch, products, loading }) => {
   const { Meta } = Card;
 
   const colors = ['cyan', 'magenta', 'geekblue', 'volcano', 'gold', 'green', 'purple', 'blue'];
@@ -52,7 +52,16 @@ const ProductList = ({ onDelete, products, loading }) => {
                     {tag}
                   </Tag>)}
             </div>}
-            actions={[<div><Icon type="shopping-cart"/><span> add to shopping cart</span></div>]}
+            actions={[
+              <div onClick={() => dispatch({
+                type: 'books/addToCart',
+                payload: product,
+              })
+              }>
+                <Icon type="shopping-cart"/>
+                <span> add to shopping cart</span>
+              </div>
+            ]}
           >
             <Meta
               title={product.title}

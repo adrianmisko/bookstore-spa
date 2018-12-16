@@ -3,7 +3,7 @@ import ProductList from '../../components/ProductList/ProductList';
 import { connect } from 'dva';
 
 
-const Books = ({ products, loading }) => {
+const Books = ({ dispatch, products, loading }) => {
 
   return(
     <h1 style={{ textAlign: 'center' }}> Books general? </h1>

@@ -2,9 +2,9 @@ import ProductList from '../components/ProductList/ProductList';
 import React from 'react';
 import { connect } from 'dva';
 
-const Search = ({ products, loading }) => {
+const Search = ({ dispatch, products, loading }) => {
   return (
-    <ProductList onDelete={() => console.log('delete')} products={products} loading={loading}/>
+    <ProductList dispatch={dispatch} products={products} loading={loading}/>
   );
 };
 
