@@ -1,4 +1,3 @@
-import styles from './index.css';
 import React from 'react';
 import { Layout } from 'antd';
 import withRouter from 'umi/withRouter';

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Icon, Tag } from 'antd';
 import styles from  './ProductList.css'
+import Link from 'umi/link';
 
 const ProductList = ({ dispatch, products, loading }) => {
   const { Meta } = Card;
@@ -42,21 +43,26 @@ const ProductList = ({ dispatch, products, loading }) => {
             key={product.id}
             style={{ width: 180, margin: 5, fontStyle: 'italic' }}
             cover={
+            <Link to={'books/' + product.id.toString()}>
             <div>
               <img src={product.mianiature} alt="cover"
-                             style={{width:110, height: 150, marginLeft: 'auto', marginRight: 'auto', marginTop: 15, borderRadius: 5 }} />
+                             style={{width:110, height: 150, marginLeft: 'auto', marginRight: 'auto', marginTop: 15, marginBottom: 10, borderRadius: 5 }} />
               { product.tags.sort((a, b) => b.length - a.length).map((tag, index) =>
                   <Tag color={colors[index % colors.length]}
                        style={{ width: 70, position: 'absolute', top: 20 + 25 * index, left: 3, fontSize: 10 }}
                   >
                     {tag}
                   </Tag>)}
-            </div>}
+            </div>
+            </Link>
+            }
             actions={[
-              <div onClick={() => dispatch({
-                type: 'books/addToCart',
-                payload: product.id,
-              })
+              <div onClick={() => {
+                  dispatch({
+                    type: 'books/addToCart',
+                    payload: product.id,
+                });
+              }
               }>
                 <Icon type="shopping-cart"/>
                 <span> add to shopping cart</span>
@@ -64,8 +70,24 @@ const ProductList = ({ dispatch, products, loading }) => {
             ]}
           >
             <Meta
-              title={product.title}
-              description={<React.Fragment><span>{product.author}</span><br/><span>{product.price}</span></React.Fragment>}
+              title={
+                <Link to={'books/' + product.id.toString()} style={{ color: 'rgba(0,0,0,0.9)' }} >
+                  {product.title}
+                </Link>
+              }
+              description={
+                <React.Fragment>
+                  <span>
+                    <Link to={'search?author=' + product.author} style={{ color: 'rgba(0,0,0,0.70)' }} >
+                      {product.author}
+                    </Link>
+                  </span>
+                  <br/>
+                  <span>
+                    {product.price}
+                  </span>
+                </React.Fragment>
+                }
             />
           </Card>)}
       </div>

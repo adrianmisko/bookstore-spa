@@ -1,0 +1,9 @@
+.cover-column {
+  max-width: 300px;
+}
+
+@media (max-width: 570px) {
+  .cover-column {
+    display: none;
+  }
+}

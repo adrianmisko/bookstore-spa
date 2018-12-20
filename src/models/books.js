@@ -16,6 +16,8 @@ export default {
     loading: false,
     itemsInCart: {},
     alreadyFetched: false,
+    restartAnimation: false,
+    firstLoad: true
   },
   reducers: {
     search(state, { payload: queryString }) {
@@ -33,24 +35,46 @@ export default {
     completeFetch(state) {
       return { ...state, alreadyFetched: true }
     },
-    addToCart(state, { payload: id }) {
-      console.log(state.itemsInCart)
-       return { ...state, itemsInCart: { ...state.itemsInCart, ...{ [id]: (state.itemsInCart[id] || 0) + 1 }} }
+    addItemToCart(state, { payload: id }) {
+      return { ...state, itemsInCart: { ...state.itemsInCart, ...{ [id]: (state.itemsInCart[id] || 0) + 1 }} }
     },
+    removeOneFromCart(state, { payload: id }) {
+      return { ...state, itemsInCart: { ...state.itemsInCart, ...{ [id]: (state.itemsInCart[id] || 0) - 1 }} }
+    },
+    removeAllFromCart(state, { payload: id }) {
+      return { ...state, itemsInCart: { ...state.itemsInCart, ...{ [id]: 0 }} }
+    },
+    clearCart(state) {
+      return { ...state, itemsInCart: {} }
+    },
+    startBasketJump(state) {
+      return { ...state, restartAnimation: true  }
+    },
+    endBasketJump(state) {
+      return { ...state, restartAnimation: false  }
+    },
+    disableFirstLoad(state) {
+      return { ...state, firstLoad: false }
+    }
+
   },
   effects: {
     *fetchBooks(action, { call, put, select }) {
       const alreadyFetched = yield select(state => state.books.alreadyFetched);
       if (! alreadyFetched) {
-        console.log('start');
         yield put({ type: 'loadingOn'});
         const result = yield call(fetchBooks);
         yield put({ type: 'update', payload: result });
         yield put({ type: 'loadingOff'});
         yield put({ type: 'completeFetch'});
-      } else {
-        ;
       }
+    },
+    *addToCart(action, { call, put }) {
+      yield put({ type: 'disableFirstLoad'} );
+      yield put({ type: 'startBasketJump' });
+      yield put({ type: 'addItemToCart', payload: action.payload });
+      yield new Promise((res, rej) => setTimeout(res, 10));
+      yield put({ type: 'endBasketJump' })
     },
   },
   subscriptions: {
