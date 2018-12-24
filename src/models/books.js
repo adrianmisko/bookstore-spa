@@ -1,13 +1,9 @@
-import { Redirect } from 'umi/redirect';
-
-function fetchBooks() {
-  const domain = 'my.api.mockaroo.com';
-  const headers = { "X-API-KEY" : "5b7c8e10" };
-  return fetch(`https://cors-anywhere.herokuapp.com/http://${domain}/books`, { headers, mode: 'cors', method:'get' })
+const fetchBooks = () => {
+  return fetch('https://bookstore-flask.herokuapp.com/api/books', { mode: 'cors', method:'get' })
     .then(response => response.json())
     .then(data => data)
     .catch(err => console.log(err));
-}
+};
 
 export default {
   namespace: 'books',
@@ -64,7 +60,7 @@ export default {
       if (! alreadyFetched) {
         yield put({ type: 'loadingOn'});
         const result = yield call(fetchBooks);
-        yield put({ type: 'update', payload: result });
+        yield put({ type: 'update', payload: result.data });
         yield put({ type: 'loadingOff'});
         yield put({ type: 'completeFetch'});
       }

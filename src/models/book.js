@@ -1,5 +1,5 @@
 const getBook = id => {
-  const path = 'http://192.168.0.14:8000/api/books/' + id.toString();
+  const path = 'https://bookstore-flask.herokuapp.com/api/books/' + id.toString();
   return fetch(path, { method: 'GET', mode: 'cors'})
     .then(response => response.json())
     .then(data => data)

@@ -94,7 +94,7 @@ const ShoppingCart = ({ dispatch, products, itemsInCart, restartAnimation, first
                   >
                     <List.Item.Meta
                       avatar={<img alt="cover" style={{ height: 68, width: 52, float: 'left', borderRadius: 5 }}
-                                   src={item.mianiature}/>}
+                                   src={item.cover}/>}
                       title={item.title}
                       description={
                         <div>
@@ -118,7 +118,7 @@ const ShoppingCart = ({ dispatch, products, itemsInCart, restartAnimation, first
                           {
                             <AnimatedNumber
                               component="text"
-                              value={item.quantity * item.price}
+                              value={item.quantity * item.base_price}
                               style={{
                                 transition: '0.8s ease-out',
                                 transitionProperty: 'background-color, color, opacity',
@@ -139,7 +139,7 @@ const ShoppingCart = ({ dispatch, products, itemsInCart, restartAnimation, first
               <p style={{ fontSize: '1.15em' }}>
                 <AnimatedNumber
                   component="text"
-                  value={inCart.reduce((acc, item) => acc + item.price * item.quantity, 0)}
+                  value={inCart.reduce((acc, item) => acc + item.base_price * item.quantity, 0)}
                   style={{
                     transition: '0.8s ease-out',
                     transitionProperty: 'background-color, color, opacity',

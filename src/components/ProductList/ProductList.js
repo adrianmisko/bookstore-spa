@@ -5,6 +5,7 @@ import Link from 'umi/link';
 
 const ProductList = ({ dispatch, products, loading }) => {
   const { Meta } = Card;
+  console.log(products);
 
   const colors = ['cyan', 'magenta', 'geekblue', 'volcano', 'gold', 'green', 'purple', 'blue'];
   const mock = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
@@ -45,7 +46,7 @@ const ProductList = ({ dispatch, products, loading }) => {
             cover={
             <Link to={'books/' + product.id.toString()}>
             <div>
-              <img src={product.mianiature} alt="cover"
+              <img src={product.cover} alt="cover"
                              style={{width:110, height: 150, marginLeft: 'auto', marginRight: 'auto', marginTop: 15, marginBottom: 10, borderRadius: 5 }} />
               { product.tags.sort((a, b) => b.length - a.length).map((tag, index) =>
                   <Tag color={colors[index % colors.length]}
@@ -77,14 +78,16 @@ const ProductList = ({ dispatch, products, loading }) => {
               }
               description={
                 <React.Fragment>
+                  {product.authors_names.map(author_name =>
                   <span>
-                    <Link to={'search?author=' + product.author} style={{ color: 'rgba(0,0,0,0.70)' }} >
-                      {product.author}
+                    <Link to={'search?author=' + author_name.name} style={{ color: 'rgba(0,0,0,0.70)' }} >
+                      {author_name.name + ' '}
                     </Link>
                   </span>
+                  )}
                   <br/>
                   <span>
-                    {product.price}
+                    {product.base_price}
                   </span>
                 </React.Fragment>
                 }
