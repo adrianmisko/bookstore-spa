@@ -1,8 +1,9 @@
 import React from 'react';
-import { Layout } from 'antd';
+import { Layout, Modal, Button } from 'antd';
 import withRouter from 'umi/withRouter';
 import Nav from '../components/Nav/Nav';
 import SideNav from '../components/SideNav/SideNav';
+import LoginForm from '../components/LoginForms/LoginForm';
 import { connect } from 'dva';
 
 
@@ -45,6 +46,16 @@ const BasicLayout = props => {
           <Nav currentKey={props.currentKey} dispatch={props.dispatch} history={props.history}/>
         </Header>
         <Content>
+          <Modal
+            width={400}
+            title="Log in"
+            visible={props.loginModalVisible}
+            onCancel={() => props.dispatch({ type: 'ui/hideLoginModal' })}
+            footer={null}
+            maskClosable={true}
+          >
+            <LoginForm />
+          </Modal>
           {props.children}
         </Content>
         <Footer style={{ backgroundColor: '#3333', marginTop: 25 }}>

@@ -1,13 +1,14 @@
 import React from 'react';
-import { Menu, Icon, Badge, Popover } from 'antd';
+import { Menu, Icon, Badge, Popover, Modal } from 'antd';
 import styles from './Nav.css';
 import SearchBar from '../SearchBar/SearchBar';
 import { Link } from 'react-router-dom';
 import ShoppingCart from '../ShoppingCart/ShoppingCart';
+import { connect } from 'dva';
 
 
-let Nav = ({ currentKey, dispatch, history }) => {
-
+let Nav = ({ currentKey, dispatch, history, isLoggedIn }) => {
+  console.log(isLoggedIn)
   return (
     <Menu
       mode="horizontal"
@@ -34,7 +35,7 @@ let Nav = ({ currentKey, dispatch, history }) => {
       <div className={styles.filler}></div>
       <ShoppingCart/>
       <div>
-        {false ?
+        {isLoggedIn ?
           <Link to="/users/1">
             <Badge count={0} showZero={true} overflowCount={5} title={'Notifications'}
                    style={{ position: 'absolute', top: 2, backgroundColor: '#f44941' }}
@@ -48,7 +49,7 @@ let Nav = ({ currentKey, dispatch, history }) => {
             placement="bottomLeft"
             content={
               <div>
-                <Link to={'/login'}>Login</Link>
+                <a onClick={() => { console.log('click'); dispatch({ type: 'ui/showLoginModal' }) } }>Login</a>
                 <br />
                 <Link to={'/register'}>Register</Link>
               </div>
@@ -65,4 +66,4 @@ let Nav = ({ currentKey, dispatch, history }) => {
   );
 };
 
-export default Nav;
+export default connect(({ user }) => user)(Nav);
