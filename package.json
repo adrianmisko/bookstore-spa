@@ -41,6 +41,7 @@
     "react": "^16.6.3",
     "react-animated-css": "^1.0.4",
     "react-animated-number": "^0.4.4",
-    "react-router-dom": "latest"
+    "react-router-dom": "latest",
+    "history": "latest"
   }
 }

@@ -8,7 +8,7 @@ import { connect } from 'dva';
 
 
 let Nav = ({ currentKey, dispatch, history, isLoggedIn }) => {
-  console.log(isLoggedIn)
+
   return (
     <Menu
       mode="horizontal"

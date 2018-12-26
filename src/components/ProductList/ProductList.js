@@ -5,7 +5,6 @@ import Link from 'umi/link';
 
 const ProductList = ({ dispatch, products, loading }) => {
   const { Meta } = Card;
-  console.log(products);
 
   const colors = ['cyan', 'magenta', 'geekblue', 'volcano', 'gold', 'green', 'purple', 'blue'];
   const mock = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];

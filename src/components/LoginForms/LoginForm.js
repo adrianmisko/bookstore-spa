@@ -1,9 +1,10 @@
 import {
-  Form, Icon, Input, Button, Checkbox,
+  Form, Icon, Input, Button, Checkbox, Alert
 } from 'antd';
 import React from 'react';
 import Link from 'umi/link';
 import { connect } from 'dva';
+import UmiReactTitle from 'umi-plugin-react/src/plugins/title/TitleWrapper';
 
 
 class LoginForm extends React.Component {
@@ -22,7 +23,19 @@ class LoginForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <React.Fragment>
+        {(this.props.errorMessage !== '') ?
+          <Alert
+            style={{ marginBottom: 30 }}
+            message={this.props.errorMessage}
+            closable={true}
+            type="error"
+            afterClose={ () => this.props.dispatch({ type: 'user/hideErrorNotification' }) }
+          />
+          :
+          null
+        }
+        <Form onSubmit={this.handleSubmit}>
         <Form.Item>
           {getFieldDecorator('userName', {
             rules: [{ required: true, message: 'Please input your username!' }],
@@ -51,6 +64,7 @@ class LoginForm extends React.Component {
           Or <Link to={'/register'} onClick={() => { this.props.dispatch({ type: 'ui/hideLoginModal' }) }}>register now!</Link>
         </Form.Item>
       </Form>
+      </React.Fragment>
     );
   }
 }

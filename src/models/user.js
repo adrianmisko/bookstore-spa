@@ -10,7 +10,8 @@ export default {
   state: {
     isLoading: false,
     isLoggedIn: false,
-    token: null,
+    token: '',
+    errorMessage: ''
   },
   reducers: {
     showLoading(state) {
@@ -27,6 +28,12 @@ export default {
     },
     logUserOut(state) {
       return { ...state, isLoggedIn: false }
+    },
+    showErrorNotification(state) {
+      return { state, errorMessage: 'Invalid credentials' }
+    },
+    hideErrorNotification(state) {
+      return { state, errorMessage: '' }
     }
   },
   effects: {
@@ -39,7 +46,7 @@ export default {
         yield put({ type: 'logUserIn' });
         yield put({ type: 'ui/hideLoginModal' });
       } else {
-        //todo display error
+        yield put({ type: 'showErrorNotification' });
         console.log('error, http response code: ' + result.status)
       }
       yield put({ type: 'hideLoading' });
