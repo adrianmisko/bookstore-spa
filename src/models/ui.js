@@ -6,6 +6,7 @@ export default {
     currentTab: 'tab1',
     currentKey: 'main',
     loginModalVisible: false,
+    registerDrawerVisible: false,
   },
   reducers: {
     changeTab(state, { payload: newTab }) {
@@ -19,6 +20,12 @@ export default {
     },
     hideLoginModal(state) {
       return { ...state, loginModalVisible: false }
+    },
+    showRegisterDrawer(state) {
+      return { ...state, registerDrawerVisible: true }
+    },
+    hideRegisterDrawer(state) {
+      return { ...state, registerDrawerVisible: false }
     },
   },
 }

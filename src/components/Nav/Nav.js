@@ -30,28 +30,40 @@ let Nav = ({ currentKey, dispatch, history, isLoggedIn }) => {
       <Menu.Item key="books" className={styles['nav-button']}>
         <Link to='/books'><Icon type="book"/>Books</Link>
       </Menu.Item>
-      <div className={styles['filler-left']}></div>
+      <div className={styles['filler-left']}> </div>
       <SearchBar history={history}/>
-      <div className={styles.filler}></div>
+      <div className={styles.filler}> </div>
       <ShoppingCart/>
       <div>
         {isLoggedIn ?
-          <Link to="/users/1">
-            <Badge count={0} showZero={true} overflowCount={5} title={'Notifications'}
-                   style={{ position: 'absolute', top: 2, backgroundColor: '#f44941' }}
-            >
-              <Icon type="user" style={{ fontSize: 26, marginTop: 15, color: '#7f8287', fontWeight: 600 }}/>
-            </Badge>
-          </Link>
+          <Popover
+            trigger="hover"
+            placement="bottomLeft"
+            content={
+              <a
+                onClick={() => dispatch({ type: 'user/logOut' })}
+              >
+                Logout
+              </a>
+            }
+          >
+            <Link to="/users/1">
+              <Badge count={0} showZero={true} overflowCount={5} title={'Notifications'}
+                     style={{ position: 'absolute', top: 2, backgroundColor: '#f44941' }}
+              >
+                <Icon type="user" style={{ fontSize: 26, marginTop: 15, color: '#7f8287', fontWeight: 600 }}/>
+              </Badge>
+            </Link>
+          </Popover>
           :
           <Popover
-            trigger="click"
+            trigger="hover"
             placement="bottomLeft"
             content={
               <div>
-                <a onClick={() => { console.log('click'); dispatch({ type: 'ui/showLoginModal' }) } }>Login</a>
+                <a onClick={() => dispatch({ type: 'ui/showLoginModal' })}>Login</a>
                 <br />
-                <Link to={'/register'}>Register</Link>
+                <a onClick={() => dispatch({ type: 'ui/showRegisterDrawer' })}>Register</a>
               </div>
           }
           >
@@ -61,7 +73,7 @@ let Nav = ({ currentKey, dispatch, history, isLoggedIn }) => {
           </Popover>
         }
       </div>
-      <div className={styles['filler-right']}></div>
+      <div className={styles['filler-right']}> </div>
     </Menu>
   );
 };

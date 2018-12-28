@@ -1,10 +1,9 @@
 import {
-  Form, Icon, Input, Button, Checkbox, Alert
+  Form, Icon, Input, Button, Checkbox, Alert, message
 } from 'antd';
 import React from 'react';
 import Link from 'umi/link';
 import { connect } from 'dva';
-import UmiReactTitle from 'umi-plugin-react/src/plugins/title/TitleWrapper';
 
 
 class LoginForm extends React.Component {
@@ -47,7 +46,7 @@ class LoginForm extends React.Component {
           {getFieldDecorator('password', {
             rules: [{ required: true, message: 'Please input your password!' }],
           })(
-            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} autoComplete={'current-password'} type="password" placeholder="Password" />
           )}
         </Form.Item>
         <Form.Item>

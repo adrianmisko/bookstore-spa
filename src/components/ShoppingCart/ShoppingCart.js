@@ -185,7 +185,7 @@ const ShoppingCart = ({ dispatch, products, itemsInCart, restartAnimation, first
         placement="bottomLeft"
         title={title}
         content={content}
-        trigger="click"
+        trigger="hover"
       >
         <a>
           <Badge

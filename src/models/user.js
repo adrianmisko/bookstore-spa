@@ -1,8 +1,10 @@
-const validateCredentials = ({ userName, password }) => {
+import {message} from 'antd';
+
+const validateCredentials = ({ userName, password, put }) => {
   const headers = { 'Authorization': `Basic ${btoa(userName + ':' + password)}` };
-  return fetch('http://127.0.0.1:5000/api/token', { mode: 'cors', headers: headers })
+  return fetch('http://127.0.0.1:5000/api/token', { mode: 'cors', method: 'POST', headers: headers })
     .then(response => response)
-    .catch(error => console.log(error));
+    .catch(_ => ({ status: 500 }));
 };
 
 export default {
@@ -11,7 +13,7 @@ export default {
     isLoading: false,
     isLoggedIn: false,
     token: '',
-    errorMessage: ''
+    errorMessage: '',
   },
   reducers: {
     showLoading(state) {
@@ -26,30 +28,44 @@ export default {
     logUserIn(state) {
       return { ...state, isLoggedIn: true }
     },
-    logUserOut(state) {
-      return { ...state, isLoggedIn: false }
-    },
-    showErrorNotification(state) {
-      return { state, errorMessage: 'Invalid credentials' }
+    showErrorNotification(state, { payload: message }) {
+      return { ...state, errorMessage: message }
     },
     hideErrorNotification(state) {
-      return { state, errorMessage: '' }
+      return { ...state, errorMessage: '' }
+    },
+    resetState() {
+      return ({ errorMessage: '' })
     }
   },
   effects: {
     *submitLoginForm(action, { call, put }) {
       yield put({ type: 'showLoading' });
-      const result = yield call(validateCredentials, action.payload);
+      const result = yield call(validateCredentials, action.payload, put);
+      yield put({ type: 'hideLoading' });
       if (result.status === 200) {
         const token = yield result.json();
         yield put({ type: 'saveToken', payload: token });
         yield put({ type: 'logUserIn' });
         yield put({ type: 'ui/hideLoginModal' });
+        yield call(message.success, 'Welcome!', 1.2);
       } else {
-        yield put({ type: 'showErrorNotification' });
-        console.log('error, http response code: ' + result.status)
+        switch (result.status) {
+          case 500:
+            yield put({ type: 'showErrorNotification', payload: 'Internal server error' });
+            break;
+          case 401:
+            yield put({ type: 'showErrorNotification', payload: 'Invalid credentials' });
+            break;
+          default:
+            yield put({ type: 'showErrorNotification', payload: 'Error' });
+        }
       }
-      yield put({ type: 'hideLoading' });
+    },
+    *logOut(action, { call, put }) {
+      yield put({ type: 'resetState' });
+      yield call(message.success, 'You\'be been successfully logged out', 1.5);
+      yield call(window.sessionStorage.clear());
     },
   }
 }
