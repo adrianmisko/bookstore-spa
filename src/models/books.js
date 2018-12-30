@@ -60,7 +60,7 @@ export default {
       if (! alreadyFetched) {
         yield put({ type: 'loadingOn'});
         const result = yield call(fetchBooks);
-        yield put({ type: 'update', payload: result.data });
+        yield put({ type: 'update', payload: result });
         yield put({ type: 'loadingOff'});
         yield put({ type: 'completeFetch'});
       }

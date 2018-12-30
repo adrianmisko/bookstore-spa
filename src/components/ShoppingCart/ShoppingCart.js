@@ -49,7 +49,7 @@ const ShoppingCart = ({ dispatch, products, itemsInCart, restartAnimation, first
             <List
               itemLayout="horizontal"
               dataSource={inCart}
-              renderItem={item => (
+              renderItem={item =>
                 <div>
                   <List.Item
                     actions={[
@@ -133,8 +133,8 @@ const ShoppingCart = ({ dispatch, products, itemsInCart, restartAnimation, first
                     />
                   </List.Item>
                 </div>
-              )}
-              />
+              }
+            />
             <div style={{ display: 'flex', marginTop: 10, marginBottom: -10 }}>
               <p style={{ fontSize: '1.15em' }}>
                 <AnimatedNumber

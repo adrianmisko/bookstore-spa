@@ -9,6 +9,7 @@ const ProductList = ({ dispatch, products, loading }) => {
   const colors = ['cyan', 'magenta', 'geekblue', 'volcano', 'gold', 'green', 'purple', 'blue'];
   const mock = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
+
   if (loading)
     return (
       <div

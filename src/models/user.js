@@ -2,7 +2,7 @@ import {message} from 'antd';
 
 const validateCredentials = ({ userName, password, put }) => {
   const headers = { 'Authorization': `Basic ${btoa(userName + ':' + password)}` };
-  return fetch('http://127.0.0.1:5000/api/token', { mode: 'cors', method: 'POST', headers: headers })
+  return fetch('https://bookstore-flask.herokuapp.com/api/token', { mode: 'cors', method: 'POST', headers: headers })
     .then(response => response)
     .catch(_ => ({ status: 500 }));
 };

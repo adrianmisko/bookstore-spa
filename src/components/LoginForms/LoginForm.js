@@ -1,8 +1,7 @@
 import {
-  Form, Icon, Input, Button, Checkbox, Alert, message
+  Form, Icon, Input, Button, Checkbox, Alert,
 } from 'antd';
 import React from 'react';
-import Link from 'umi/link';
 import { connect } from 'dva';
 
 
@@ -37,14 +36,14 @@ class LoginForm extends React.Component {
         <Form onSubmit={this.handleSubmit}>
         <Form.Item>
           {getFieldDecorator('userName', {
-            rules: [{ required: true, message: 'Please input your username!' }],
+            rules: [{ required: true, message: 'Please input your email' }],
           })(
             <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username (e-mail)" />
           )}
         </Form.Item>
         <Form.Item>
           {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Please input your password!' }],
+            rules: [{ required: true, message: 'Please input your password' }],
           })(
             <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} autoComplete={'current-password'} type="password" placeholder="Password" />
           )}
@@ -60,7 +59,12 @@ class LoginForm extends React.Component {
           <Button type="primary" htmlType="submit" style={{ width: '100%'}}>
             Log in
           </Button>
-          Or <Link to={'/register'} onClick={() => { this.props.dispatch({ type: 'ui/hideLoginModal' }) }}>register now!</Link>
+          Or{' '}
+          <a onClick={() => { this.props.dispatch({ type: 'ui/hideLoginModal' });
+                              this.props.dispatch({ type: 'ui/showRegisterDrawer' }) } }
+          >
+             register now!
+          </a>
         </Form.Item>
       </Form>
       </React.Fragment>

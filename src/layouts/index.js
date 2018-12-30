@@ -26,16 +26,16 @@ const BasicLayout = props => {
         >
           <LoginForm/>
         </Modal>
-        <Drawer
+        <Modal
+          title="Register"
           visible={props.registerDrawerVisible}
-          width={600}
-          placement={'right'}
+          width={500}
+          footer={null}
           maskClosable={true}
-          closable={false}
-          onClose={() => props.dispatch({ type: 'ui/hideRegisterDrawer' })}
+          onCancel={() => props.dispatch({ type: 'ui/hideRegisterDrawer' })}
         >
           <RegisterForm/>
-        </Drawer>
+        </Modal>
         {props.children}
       </Content>
       <Footer style={{ backgroundColor: '#3333', marginTop: 25 }}>
