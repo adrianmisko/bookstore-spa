@@ -1,5 +1,5 @@
 import {
-  Form, Icon, Input, Button, Checkbox, Alert,
+  Form, Icon, Input, Button, Checkbox, Alert, Spin,
 } from 'antd';
 import React from 'react';
 import { connect } from 'dva';
@@ -11,9 +11,12 @@ class LoginForm extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         this.props.dispatch({
+          type: 'user/hideErrorNotification'
+        });
+        this.props.dispatch({
           type: 'user/submitLoginForm',
-          payload: values
-        })
+          payload: { form: this.props.form, values }
+        });
       }
     });
   };
@@ -56,9 +59,14 @@ class LoginForm extends React.Component {
             <Checkbox>Remember me</Checkbox>
           )}
           <a href="" style={{ float: 'right' }}>Forgot password</a>
-          <Button type="primary" htmlType="submit" style={{ width: '100%'}}>
-            Log in
-          </Button>
+          <Spin
+            spinning={this.props.isLoading}
+            indicator={<Icon type="loading" style={{ fontSize: 22 }} spin/>}
+          >
+            <Button type="primary" htmlType="submit" style={{ width: '100%'}}>
+              Log in
+            </Button>
+          </Spin>
           Or{' '}
           <a onClick={() => { this.props.dispatch({ type: 'ui/hideLoginModal' });
                               this.props.dispatch({ type: 'ui/showRegisterDrawer' }) } }

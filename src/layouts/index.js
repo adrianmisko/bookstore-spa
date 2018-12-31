@@ -20,7 +20,11 @@ const BasicLayout = props => {
           width={400}
           title="Log in"
           visible={props.loginModalVisible}
-          onCancel={() => props.dispatch({ type: 'ui/hideLoginModal' })}
+          onCancel={() => {
+            props.dispatch({ type: 'user/hideErrorNotification' });
+            props.dispatch({ type: 'ui/hideLoginModal' });
+            }
+          }
           footer={null}
           maskClosable={true}
         >

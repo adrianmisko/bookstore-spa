@@ -12,7 +12,8 @@ class RegistrationForm extends React.Component {
   state = {
     confirmDirty: false,
     autoCompleteResult: [],
-    fetchInProgress: false,
+    validatingEmail: false,
+    validatingPhoneNumber: false
   };
 
   handleAutocomplete = value => {
@@ -29,7 +30,10 @@ class RegistrationForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        this.props.dispatch({
+          type: 'user/submitRegistrationForm',
+          payload: { form: this.props.form, values }
+        });
       }
     });
   };
@@ -58,7 +62,7 @@ class RegistrationForm extends React.Component {
 
 
   validateEmail = (rule, value, callback) => {
-    this.setState({ ...this.state, fetchInProgress: true });
+    this.setState({ ...this.state, validatingEmail: true });
     const body = JSON.stringify({ email: value });
     fetch('https://bookstore-flask.herokuapp.com/api/emails/validate',
       {
@@ -76,14 +80,41 @@ class RegistrationForm extends React.Component {
           callback();
         else
           callback(data.email[0]);
-        this.setState({ ...this.state, fetchInProgress: false });
+        this.setState({ ...this.state, validatingEmail: false });
       })
       .catch(_ => {
         callback('Internal server error :(');
-        this.setState({ ...this.state, fetchInProgress: false });
+        this.setState({ ...this.state, validatingEmail: false });
       });
   };
 
+
+  validatePhoneNumber = (rule, value, callback) => {
+    this.setState({ ...this.state, validatingPhoneNumber: true });
+    const body = JSON.stringify({ phone_number: value });
+    fetch( 'https://bookstore-flask.herokuapp.com/api/phone_number/validate',
+      {
+        method: 'POST',
+        mode: 'cors',
+        body,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data['valid phone number'] === true)
+          callback();
+        else
+          callback(data.phone_number[0]);
+        this.setState({ ...this.state, validatingPhoneNumber: false });
+      })
+      .catch(_ => {
+        callback('Internal server error :(');
+        this.setState({ ...this.state, validatingPhoneNumber: false });
+      });
+  };
 
   render() {
     const { autoCompleteResult } = this.state;
@@ -130,7 +161,7 @@ class RegistrationForm extends React.Component {
           label="E-mail"
         >
           <Spin
-            spinning={this.state.fetchInProgress}
+            spinning={this.state.validatingEmail}
             indicator={<Icon type="loading" style={{ fontSize: 22 }} spin/>}
           >
             {getFieldDecorator('email', {
@@ -192,19 +223,16 @@ class RegistrationForm extends React.Component {
           label="Phone Number"
         >
           {getFieldDecorator('phone', {
-            validate: [{
-              trigger: 'onBlur',
+              validateTrigger: 'onBlur',
+              validateFirst: true,
               rules: [{
-                required: true,
-                message: 'Please input your phone number',
+                required: true, message: 'Please input your phone number',
+              },{
+                pattern: '^[0-9]+$', message: 'Phone number cannot contain non-numeric characters',
+              }, {
+                validator: this.validatePhoneNumber
               }]
-            }, {
-              trigger: 'onChange',
-              rules: [{
-                pattern: '^[0-9]+$',
-                message: 'Phone number cannot contain non-numeric characters',
-              }],
-            }]})(
+            })(
             <Input addonBefore={prefixSelector} style={{ width: '100%' }}/>,
           )}
         </Form.Item>
