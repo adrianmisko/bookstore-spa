@@ -222,6 +222,10 @@ class RegistrationForm extends React.Component {
           {...formItemLayout}
           label="Phone Number"
         >
+          <Spin
+            spinning={this.state.validatingPhoneNumber}
+            indicator={<Icon type="loading" style={{ fontSize: 22 }} spin/>}
+          >
           {getFieldDecorator('phone', {
               validateTrigger: 'onBlur',
               validateFirst: true,
@@ -235,6 +239,7 @@ class RegistrationForm extends React.Component {
             })(
             <Input addonBefore={prefixSelector} style={{ width: '100%' }}/>,
           )}
+          </Spin>
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           {getFieldDecorator('agreement', {

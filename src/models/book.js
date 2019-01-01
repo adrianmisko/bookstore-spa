@@ -8,7 +8,10 @@ const getBook = id => {
 
 export default {
   namespace: 'book',
-  state: { book: {}, loading: false },
+  state: {
+    book: null,
+    loading: false
+  },
   reducers: {
     showLoading(state) {
       return { ...state,  loading: true };
@@ -21,11 +24,15 @@ export default {
     },
   },
   effects: {
-    *fetchBook(action, { call, put }) {
-      yield put({ type: 'showLoading' });
-      const result = yield call(getBook, action.payload);
-      yield put({ type: 'update', payload: result });
-      yield put({ type: 'stopLoading' });
+    *fetchBook(action, { call, put, select }) {
+      const book = yield select(state => state.book.book);
+      if (book === null || book === undefined || book.id !== action.payload) {
+        console.log('fetching new');
+        yield put({ type: 'showLoading' });
+        const result = yield call(getBook, action.payload);
+        yield put({ type: 'update', payload: result });
+        yield put({ type: 'stopLoading' });
+      }
     }
   },
   subscriptions: {

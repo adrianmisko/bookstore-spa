@@ -44,15 +44,21 @@ const ProductList = ({ dispatch, products, loading }) => {
             key={product.id}
             style={{ width: 180, margin: 5, fontStyle: 'italic' }}
             cover={
-            <Link to={'books/' + product.id.toString()}>
+            <Link
+              onClick={() => dispatch({
+                type: 'book/update',
+                payload: product
+              })}
+              to={'books/' + product.id.toString()}
+            >
             <div>
               <img src={product.cover} alt="cover"
                              style={{width:110, height: 150, marginLeft: 'auto', marginRight: 'auto', marginTop: 15, marginBottom: 10, borderRadius: 5 }} />
-              { product.tags.sort((a, b) => b.length - a.length).map((tag, index) =>
+              { product.tags.sort((a, b) => b.tag.length - a.tag.length).map((tag, index) =>
                   <Tag color={colors[index % colors.length]}
                        style={{ width: 70, position: 'absolute', top: 20 + 25 * index, left: 3, fontSize: 10 }}
                   >
-                    {tag}
+                    {tag.tag}
                   </Tag>)}
             </div>
             </Link>
@@ -72,7 +78,14 @@ const ProductList = ({ dispatch, products, loading }) => {
           >
             <Meta
               title={
-                <Link to={'books/' + product.id.toString()} style={{ color: 'rgba(0,0,0,0.9)' }} >
+                <Link
+                  onClick={() => dispatch({
+                    type: 'book/update',
+                    payload: product
+                  })}
+                  to={'books/' + product.id.toString()}
+                  style={{ color: 'rgba(0,0,0,0.9)' }}
+                >
                   {product.title}
                 </Link>
               }

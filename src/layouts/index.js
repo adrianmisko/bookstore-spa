@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Modal, Drawer } from 'antd';
+import { Layout, Modal } from 'antd';
 import withRouter from 'umi/withRouter';
 import Nav from '../components/Nav/Nav';
 import LoginForm from '../components/LoginForms/LoginForm';
