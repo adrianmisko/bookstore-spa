@@ -1,16 +1,16 @@
+import { message } from 'antd';
+
 const getBook = id => {
   const path = 'https://bookstore-flask.herokuapp.com/api/books/' + id.toString();
   return fetch(path, { method: 'GET', mode: 'cors'})
-    .then(response => response.json())
-    .then(data => data)
-    .catch(err => console.log(err));
+    .then(response => response)
 };
 
 export default {
   namespace: 'book',
   state: {
     book: null,
-    loading: false
+    loading: false,
   },
   reducers: {
     showLoading(state) {
@@ -25,14 +25,25 @@ export default {
   },
   effects: {
     *fetchBook(action, { call, put, select }) {
-      const book = yield select(state => state.book.book);
-      if (book === null || book === undefined || book.id !== action.payload) {
-        console.log('fetching new');
-        yield put({ type: 'showLoading' });
-        const result = yield call(getBook, action.payload);
-        yield put({ type: 'update', payload: result });
-        yield put({ type: 'stopLoading' });
+      yield put({ type: 'showLoading' });
+      let book = yield select(state => state.book.book);
+      if (action.payload !== book.id) {
+        const products = yield select(state => state.books.products);
+        book = products.filter(book => book.id === action.payload)[0];
+        if (book === null || book === undefined) {
+          const result = yield call(getBook, action.payload);
+          switch (result.status) {
+            case 200:
+              const data = yield result.json();
+              yield put({ type: 'update', payload: data });
+              break;
+            default:
+              yield call(message.error, 'Error :(', 1.5)
+          }
+        } else
+          yield put({ type: 'update', payload: book });
       }
+      yield put({ type: 'stopLoading' });
     }
   },
   subscriptions: {

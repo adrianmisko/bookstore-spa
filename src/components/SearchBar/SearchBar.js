@@ -55,7 +55,7 @@ const SearchBar = ({ dispatch, booksFound, history }) => {
   const handleSelect = (value, option) => {
     dispatch({ type: 'search/clearDataSource' });
     dispatch({
-      type: 'book/update',
+      type: 'books/update',
       payload: booksFound.filter(book => book.id === option.key.toNumber()).first()
     });
     history.push('/books/' + option.key);

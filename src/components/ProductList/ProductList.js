@@ -45,10 +45,6 @@ const ProductList = ({ dispatch, products, loading }) => {
             style={{ width: 180, margin: 5, fontStyle: 'italic' }}
             cover={
             <Link
-              onClick={() => dispatch({
-                type: 'book/update',
-                payload: product
-              })}
               to={'books/' + product.id.toString()}
             >
             <div>
@@ -79,10 +75,6 @@ const ProductList = ({ dispatch, products, loading }) => {
             <Meta
               title={
                 <Link
-                  onClick={() => dispatch({
-                    type: 'book/update',
-                    payload: product
-                  })}
                   to={'books/' + product.id.toString()}
                   style={{ color: 'rgba(0,0,0,0.9)' }}
                 >
