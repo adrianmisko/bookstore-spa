@@ -69,7 +69,7 @@ const Book = ({ dispatch, book, loading }) => {
               <br/>
               <div>
                 {book.authors_names.length > 1 ? 'Authors: ' : 'Author: '}
-                {book.authors_names.map((author, idx) => <span>{(idx ? ', ' : '')} + {author.name}</span>)}
+                {book.authors_names.map((author, idx) => <span>{(idx ? ', ' : '')} {author.name}</span>)}
               </div>
               <br/>
               <div>{'Price: ' + book.base_price}</div>
