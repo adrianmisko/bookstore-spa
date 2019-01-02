@@ -2,8 +2,8 @@ import { message } from 'antd';
 
 const getBook = id => {
   const path = 'https://bookstore-flask.herokuapp.com/api/books/' + id.toString();
-  return fetch(path, { method: 'GET', mode: 'cors'})
-    .then(response => response)
+  return fetch(path, { method: 'GET', mode: 'cors' })
+    .then(response => response);
 };
 
 export default {
@@ -14,37 +14,30 @@ export default {
   },
   reducers: {
     showLoading(state) {
-      return { ...state,  loading: true };
+      return { ...state, loading: true };
     },
     stopLoading(state) {
       return { ...state, loading: false };
     },
     update(state, { payload: book }) {
-      return { ...state, book }
+      return { ...state, book };
     },
   },
   effects: {
-    *fetchBook(action, { call, put, select }) {
+    * fetchBook(action, { call, put }) {
+      yield put({ type: 'update', payload: null });
       yield put({ type: 'showLoading' });
-      let book = yield select(state => state.book.book);
-      if (action.payload !== book.id) {
-        const products = yield select(state => state.books.products);
-        book = products.filter(book => book.id === action.payload)[0];
-        if (book === null || book === undefined) {
-          const result = yield call(getBook, action.payload);
-          switch (result.status) {
-            case 200:
-              const data = yield result.json();
-              yield put({ type: 'update', payload: data });
-              break;
-            default:
-              yield call(message.error, 'Error :(', 1.5)
-          }
-        } else
-          yield put({ type: 'update', payload: book });
+      const result = yield call(getBook, action.payload);
+      switch (result.status) {
+        case 200:
+          const data = yield result.json();
+          yield put({ type: 'update', payload: data });
+          break;
+        default:
+          yield call(message.error, 'Error :(', 1.5);
       }
       yield put({ type: 'stopLoading' });
-    }
+    },
   },
   subscriptions: {
     getDetails({ dispatch, history }) {
@@ -55,8 +48,8 @@ export default {
         if (matches !== null) {
           dispatch({
             type: 'fetchBook',
-            payload: parseInt(matches[1], 10)
-          })
+            payload: parseInt(matches[1], 10),
+          });
         }
       });
     },

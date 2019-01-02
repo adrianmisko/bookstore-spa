@@ -1,42 +1,16 @@
 import { connect } from 'dva';
 import React from 'react';
-import { Card, Spin, Icon } from 'antd';
+import CardCenteredLayout from '../../components/CardCenteredLayout/CardCenteredLayout';
+import { Card } from 'antd';
 
 const Book = ({ dispatch, book, loading }) => {
 
   return (
-    <Spin
-      spinning={loading}
-      indicator={
-        <Icon
-          type="loading"
-          spin={true}
-          style={{
-            fontSize: '5em',
-            position: 'absolute',
-            transform: 'translate(-0.25em, 0)',
-          }}
-        />}
+    <CardCenteredLayout
+      title={book !== null ? book.title : null}
     >
-      <div
-        style={{
-          display: 'flex',
-        }}
-      >
-        <div
-          style={{
-            flexGrow: 1,
-          }}
-        >
-        </div>
-        <Card
-          style={{
-            flexGrow: 4,
-            minWidth: 340,
-            minHeight: '80vh',
-          }}
-          title={book.title}
-        >
+      {book !== null ?
+        <React.Fragment>
           <div
             style={{
               display: 'flex',
@@ -44,17 +18,19 @@ const Book = ({ dispatch, book, loading }) => {
             }}
           >
             <div
-            style={{
-              width: '50%'
-            }}
+              style={{
+                width: '50%',
+              }}
             >
               <img
-                src={book.cover}
+                src={book.covers[0].path}
                 alt={'cover'}
                 style={{
                   margin: 20,
                   maxHeight: 390,
                   maxWidth: 292,
+                  minWidth: 100,
+                  width: '100%',
                   borderRadius: 10,
                 }}
               />
@@ -72,32 +48,30 @@ const Book = ({ dispatch, book, loading }) => {
                 {book.authors_names.map((author, idx) => <span>{(idx ? ', ' : '')} {author.name}</span>)}
               </div>
               <br/>
-              <div>{'Price: ' + book.base_price}</div>
+              <div>{'Price: ' + book.price}</div>
               <br/>
               <div>
                 {'Genres: '}
-                {book.genres.map((genre, idx) => <span>{(idx ? ', ' : '')} + {genre.name}</span>)}
+                {
+                  book.genres.map((genre, idx) => <span>{(idx ? ', ' : '')} + {genre.name}</span>)
+                }
               </div>
               <br/>
             </div>
           </div>
           <div
             style={{
-              margin: 20
+              margin: 20,
             }}
           >
             <h3>Description</h3>
             <div>{book.description}</div>
           </div>
-        </Card>
-        <div
-          style={{
-            flexGrow: 1,
-          }}
-        >
-        </div>
-      </div>
-    </Spin>
+        </React.Fragment>
+        :
+        <p>content</p>
+      }
+    </CardCenteredLayout>
   );
 };
 

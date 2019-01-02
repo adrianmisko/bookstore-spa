@@ -4,6 +4,7 @@ import styles from  './ProductList.css'
 import Link from 'umi/link';
 
 const ProductList = ({ dispatch, products, loading }) => {
+
   const { Meta } = Card;
 
   const colors = ['cyan', 'magenta', 'geekblue', 'volcano', 'gold', 'green', 'purple', 'blue'];
@@ -92,7 +93,7 @@ const ProductList = ({ dispatch, products, loading }) => {
                   )}
                   <br/>
                   <span>
-                    {product.base_price}
+                    {product.price}
                   </span>
                 </React.Fragment>
                 }

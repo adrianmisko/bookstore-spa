@@ -41,7 +41,7 @@ const SearchBar = ({ dispatch, booksFound, history }) => {
             </span>
       }
       <span>
-        {book.base_price}
+        {book.price}
       </span>
       </div>
     </Option>);
@@ -54,10 +54,6 @@ const SearchBar = ({ dispatch, booksFound, history }) => {
 
   const handleSelect = (value, option) => {
     dispatch({ type: 'search/clearDataSource' });
-    dispatch({
-      type: 'books/update',
-      payload: booksFound.filter(book => book.id === option.key.toNumber()).first()
-    });
     history.push('/books/' + option.key);
   };
 

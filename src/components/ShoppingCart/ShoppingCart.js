@@ -9,9 +9,11 @@ import TweenOne from 'rc-tween-one';
 
 const ShoppingCart = ({ dispatch, products, itemsInCart, restartAnimation, firstLoad }) => {
 
-  const title = <span>Your shopping cart</span>;
   itemsInCart = itemsInCart || [];
   products = products || [];
+
+  const title = <span>Your shopping cart</span>;
+
   const inCart = products.filter(product => {
     return Object.keys(itemsInCart).includes(product.id.toString()) && itemsInCart[product.id] > 0;
   }).map(item => {
@@ -118,7 +120,7 @@ const ShoppingCart = ({ dispatch, products, itemsInCart, restartAnimation, first
                           {
                             <AnimatedNumber
                               component="text"
-                              value={item.quantity * item.base_price}
+                              value={item.quantity * item.price}
                               style={{
                                 transition: '0.8s ease-out',
                                 transitionProperty: 'background-color, color, opacity',
@@ -139,7 +141,7 @@ const ShoppingCart = ({ dispatch, products, itemsInCart, restartAnimation, first
               <p style={{ fontSize: '1.15em' }}>
                 <AnimatedNumber
                   component="text"
-                  value={inCart.reduce((acc, item) => acc + item.base_price * item.quantity, 0)}
+                  value={inCart.reduce((acc, item) => acc + item.price * item.quantity, 0)}
                   style={{
                     transition: '0.8s ease-out',
                     transitionProperty: 'background-color, color, opacity',

@@ -1,6 +1,7 @@
 import { Card } from 'antd';
 import React from 'react';
 import { connect } from 'dva';
+import CardCenteredLayout from '../../components/CardCenteredLayout/CardCenteredLayout';
 
 let UserPage = ({ currentTab, dispatch }) => {
 
@@ -19,39 +20,17 @@ let UserPage = ({ currentTab, dispatch }) => {
 
 
   return (
-    <div
-      style={{
-        display: 'flex'
-      }}
+    <CardCenteredLayout
+      title={'Hello, user 1'}
+      tabList={tabList}
+      onTabChange={key => { dispatch({
+        type: 'ui/changeTab',
+        payload: key,
+      }) }}
     >
-      <div
-        style={{
-          flexGrow: 1
-        }}
-      >
-      </div>
-      <Card
-        style={{
-          flexGrow: 4,
-          minWidth: 340,
-        }}
-        title={'Hello, user 1'}
-        tabList={tabList}
-        onTabChange={key => { dispatch({
-          type: 'ui/changeTab',
-          payload: key,
-        }) }}
-      >
-        <br/>
-        { contentList[currentTab] }
-      </Card>
-      <div
-        style={{
-          flexGrow: 1
-        }}
-      >
-      </div>
-    </div>
+      <br />
+      { contentList[currentTab] }
+    </CardCenteredLayout>
   );
 };
 
