@@ -55,7 +55,7 @@ export default {
   effects: {
     *submitLoginForm(action, { call, put }) {
       yield put({ type: 'showLoading' });
-      const result = yield call(validateCredentials, action.payload.values, put);
+      const result = yield call(validateCredentials, action.payload.values);
       yield put({ type: 'hideLoading' });
       if (result.status === 200) {
         const token = yield result.json();
@@ -89,6 +89,15 @@ export default {
           yield call(message.success, 'Your account has been successfully created', 2);
           yield put({ type: 'ui/hideRegisterDrawer' });
           yield call(action.payload.form.resetFields);
+          yield put({
+            type: 'submitLoginForm',
+            payload: {
+              values: {
+                userName: action.payload.values.email,
+                password: action.payload.values.password
+              }
+            }
+          });
           break;
         default:
           yield call(message.error, 'Error :(', 2);

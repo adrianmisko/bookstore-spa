@@ -14,11 +14,11 @@ const ShoppingCart = ({dispatch, products, itemsInCart}) => {
 
   const columns = [{
     title: 'Cover',
-    dataIndex: 'mianiature',
+    dataIndex: 'cover',
     key: 'mianiature',
     className: 'cover-column',
     render: row => {
-      return <img src={row} alt="cover" style={{width: '100%', maxWidth: 135}}/>
+      return <img src={row} alt="cover" style={{width: '100%', maxWidth: 75, borderRadius: 3}}/>
       }
   }, {
     title: 'Title',

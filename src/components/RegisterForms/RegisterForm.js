@@ -234,6 +234,8 @@ class RegistrationForm extends React.Component {
               },{
                 pattern: '^[0-9]+$', message: 'Phone number cannot contain non-numeric characters',
               }, {
+                max: 32, message: 'Phone number must have less than 32 numbers',
+              }, {
                 validator: this.validatePhoneNumber
               }]
             })(
@@ -249,6 +251,7 @@ class RegistrationForm extends React.Component {
           )}
         </Form.Item>
         <Button
+          loading={this.props.isLoading}
           type="primary"
           htmlType="submit"
           style={{ width: '100%', maxWidth: 300, margin: '0 auto', display: 'block' }}

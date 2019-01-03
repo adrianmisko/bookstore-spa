@@ -1,5 +1,5 @@
 import {
-  Form, Icon, Input, Button, Checkbox, Alert, Spin,
+  Form, Icon, Input, Button, Checkbox, Alert,
 } from 'antd';
 import React from 'react';
 import { connect } from 'dva';
@@ -59,14 +59,9 @@ class LoginForm extends React.Component {
             <Checkbox>Remember me</Checkbox>
           )}
           <a href="" style={{ float: 'right' }}>Forgot password</a>
-          <Spin
-            spinning={this.props.isLoading}
-            indicator={<Icon type="loading" style={{ fontSize: 22 }} spin/>}
-          >
-            <Button type="primary" htmlType="submit" style={{ width: '100%'}}>
-              Log in
-            </Button>
-          </Spin>
+          <Button type="primary" htmlType="submit" style={{ width: '100%'}} loading={this.props.isLoading}>
+            Log in
+          </Button>
           Or{' '}
           <a onClick={() => { this.props.dispatch({ type: 'ui/hideLoginModal' });
                               this.props.dispatch({ type: 'ui/showRegisterDrawer' }) } }

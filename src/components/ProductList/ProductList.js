@@ -8,23 +8,33 @@ const ProductList = ({ dispatch, products, loading }) => {
   const { Meta } = Card;
 
   const colors = ['cyan', 'magenta', 'geekblue', 'volcano', 'gold', 'green', 'purple', 'blue'];
-  const mock = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+  const mock = Array(12).fill(0);
 
 
   if (loading)
     return (
       <div
-        style={{ maxWidth: 1200, margin: 'auto', display: 'flex', flexWrap: 'wrap',
-          justifyContent: 'center', textAlign: 'center' }}
+        style={{
+          maxWidth: 1100,
+          margin: 'auto',
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          textAlign: 'center'
+        }}
       >
         {mock.map(_ =>
           <Card
-            headStyle={{ color: 'rgba(0, 0, 0, 0.4)' }}
-            style={{ width: 170, margin: 4 }}
+            headStyle={{
+              color: 'rgba(0, 0, 0, 0.4)'
+            }}
+            style={{
+              width: 170,
+              height: 280,
+              margin: 4
+            }}
             loading={true}
             active={true}
-            title={'...'}
-            actions={['']}
           >
           </Card>)}
       </div>
@@ -38,12 +48,13 @@ const ProductList = ({ dispatch, products, loading }) => {
         flexWrap: 'wrap',
         justifyContent: 'center',
         textAlign: 'center',
+        alignItems: 'center'
       }}>
         {products.map(product =>
           <Card
             className={styles['card']}
             key={product.id}
-            style={{ width: 180, margin: 5, fontStyle: 'italic' }}
+            style={{ width: 180, height: '100%', margin: 5, fontStyle: 'italic' }}
             cover={
             <Link
               to={'books/' + product.id.toString()}
@@ -52,11 +63,13 @@ const ProductList = ({ dispatch, products, loading }) => {
               <img src={product.cover} alt="cover"
                              style={{width:110, height: 150, marginLeft: 'auto', marginRight: 'auto', marginTop: 15, marginBottom: 10, borderRadius: 5 }} />
               { product.tags.sort((a, b) => b.tag.length - a.tag.length).map((tag, index) =>
+                <Link to={'/books?search=' + tag.tag}>
                   <Tag color={colors[index % colors.length]}
                        style={{ width: 70, position: 'absolute', top: 20 + 25 * index, left: 3, fontSize: 10 }}
                   >
                     {tag.tag}
-                  </Tag>)}
+                  </Tag>
+                </Link>)}
             </div>
             </Link>
             }
@@ -84,10 +97,10 @@ const ProductList = ({ dispatch, products, loading }) => {
               }
               description={
                 <React.Fragment>
-                  {product.authors_names.map(author_name =>
+                  {product.authors_names.map((author_name, idx) =>
                   <span>
-                    <Link to={'search?author=' + author_name.name} style={{ color: 'rgba(0,0,0,0.70)' }} >
-                      {author_name.name + ' '}
+                    <Link to={'books?author=' + author_name.name} style={{ color: 'rgba(0,0,0,0.70)' }} >
+                     {(idx ? ', ' : '')}{author_name.name}
                     </Link>
                   </span>
                   )}

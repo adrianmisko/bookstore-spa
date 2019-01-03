@@ -20,7 +20,7 @@ const CardCenteredLayout = ({title, children, tabList, onTabChange}) => {
         style={{
           flexGrow: 4,
           minWidth: 340,
-          maxWidth: 1200,
+          maxWidth: 900,
           minHeight: '80vh',
         }}
         title={title}

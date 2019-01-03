@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Icon, Input, AutoComplete } from 'antd';
+import { Icon, Input, AutoComplete, Skeleton } from 'antd';
 import { debounce } from 'lodash';
 
 
-const SearchBar = ({ dispatch, booksFound, history }) => {
+const SearchBar = ({ dispatch, booksFound, history, queryInProgress }) => {
 
   const Option = AutoComplete.Option;
-  const options = booksFound.map(book =>
+  let options = booksFound.map(book =>
     <Option
       key={book.id}
       value={book.title}
@@ -17,34 +17,44 @@ const SearchBar = ({ dispatch, booksFound, history }) => {
           display: 'flex',
           justifyContent: 'space-between',
           flexWrap: 'wrap',
-          alignItems: 'center'
+          alignItems: 'center',
         }}
       >
-      <img
-        src={book.cover}
-        style={{
-          width: 39,
-          height: 52,
-          borderRadius: 3
-        }}
-        alt={'cover'}
-      />
-      <span>
+        <img
+          src={book.cover}
+          style={{
+            width: 39,
+            height: 52,
+            borderRadius: 3,
+          }}
+          alt={'cover'}
+        />
+        <span>
         {book.title}
       </span>
-      {
-        book.authors_names.length === 0 ?
-          null
-          :
-          <span style={{ float: 'right' }}>
+        {
+          book.authors_names.length === 0 ?
+            null
+            :
+            <span style={{ float: 'right' }}>
               {book.authors_names[0].name}
             </span>
-      }
-      <span>
+        }
+        <span>
         {book.price}
       </span>
       </div>
     </Option>);
+
+  const mock = Array(3).fill(0).map((_, idx) => idx + 1);
+  const skeleton = mock.map(elem =>
+    <AutoComplete.Option
+      key={elem}
+      value={elem.toString()}
+    >
+      <Skeleton avatar paragraph={{ rows: 1 }} active/>
+    </AutoComplete.Option>,
+  );
 
 
   const handleBlur = () => {
@@ -58,15 +68,19 @@ const SearchBar = ({ dispatch, booksFound, history }) => {
   };
 
   const handleChange = value => {
-    dispatch({
-      type: 'search/searchForBooks',
-      payload: value,
-    });
+    if (value === '') {
+      dispatch({ type: 'search/clearDataSource' });
+    } else {
+      dispatch({
+        type: 'search/searchForBooks',
+        payload: value,
+      });
+    }
   };
 
   return (
     <AutoComplete
-      dataSource={options}
+      dataSource={queryInProgress ? skeleton : options}
       style={{
         marginRight: '1em',
         marginLeft: '1em',
@@ -77,6 +91,7 @@ const SearchBar = ({ dispatch, booksFound, history }) => {
       onChange={debounce(handleChange, 300)}
       onSelect={handleSelect}
       onBlur={handleBlur}
+      notFoundContent={<span>No results </span>}
       placeholder="Title, author..."
       optionLabelProp={'value'}
     >
