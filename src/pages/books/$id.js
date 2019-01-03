@@ -2,7 +2,7 @@ import { connect } from 'dva';
 import React from 'react';
 import CardCenteredLayout from '../../components/CardCenteredLayout/CardCenteredLayout';
 import BookDetails from '../../components/BookDetails/BookDetails';
-import BookSkeleton from '../../components/BookSkeleton/BookSkeleton';
+import BookDetailsSkeleton from '../../components/BookDetailsSkeleton/BookDetailsSkeleton';
 import { Skeleton } from 'antd';
 
 
@@ -20,7 +20,7 @@ const Book = ({ dispatch, book, loading }) => {
     >
       {
         loading ?
-          <BookSkeleton/>
+          <BookDetailsSkeleton/>
         :
           <BookDetails book={book} dispatch={dispatch}/>
       }

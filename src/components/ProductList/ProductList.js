@@ -7,7 +7,12 @@ const ProductList = ({ dispatch, products, loading }) => {
 
   const { Meta } = Card;
 
-  const colors = ['cyan', 'magenta', 'geekblue', 'volcano', 'gold', 'green', 'purple', 'blue'];
+  const colors = {
+    'Set text': 'rgba(10, 50, 88, 1)',
+    'New': '#2db7f5',
+    'Bestseller': '#87d068',
+    'Promotion': '#ffff'
+  };
   const mock = Array(12).fill(0);
 
 
@@ -57,14 +62,14 @@ const ProductList = ({ dispatch, products, loading }) => {
             style={{ width: 180, height: '100%', margin: 5, fontStyle: 'italic' }}
             cover={
             <Link
-              to={'books/' + product.id.toString()}
+              to={'/books/' + product.id.toString()}
             >
             <div>
               <img src={product.cover} alt="cover"
                              style={{width:110, height: 150, marginLeft: 'auto', marginRight: 'auto', marginTop: 15, marginBottom: 10, borderRadius: 5 }} />
               { product.tags.sort((a, b) => b.tag.length - a.tag.length).map((tag, index) =>
                 <Link to={'/books?search=' + tag.tag}>
-                  <Tag color={colors[index % colors.length]}
+                  <Tag color={colors[tag.tag]}
                        style={{ width: 70, position: 'absolute', top: 20 + 25 * index, left: 3, fontSize: 10 }}
                   >
                     {tag.tag}
@@ -89,7 +94,7 @@ const ProductList = ({ dispatch, products, loading }) => {
             <Meta
               title={
                 <Link
-                  to={'books/' + product.id.toString()}
+                  to={'/books/' + product.id.toString()}
                   style={{ color: 'rgba(0,0,0,0.9)' }}
                 >
                   {product.title}
@@ -99,7 +104,7 @@ const ProductList = ({ dispatch, products, loading }) => {
                 <React.Fragment>
                   {product.authors_names.map((author_name, idx) =>
                   <span>
-                    <Link to={'books?author=' + author_name.name} style={{ color: 'rgba(0,0,0,0.70)' }} >
+                    <Link to={'/books?author=' + author_name.name} style={{ color: 'rgba(0,0,0,0.70)' }} >
                      {(idx ? ', ' : '')}{author_name.name}
                     </Link>
                   </span>

@@ -44,7 +44,9 @@
     "react": "^16.6.3",
     "react-animated-css": "^1.0.4",
     "react-animated-number": "^0.4.4",
+    "react-media": "^1.9.2",
     "react-nprogress": "^0.1.6",
+    "react-responsive": "^6.0.1",
     "react-router-dom": "latest",
     "styled-components": "^4.1.3"
   }
