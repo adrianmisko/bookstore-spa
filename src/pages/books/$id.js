@@ -8,7 +8,6 @@ import { Skeleton } from 'antd';
 
 const Book = ({ dispatch, book, loading }) => {
 
-
   const title = loading ?
     <Skeleton active paragraph={null} title={{ width: 120 }}/>
     :

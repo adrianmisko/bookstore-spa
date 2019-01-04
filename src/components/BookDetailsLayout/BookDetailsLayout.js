@@ -4,7 +4,7 @@ import Media from 'react-media';
 const BookDetailsLayout = ({ description, images, bookInfo }) => {
 
   return (
-    <Media query={{ minWidth: 500 }}>
+    <Media query={{ minWidth: 450 }}>
       {
       matches => matches ?
           <React.Fragment>
@@ -54,24 +54,17 @@ const BookDetailsLayout = ({ description, images, bookInfo }) => {
           </React.Fragment>
             :
           <React.Fragment>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-              }}
-            >
               <div
                 style={{
-                  width: '50%',
+                  width: '100%',
                 }}
               >
                 <div
                   style={{
-                    margin: 10,
-                    marginTop: 5,
+                    margin: '5px auto 20px auto',
                     padding: 5,
                     maxHeight: 520,
-                    maxWidth: 390,
+                    maxWidth: 300,
                     minWidth: 70,
                     width: '100%',
                     height: '100%',
@@ -82,17 +75,16 @@ const BookDetailsLayout = ({ description, images, bookInfo }) => {
               </div>
               <div
                 style={{
-                  width: '50%',
-                  padding: '5px 0px 0px 15px'
+                  width: '100%',
+                  padding: 15
                 }}
               >
                 {bookInfo}
               </div>
-            </div>
             <div
               style={{
                 margin: 10,
-                marginTop: 15
+                marginTop: 25
               }}
             >
               {description}

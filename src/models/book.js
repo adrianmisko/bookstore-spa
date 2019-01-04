@@ -6,11 +6,20 @@ const getBook = id => {
     .then(response => response);
 };
 
+const getReviews = id => {
+  const path = 'https://bookstore-flask.herokuapp.com/api/books/' + id.toString() + '/reviews';
+  return fetch(path, { method: 'GET', mode: 'cors' })
+    .then(response => response);
+};
+
+
 export default {
   namespace: 'book',
   state: {
     book: null,
     loading: false,
+    reviews: [],
+    loadingReviews: false
   },
   reducers: {
     showLoading(state) {
@@ -22,9 +31,18 @@ export default {
     update(state, { payload: book }) {
       return { ...state, book };
     },
+    showLoadingReviews(state) {
+      return { ...state, loadingReviews: true }
+    },
+    hideLoadingReviews(state) {
+      return { ...state, loadingReviews: false }
+    },
+    updateReviews(state, { payload: reviews }) {
+      return { ...state, reviews }
+    }
   },
   effects: {
-    * fetchBook(action, { call, put }) {
+    *fetchBook(action, { call, put }) {
       yield put({ type: 'update', payload: null });
       yield put({ type: 'showLoading' });
       const result = yield call(getBook, action.payload);
@@ -38,6 +56,22 @@ export default {
       }
       yield put({ type: 'stopLoading' });
     },
+    *fetchReviews(action, { call, put }) {
+      if (action.payload.key.length) {
+        yield put({ type: 'showLoadingReviews' });
+        const result = yield call(getReviews, action.payload.id);
+        switch (result.status) {
+          case 200:
+            const data = yield result.json();
+            yield put({ type: 'updateReviews', payload: data });
+            break;
+          default:
+            yield call(message.error, 'Error :(', 1.5);
+            break;
+        }
+        yield put({ type: 'hideLoadingReviews' });
+      }
+    }
   },
   subscriptions: {
     getDetails({ dispatch, history }) {

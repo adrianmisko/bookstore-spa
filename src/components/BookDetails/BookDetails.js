@@ -30,12 +30,12 @@ const BookDetails = ({ dispatch, book }) => {
     <React.Fragment>
       <BookDetailsLayout
         images={images}
-        bookInfo={BookInfo(book)}
+        bookInfo={BookInfo({book, dispatch})}
         description={description}
       />
       <Collapse
         bordered={false}
-        onChange={() => dispatch({ type: 'book/fetchReviews', payload: book.id })}
+        onChange={key => dispatch({ type: 'book/fetchReviews', payload: { id: book.id, key } })}
       >
         <Collapse.Panel
           header="See the reviews"

@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "antd": "latest",
+    "crypto-js": "^3.1.9-1",
     "dva": "latest",
     "history": "latest",
     "lodash": "^4.17.11",
