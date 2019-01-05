@@ -7,7 +7,7 @@ const BookDetailsSkeleton = () => {
   const imageSkeleton = <div
     style={{
       width: '100%',
-      height: '55vw',
+      height: '50vw',
       maxHeight: 520,
       backgroundColor: 'rgba(0, 0, 0, 0.01)',
       border: '1px solid rgba(0, 0, 0, 0.3)'

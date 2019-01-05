@@ -7,7 +7,7 @@ const BookInfo = ({book, dispatch}) => {
 
   return (
     <React.Fragment>
-      <div style={{ fontSize: '1.2em' }}>
+      <div style={{ fontSize: '1.1em' }}>
         <div>
           {'ISBN number: ' + book.ISBN}</div>
         <div>

@@ -1,7 +1,8 @@
-import { Comment, List, Tooltip, Skeleton, Icon, Rate, Divider } from 'antd';
+import { Comment, List, Tooltip, Skeleton, Icon, Rate, Divider, Collapse } from 'antd';
 import { connect } from 'dva';
 import React from 'react';
 import { MD5 } from 'crypto-js';
+import BookReviewForm from '../BookReviewForm/BookReviewForm';
 
 const BookReviews = ({ reviews, loadingReviews }) => {
 
@@ -17,7 +18,20 @@ const BookReviews = ({ reviews, loadingReviews }) => {
       :
       <React.Fragment>
         {reviews.length === 0 ?
-          <div>There aren't any reviews yet</div>
+          <Collapse
+            bordered={false}
+          >
+            <Collapse.Panel
+              style={{
+                border: 0,
+              }}
+              showArrow={false}
+              header={<span>There aren't any reviews yet, <a>be the first one!</a></span>}
+              key="1"
+            >
+              <BookReviewForm/>
+            </Collapse.Panel>
+          </Collapse>
           :
           <React.Fragment>
             <List
@@ -55,10 +69,23 @@ const BookReviews = ({ reviews, loadingReviews }) => {
                   author={item.author}
                   avatar={`https://www.gravatar.com/avatar/${MD5(item.author)}?d=identicon&s=50`}
                   content={item.body}
-                  datetime={Date()}
+                  datetime={item.posted_on}
                 />
               }
             />
+            <Collapse
+              bordered={false}
+            >
+              <Collapse.Panel
+                style={{
+                  border: 0,
+                }}
+                header={<span><a>Write a review</a></span>}
+                key="1"
+              >
+                <BookReviewForm/>
+              </Collapse.Panel>
+            </Collapse>
           </React.Fragment>
         }
       </React.Fragment>
@@ -68,4 +95,4 @@ const BookReviews = ({ reviews, loadingReviews }) => {
 
 };
 
-export default connect(({book}) => book)(BookReviews);;;;
+export default connect(({book}) => book)(BookReviews);
