@@ -1,7 +1,7 @@
 import { message } from 'antd';
 
-const queryServer = value => {
-  return fetch('https://bookstore-flask.herokuapp.com/api/books?search=' + value,
+const queryServer = queryString => {
+  return fetch('https://bookstore-flask.herokuapp.com/api/books' + queryString,
     { mode: 'cors', method: 'GET', headers: { 'Accept': 'Application/json' } })
     .then(response => response.json())
     .then(data => ({ data, status: 200 }))
@@ -10,7 +10,7 @@ const queryServer = value => {
 
 
 export default {
-  namespace: 'searchBar',
+  namespace: 'search',
   state: {
     booksFound: [],
     queryInProgress: false,

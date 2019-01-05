@@ -100,4 +100,4 @@ const SearchBar = ({ dispatch, booksFound, history, queryInProgress }) => {
   );
 };
 
-export default connect(({ search }) => search)(SearchBar);
+export default connect(({ searchBar }) => searchBar)(SearchBar);
