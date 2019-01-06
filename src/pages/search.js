@@ -1,10 +1,17 @@
 import React from 'react';
-import { connect } from 'dva';
+import PageSearchLayout from '../components/PageSearchLayout/PageSearchLayout';
+import FilterOptionsBar from '../components/FilterOptionsBar/FilterOptionsBar';
+import ResultsList from '../components/ResultsList/ResultsList';
 
-const Search = ({ dispatch, products, loading }) => {
+
+const Search = () => {
+
   return (
-    <h1>page search</h1>
+    <PageSearchLayout
+      FilterOptionsBar={FilterOptionsBar}
+      ResultsList={ResultsList}
+    />
   );
 };
 
-export default connect(({ search }) => search)(Search);
+export default Search;

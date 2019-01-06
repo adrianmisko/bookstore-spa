@@ -15,9 +15,6 @@ export default {
     firstLoad: true,
   },
   reducers: {
-    search(state, { payload: queryString }) {
-      return { ...state };
-    },
     update(state, { payload: products }) {
       return { ...state, products };
     },

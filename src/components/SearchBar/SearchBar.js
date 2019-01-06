@@ -58,7 +58,7 @@ const SearchBar = ({ dispatch, booksFound, history, queryInProgress }) => {
 
 
   const handleBlur = () => {
-    dispatch({ type: 'search/clearDataSource' });
+    dispatch({ type: 'searchBar/clearDataSource' });
   };
 
 
@@ -69,10 +69,10 @@ const SearchBar = ({ dispatch, booksFound, history, queryInProgress }) => {
 
   const handleChange = value => {
     if (value === '') {
-      dispatch({ type: 'search/clearDataSource' });
+      dispatch({ type: 'searchBar/clearDataSource' });
     } else {
       dispatch({
-        type: 'search/searchForBooks',
+        type: 'searchBar/searchForBooks',
         payload: value,
       });
     }

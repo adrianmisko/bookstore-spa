@@ -40,6 +40,7 @@ const ProductList = ({ dispatch, products, loading }) => {
             }}
             loading={true}
             active={true}
+            hoverable={true}
           >
           </Card>)}
       </div>
@@ -68,7 +69,7 @@ const ProductList = ({ dispatch, products, loading }) => {
               <img src={product.cover} alt="cover"
                              style={{width:110, height: 150, marginLeft: 'auto', marginRight: 'auto', marginTop: 15, marginBottom: 10, borderRadius: 5 }} />
               { product.tags.sort((a, b) => b.tag.length - a.tag.length).map((tag, index) =>
-                <Link to={'/books?search=' + tag.tag}>
+                <Link to={'/search?tag=' + tag.tag}>
                   <Tag color={colors[tag.tag]}
                        style={{ width: 70, position: 'absolute', top: 20 + 25 * index, left: 3, fontSize: 10 }}
                   >
@@ -104,7 +105,7 @@ const ProductList = ({ dispatch, products, loading }) => {
                 <React.Fragment>
                   {product.authors_names.map((author_name, idx) =>
                   <span>
-                    <Link to={'/books?author=' + author_name.name} style={{ color: 'rgba(0,0,0,0.70)' }} >
+                    <Link to={'/search?author=' + author_name.name} style={{ color: 'rgba(0,0,0,0.70)' }} >
                      {(idx ? ', ' : '')}{author_name.name}
                     </Link>
                   </span>
