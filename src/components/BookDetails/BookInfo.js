@@ -28,7 +28,7 @@ const BookInfo = ({book, dispatch}) => {
           {book.authors_names.length > 1 ? 'Authors: ' :  'Author: '}
           {book.authors_names.map((author_name, idx) =>
             <Link
-              to={'/search?author=' + author_name.name}
+              to={'/search?authors_name=' + author_name.name}
               style={{ color: 'rgba(0,0,0,0.9)', fontWeight: 520 }}
             >
              {(idx ? ', ' : '')}{author_name.name}

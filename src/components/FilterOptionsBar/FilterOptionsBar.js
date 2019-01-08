@@ -3,19 +3,127 @@ import { Select, Slider, DatePicker, Switch } from 'antd';
 import { connect } from 'dva';
 import { debounce } from 'lodash';
 
-const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocompleteLoading }) => {
+const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocompleteLoading, values }) => {
 
-  const handleGenresSearch = () => {
+  const handleGenresChange = values => {
+    dispatch({
+      type: 'search/updateValue',
+      payload: {
+        optionName: 'genres',
+        newValues: values
+      }
+    });
+  };
+
+  const handleGenresFocus = () => {
     if (options.genres.length === 0) {
       dispatch({
         type: 'search/getAutocompleteOptions',
         payload: {
-          optionName: 'genre',
+          optionName: 'genres',
           searchBy: '' // no request args => GET all
         }
       });
     }
   };
+
+
+  const handleAuthorsChange = values => {
+    dispatch({
+      type: 'search/updateValue',
+      payload: {
+        optionName: 'authors_names',
+        newValues: values
+      }
+    })
+  };
+
+  const handleAuthorsSearch = value => {
+    if (value.length > 2) {
+      dispatch({
+        type: 'search/getAutocompleteOptions',
+        payload: {
+          optionName: 'authors_names',
+          searchBy: value
+        }
+      });
+    }
+  };
+
+  const handlePublishersChange = values => {
+    dispatch({
+      type: 'search/updateValue',
+      payload: {
+        optionName: 'publishers',
+        newValues: values
+      }
+    });
+  };
+
+  const handlePublishersFocus = () => {
+    if (options.publishers.length === 0) {
+      dispatch({
+        type: 'search/getAutocompleteOptions',
+        payload: {
+          optionName: 'publishers',
+          searchBy: ''
+        }
+      });
+    }
+  };
+
+  const handleTagsChange = values => {
+    dispatch({
+      type: 'search/updateValue',
+      payload: {
+        optionName: 'tags',
+        newValues: values
+      }
+    });
+  };
+
+  const handleTagsFocus = () => {
+    if (options.tags.length === 0) {
+      dispatch({
+        type: 'search/getAutocompleteOptions',
+        payload: {
+          optionName: 'tags',
+          searchBy: ''
+        }
+      });
+    }
+  };
+
+  const handlePriceSliderChange = values => {
+    dispatch({
+      type: 'search/updateValue',
+      payload: {
+        optionName: 'price',
+        newValues: values
+      }
+    });
+  };
+
+  const handleAvailableSwitchChange = value => {
+    dispatch({
+      type: 'search/updateValue',
+      payload: {
+        optionName: 'available',
+        newValues: value
+      }
+    });
+  };
+
+  const handleFeaturedSwitchChange = value => {
+    dispatch({
+      type: 'search/updateValue',
+      payload: {
+        optionName: 'featured',
+        newValues: value
+      }
+    });
+  };
+
 
   return (
     <div>
@@ -27,9 +135,12 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
         }}
         mode="multiple"
         placeholder="Genres"
-        onFocus={handleGenresSearch}
+        value={values.genres}
+        onChange={handleGenresChange}
+        onFocus={handleGenresFocus}
         loading={autocompleteLoading.genres}
-        notFoundContent={'Getting genres...'}
+        notFoundContent="Getting genres..."
+        allowClear
       >
         {options.genres.map(genre => <Select.Option key={genre}>{genre}</Select.Option>)}
       </Select>
@@ -41,8 +152,15 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
         }}
         mode="multiple"
         placeholder="Authors"
+        value={values.authors_names}
+        onChange={handleAuthorsChange}
+        onSearch={debounce(handleAuthorsSearch, 250)}
+        onBlur={() => dispatch({ type: 'search/clearOption', payload: 'authors_names' })}
+        loading={autocompleteLoading.authors_names}
+        notFoundContent="Nothing found"
+        allowClear
       >
-        {options.authors.map(author_name => <Select.Option key={author_name}>{author_name}</Select.Option>)}
+        {options.authors_names.map(author_name => <Select.Option key={author_name}>{author_name}</Select.Option>)}
       </Select>
       <div>Publishers:</div>
       <Select
@@ -52,6 +170,12 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
         }}
         mode="multiple"
         placeholder="Publishers"
+        value={values.publishers}
+        onChange={handlePublishersChange}
+        onFocus={handlePublishersFocus}
+        loading={autocompleteLoading.publishers}
+        notFoundContent="Getting publishers..."
+        allowClear
       >
         {options.publishers.map(publisher => <Select.Option key={publisher}>{publisher}</Select.Option>)}
       </Select>
@@ -63,6 +187,12 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
         }}
         mode="multiple"
         placeholder="Tags"
+        onChange={handleTagsChange}
+        value={values.tags}
+        onFocus={handleTagsFocus}
+        loading={autocompleteLoading.tags}
+        notFoundContent="Getting tags..."
+        allowClear
       >
         {options.tags.map(tag => <Select.Option key={tag}>{tag}</Select.Option>)}
       </Select>
@@ -70,27 +200,30 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
       <DatePicker.RangePicker
         style={{ width: '100%' }}
         size="large"
-        disabled={dataSet.length === 0}
       />
       <div>Price:</div>
       <Slider
-        defaultValue={dataSet.length === 0 ? [0, 100] : pricesRange}
-        tooltipVisible={dataSet.length !== 0}
+        value={values.price}
         range
-        disabled={dataSet.length === 0}
+        min={pricesRange.min}
+        max={pricesRange.max}
+        onChange={handlePriceSliderChange}
+        tipFormatter={value => `$${value}`}
       />
       <div style={{ marginTop: 20 }}>
         Featured:
         <Switch
+          value={values.featured}
+          onChange={handleFeaturedSwitchChange}
           defaultUnchecked
-          disabled={dataSet.length === 0}
         />
       </div>
       <div style={{ marginTop: 20 }}>
         Available:
         <Switch
+          onChange={handleAvailableSwitchChange}
+          value={values.available}
           defaultUnchecked
-          disabled={dataSet.length === 0}
         />
       </div>
     </div>
