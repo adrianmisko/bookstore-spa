@@ -1,10 +1,10 @@
 import { message } from 'antd';
 import queryString from 'query-string';
-import { bool } from 'prop-types';
-import select from 'eslint-plugin-jsx-a11y/src/util/implicitRoles/select';
+
 
 const fetchBooks = queryString => {
-  return fetch('https://bookstore-flask.herokuapp.com/api/books' + queryString,
+  const path = 'https://bookstore-flask.herokuapp.com' + queryString;
+  return fetch(path,
     { mode: 'cors', method: 'GET', headers: { 'Accept': 'Application/json' } })
     .then(response => response.json())
     .then(data => ({ data, status: 200 }))
@@ -18,11 +18,22 @@ const fetchAutocompleteOptions = ({ optionName, searchBy }) => {
     .then(response => response);
 };
 
+const updateQueryString = values => {
+  let toQueryString = {};
+  Object.keys(values).forEach(key => {
+    if (Array.isArray(values[key]) && key !== 'price')
+      toQueryString[key.slice(0, -1)] = values[key];
+    else
+      toQueryString[key] = values[key];
+  });
+  window.history.pushState(null, '',
+    `search?${queryString.stringify(toQueryString)}`);
+};
+
 export default {
   namespace: 'search',
   state: {
     dataSet: [],
-    filtered: [],
     queryInProgress: false,
     filtering: false,
     autocompleteLoading: {
@@ -84,10 +95,10 @@ export default {
     clearOption(state, { payload: optionName }) {
       return { ...state, options: { ...state.options, ...{ [optionName]: [] } } };
     },
-    updateSingleValue(state, { payload: { optionName, newValues } }) {
+    updateValue(state, { payload: { optionName, newValues } }) {
       return { ...state, values: { ...state.values, ...{ [optionName]: newValues } } };
     },
-    updateAllValues(state, { payload: values }) {
+    updateValues(state, { payload: values }) {
       return { ...state, values };
     },
     clearValues(state) {
@@ -138,32 +149,33 @@ export default {
       }
       yield put({ type: 'autocompleteOptionStoppedLoading', payload: action.payload.optionName });
     },
-    *parseQueryStringIntoValues(action, { put, select }) {
+    *parseQueryStringIntoValues(action, { put, call, select }) {
       let fromSearch = queryString.parse(action.payload);
       let values = yield select(({ search }) => search.values);
       Object.keys(fromSearch).forEach(key => {
-        const value = fromSearch[key];
-        values[key + 's'] = Array.isArray(value) ? value : [value]});
+        if (Array.isArray(values[key + 's']))
+          values[key + 's'] = Array.isArray(fromSearch[key]) ? fromSearch[key] : [fromSearch[key]];
+        else
+          if (! Array.isArray(values[key]))
+            values[key] = fromSearch[key] === 'true';
+      });
       yield put({ type: 'updateValues', payload: values });
     },
-    *updateValue(action, { call, put, select }) {
-      yield put({ type: 'updateSingleValue', payload: action.payload });
+    *search(action, { put, call, select }) {
+      yield put({ type: 'startQuery' });
       const values = yield select(({ search }) => search.values);
-      window.history.pushState(null, '',
-        `search?${queryString.stringify(values)}`);
-      //check if there might be more
-      //filter if less
-      //reset price slider
-    },
-    *updateValues(action, { call, put, select }) {
-      yield put({ type: 'updateAllValues', payload: action.payload });
-      const values = yield select(({ search }) => search.values);
-      window.history.pushState(null, '',
-        `search?${queryString.stringify(values)}`);
-      //check if there might be more
-      //filter if less
-      //reset price slider
-    },
+      yield call(updateQueryString, values);
+      const result = yield call(fetchBooks, window.location.search);
+      console.log(result);
+      switch(result.status) {
+        case 200:
+          yield put({ type: 'updateDataSet', payload: { dataSet: result.data } });
+          break;
+        default:
+          yield call(message.error, 'Error :(', 1.5);
+      }
+      yield put({ type: 'stopQuery' });
+    }
   },
   subscriptions: {
     keepURLandFilterOptionsInSync({ dispatch, history }) {

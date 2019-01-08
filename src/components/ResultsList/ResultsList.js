@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import Link from 'umi/link';
 import React from 'react';
 
-const ResultsList = filtered => {
+const ResultsList = ({ queryInProgress, dataSet }) => {
 
   const IconText = ({ type, text }) => (
     <span>
@@ -14,12 +14,13 @@ const ResultsList = filtered => {
 
   return (
     <List
+      loading={queryInProgress}
       itemLayout="vertical"
       size="large"
       pagination={{
         pageSize: 3,
       }}
-      dataSource={filtered}
+      dataSource={dataSet}
       renderItem={item => (
         <List.Item
           key={item.title}

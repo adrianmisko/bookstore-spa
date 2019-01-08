@@ -1,9 +1,10 @@
 import React from 'react';
-import { Select, Slider, DatePicker, Switch } from 'antd';
+import { Select, Slider, DatePicker, Checkbox, Button, Icon, Row, Col } from 'antd';
 import { connect } from 'dva';
-import { debounce } from 'lodash';
+import { debounce, some } from 'lodash';
 
 const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocompleteLoading, values }) => {
+
 
   const handleGenresChange = values => {
     dispatch({
@@ -104,7 +105,9 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
     });
   };
 
-  const handleAvailableSwitchChange = value => {
+  const handleAvailableSwitchChange = e => {
+    let value = e.target.checked;
+
     dispatch({
       type: 'search/updateValue',
       payload: {
@@ -114,7 +117,9 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
     });
   };
 
-  const handleFeaturedSwitchChange = value => {
+  const handleFeaturedSwitchChange = e => {
+    let value = e.target.checked;
+
     dispatch({
       type: 'search/updateValue',
       payload: {
@@ -124,6 +129,13 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
     });
   };
 
+  const handleSearch = () => {
+    if (some(Object.values(values).filter(elem => Array.isArray(elem) && elem.length > 0))) {
+      dispatch({
+        type: 'search/search',
+      });
+    }
+  };
 
   return (
     <div>
@@ -211,21 +223,37 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
         tipFormatter={value => `$${value}`}
       />
       <div style={{ marginTop: 20 }}>
-        Featured:
-        <Switch
-          value={values.featured}
-          onChange={handleFeaturedSwitchChange}
-          defaultUnchecked
-        />
+        <Checkbox.Group style={{ width: '100%', textAlign: 'center' }}>
+          <Row>
+            <Col span={8}>
+              <Checkbox
+                checked={values.featured}
+                onChange={handleFeaturedSwitchChange}
+              >
+                Featured
+              </Checkbox>
+            </Col>
+            <Col span={8}>
+              <Checkbox
+                value={values.available}
+                onChange={handleAvailableSwitchChange}
+              >
+                Available
+              </Checkbox>
+            </Col>
+          </Row>
+        </Checkbox.Group>,
       </div>
-      <div style={{ marginTop: 20 }}>
-        Available:
-        <Switch
-          onChange={handleAvailableSwitchChange}
-          value={values.available}
-          defaultUnchecked
-        />
-      </div>
+      <Button
+        style={{
+          margin: '30px auto 10px auto',
+          width: '50%',
+          display: 'block'
+        }}
+        onClick={handleSearch}
+      >
+        Search <Icon type="search"/>
+      </Button>
     </div>
   );
 };
