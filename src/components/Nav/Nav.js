@@ -49,9 +49,9 @@ let Nav = ({ currentKey, dispatch, history, isLoggedIn }) => {
           >
             <Link to="/users/1">
               <Badge count={0} showZero={true} overflowCount={5} title={'Notifications'}
-                     style={{ position: 'absolute', top: 2, backgroundColor: '#f44941' }}
+                     style={{ position: 'absolute', top: 6, backgroundColor: '#f44941' }}
               >
-                <Icon type="user" style={{ fontSize: 26, marginTop: 15, color: '#7f8287', fontWeight: 600 }}/>
+                <Icon type="user" style={{ fontSize: 26, marginTop: 18, color: '#7f8287', fontWeight: 600 }}/>
               </Badge>
             </Link>
           </Popover>
@@ -68,7 +68,7 @@ let Nav = ({ currentKey, dispatch, history, isLoggedIn }) => {
           }
           >
             <a>
-              <Icon type="user" style={{ fontSize: 26, marginTop: 15, color: '#7f8287', fontWeight: 600 }}/>
+              <Icon type="user" style={{ fontSize: 26, marginTop: 18, color: '#7f8287', fontWeight: 600 }}/>
             </a>
           </Popover>
         }

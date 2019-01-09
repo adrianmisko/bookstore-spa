@@ -2,25 +2,14 @@ import { Card } from 'antd';
 import React from 'react';
 
 
-const CardCenteredLayout = ({title, children, tabList, onTabChange}) => {
+const CardCenteredLayout = ({title, children, tabList, onTabChange, maxWidth}) => {
 
   return (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <div
-        style={{
-          flexGrow: 1,
-        }}
-      >
-      </div>
       <Card
         style={{
-          flexGrow: 4,
+          margin: '5px auto',
           minWidth: 340,
-          maxWidth: 900,
+          maxWidth: maxWidth,
           minHeight: '80vh',
         }}
         title={title}
@@ -29,13 +18,6 @@ const CardCenteredLayout = ({title, children, tabList, onTabChange}) => {
       >
         {children}
       </Card>
-      <div
-        style={{
-          flexGrow: 1,
-        }}
-      >
-      </div>
-    </div>
   );
 
 };

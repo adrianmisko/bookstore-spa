@@ -18,7 +18,7 @@ const postReview = (id, {author, body, mark }) => {
     author,
     body,
     mark: mark * 2,
-  });  console.log(postRequestBody);
+  });
 
   return fetch('https://bookstore-flask.herokuapp.com/api/books/' + id.toString() + '/reviews', {
     mode: 'cors', method: 'POST', body: postRequestBody, headers: {

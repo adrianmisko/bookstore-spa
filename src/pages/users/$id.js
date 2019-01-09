@@ -21,6 +21,7 @@ let UserPage = ({ currentTab, dispatch }) => {
 
   return (
     <CardCenteredLayout
+      maxWidth={1200}
       title={'Hello, user 1'}
       tabList={tabList}
       onTabChange={key => { dispatch({
