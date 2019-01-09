@@ -1,7 +1,7 @@
 import React from 'react';
 import PageSearchLayout from '../components/PageSearchLayout/PageSearchLayout';
 import FilterOptionsBar from '../components/FilterOptionsBar/FilterOptionsBar';
-import ResultsList from '../components/ResultsList/ResultsList';
+import ResultsList from '../components/ProductList/ProductList';
 
 
 const Search = () => {

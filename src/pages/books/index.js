@@ -1,5 +1,5 @@
 import React from 'react';
-import ProductList from '../../components/ProductList/ProductList';
+import ProductListCardType from '../../components/ProductList/ProductListCardType';
 import { connect } from 'dva';
 
 

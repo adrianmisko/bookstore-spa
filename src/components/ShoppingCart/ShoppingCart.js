@@ -163,7 +163,7 @@ const ShoppingCart = ({ dispatch, products, itemsInCart, restartAnimation, first
             <br/>
             <div>
               <Link to={'/shoppingCart'}>See the details</Link>
-              <Link to={'#'} style={{ float: 'right' }}>Buy »</Link>
+              <Link to={'/order'} style={{ float: 'right' }}>Buy »</Link>
             </div>
           </React.Fragment>
           :

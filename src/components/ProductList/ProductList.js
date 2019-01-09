@@ -1,125 +1,160 @@
-import React from 'react';
-import { Card, Icon, Tag } from 'antd';
-import styles from  './ProductList.css'
+import { Button, Icon, List } from 'antd';
+import { connect } from 'dva';
 import Link from 'umi/link';
-
-const ProductList = ({ dispatch, products, loading }) => {
-
-  const { Meta } = Card;
-
-  const colors = {
-    'Set text': 'rgba(10, 50, 88, 1)',
-    'New': '#2db7f5',
-    'Bestseller': '#87d068',
-    'Promotion': '#ffff'
-  };
-  const mock = Array(12).fill(0);
+import React from 'react';
+import { isEmpty } from 'lodash';
+import AnimatedNumber from 'react-animated-number';
 
 
-  if (loading)
-    return (
-      <div
+const ProductList = ({ queryInProgress, dataSet, ownProps, dispatch }) => {
+
+  const IconText = ({ type, text }) => (
+    <span>
+      <Icon type={type} style={{ marginRight: 8 }}/>
+      {text}
+    </span>
+  );
+
+  const summaryActions = item => [
+    <Button
+      type={'default'}
+      style={{ fontSize: 18 }}
+      onClick={() => {
+        dispatch({
+          type: 'books/addItemToCart',
+          payload: item.id,
+        });
+      }}
+    >
+      +
+    </Button>,
+    <Button
+      type={'default'}
+      style={{ fontSize: 18 }}
+      disabled={item.quantity === 1}
+      onClick={() => {
+        dispatch({
+          type: 'books/removeOneFromCart',
+          payload: item.id,
+        });
+      }}
+    >
+      –
+    </Button>,
+    <Button
+      type={'danger'}
+      style={{ fontSize: 18 }}
+      onClick={() => {
+        dispatch({
+          type: 'books/removeAllFromCart',
+          payload: item.id,
+        });
+      }}
+    >
+      <Icon type="delete"/>
+    </Button>,
+  ];
+
+  const summaryContent = item => <div>
+    <span>
+      {<AnimatedNumber
+        component="text"
+        value={item.quantity}
         style={{
-          maxWidth: 1100,
-          margin: 'auto',
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-          textAlign: 'center'
+          transition: '0.8s ease-out',
+          transitionProperty: 'background-color, color, opacity',
         }}
-      >
-        {mock.map(_ =>
-          <Card
-            headStyle={{
-              color: 'rgba(0, 0, 0, 0.4)'
-            }}
-            style={{
-              width: 170,
-              height: 280,
-              margin: 4
-            }}
-            loading={true}
-            active={true}
-            hoverable={true}
-          >
-          </Card>)}
-      </div>
-    );
-  else
-    return (
-        <div style={{
-        maxWidth: 1200,
-        margin: 'auto',
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        textAlign: 'center',
-        alignItems: 'center'
-      }}>
-        {products.map(product =>
-          <Card
-            className={styles['card']}
-            key={product.id}
-            style={{ width: 180, height: '100%', margin: 5, fontStyle: 'italic' }}
-            cover={
-            <Link
-              to={'/books/' + product.id.toString()}
-            >
-            <div>
-              <img src={product.cover} alt="cover"
-                             style={{width:110, height: 150, marginLeft: 'auto', marginRight: 'auto', marginTop: 15, marginBottom: 10, borderRadius: 5 }} />
-              { product.tags.sort((a, b) => b.tag.length - a.tag.length).map((tag, index) =>
-                <Link to={'/search?tag=' + tag.tag}>
-                  <Tag color={colors[tag.tag]}
-                       style={{ width: 70, position: 'absolute', top: 20 + 25 * index, left: 3, fontSize: 10 }}
-                  >
-                    {tag.tag}
-                  </Tag>
-                </Link>)}
-            </div>
-            </Link>
+        duration={300}
+        formatValue={n => 'Quantity: ' + n.toFixed(0).toString()}
+      />}
+    </span>
+    <br/>
+    <span>
+      <span>
+        {<AnimatedNumber
+          component="text"
+          value={item.quantity * item.price}
+          style={{
+            transition: '0.8s ease-out',
+            transitionProperty: 'background-color, color, opacity',
+          }}
+          duration={300}
+          formatValue={n => 'Price: ' + n.toFixed(2).toString()}
+        />}
+      </span>
+    </span>
+  </div>;
+
+  return (
+    <List
+      loading={isEmpty(ownProps) ? queryInProgress : false}
+      itemLayout="vertical"
+      size="large"
+      pagination={{
+        pageSize: 4,
+      }}
+      dataSource={isEmpty(ownProps) ? dataSet : ownProps.books}
+      renderItem={item => (
+        <List.Item
+          style={{
+            paddingTop: 16,
+            paddingBottom: 16,
+          }}
+          key={item.title}
+          actions={
+            isEmpty(ownProps) ?
+              [<IconText type="shoppingCart" text="add to shopping cart"/>]
+              :
+              summaryActions(item)
+          }
+          extra={
+            <img
+              style={{
+                margin: '5px auto 20px auto',
+                padding: 5,
+                maxHeight: 170,
+                maxWidth: 135,
+                minWidth: 70,
+                width: '100%',
+                height: '100%',
+              }}
+              alt="cover"
+              src={item.cover}
+            />}
+        >
+          <List.Item.Meta
+            title={
+              <Link
+                to={'/books/' + item.id.toString()}
+                style={{ color: 'rgba(0,0,0,0.9)' }}
+              >
+                {item.title}
+              </Link>
             }
-            actions={[
-              <div onClick={() => {
-                  dispatch({
-                    type: 'books/addToCart',
-                    payload: product.id,
-                });
-              }
-              }>
-                <Icon type="shopping-cart"/>
-                <span> add to shopping cart</span>
-              </div>
-            ]}
-          >
-            <Meta
-              title={
-                <Link
-                  to={'/books/' + product.id.toString()}
-                  style={{ color: 'rgba(0,0,0,0.9)' }}
-                >
-                  {product.title}
-                </Link>
-              }
-              description={
-                <React.Fragment>
-                  {product.authors_names.map((author_name, idx) =>
+            description={
+              <React.Fragment>
+                {item.authors_names.map((author_name, idx) =>
                   <span>
-                    <Link to={'/search?authors_name=' + author_name.name} style={{ color: 'rgba(0,0,0,0.70)' }} >
+                    <Link to={'/search?author=' + author_name.name} style={{ color: 'rgba(0,0,0,0.70)' }}>
                      {(idx ? ', ' : '')}{author_name.name}
                     </Link>
-                  </span>
-                  )}
-                  <br/>
-                  <span>
-                    {product.price}
-                  </span>
-                </React.Fragment>
-                }
-            />
-          </Card>)}
-      </div>
-    );
+                  </span>,
+                )}
+                <br/>
+              </React.Fragment>
+            }
+          />
+          <span>
+            {isEmpty(ownProps) ?
+              <span>{item.price}</span>
+              :
+              summaryContent(item)
+            }
+          </span>
+        </List.Item>
+      )}
+    />
+  );
 };
 
-export default ProductList;
+export default connect(({ search }, ownProps) => ({ search, ownProps }))(ProductList);

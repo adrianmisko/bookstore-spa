@@ -16,6 +16,7 @@ const Book = ({ dispatch, book, loading }) => {
   return (
     <CardCenteredLayout
       title={title}
+      maxWidth={900}
     >
       {
         loading ?
