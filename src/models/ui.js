@@ -7,6 +7,7 @@ export default {
     currentKey: 'main',
     loginModalVisible: false,
     registerDrawerVisible: false,
+    currentStep: 0,
   },
   reducers: {
     changeTab(state, { payload: newTab }) {
@@ -27,5 +28,11 @@ export default {
     hideRegisterDrawer(state) {
       return { ...state, registerDrawerVisible: false }
     },
+    stepForward(state) {
+      return { ...state, currentStep: state.currentStep + 1 }
+    },
+    stepBackward(state) {
+      return { ...state, currentStep: state.currentStep - 1 }
+    }
   },
 }
