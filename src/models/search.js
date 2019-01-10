@@ -3,7 +3,7 @@ import queryString from 'query-string';
 
 
 const fetchBooks = queryString => {
-  const path = 'https://bookstore-flask.herokuapp.com' + queryString;
+  const path = 'https://bookstore-flask.herokuapp.com/api/books' + queryString;
   return fetch(path,
     { mode: 'cors', method: 'GET', headers: { 'Accept': 'Application/json' } })
     .then(response => response.json())
@@ -71,9 +71,6 @@ export default {
     stopQuery(state) {
       return { ...state, queryInProgress: false };
     },
-    updateBooks(state, { payload: books }) {
-      return { ...state, dataSet: books };
-    },
     clearDataSource(state) {
       return { ...state, dataSet: [] };
     },
@@ -83,8 +80,8 @@ export default {
     autocompleteOptionStoppedLoading(state, { payload: optionName }) {
       return { ...state, autocompleteLoading: { ...state.autocompleteLoading, ...{ [optionName]: false } } };
     },
-    updateDataSet(state, { payload: dataSet }) {
-      return { ...state, dataSet };
+    updateDataSet(state, { payload:  { dataSet: data } }) {
+      return { ...state, dataSet: data };
     },
     updateAutocompleteOption(state, { payload: { optionName, newOptions } }) {
       return { ...state, options: { ...state.options, ...{ [optionName]: newOptions } } };
@@ -117,15 +114,6 @@ export default {
     },
   },
   effects: {
-    * fetchBooks(action, { call, put }) {
-      yield put({ type: 'startQuery' });
-      const result = yield call(fetchBooks, action.payload);
-      if (result.status === 200)
-        yield put({ type: 'updateBooks', payload: result.data });
-      else
-        yield call(message.error, 'Error ' + result.status + ' :(', 1.5);
-      yield put({ type: 'stopQuery' });
-    },
     * getAutocompleteOptions(action, { call, put }) {
       yield put({ type: 'autocompleteOptionIsLoading', payload: action.payload.optionName });
       const result = yield call(fetchAutocompleteOptions, action.payload);
@@ -166,7 +154,7 @@ export default {
       const values = yield select(({ search }) => search.values);
       yield call(updateQueryString, values);
       const result = yield call(fetchBooks, window.location.search);
-      console.log(result);
+      console.log(result.data);
       switch(result.status) {
         case 200:
           yield put({ type: 'updateDataSet', payload: { dataSet: result.data } });
@@ -185,6 +173,10 @@ export default {
           dispatch({
             type: 'parseQueryStringIntoValues',
             payload: search,
+          });
+          dispatch({
+            type: 'search',
+            payload: window.location.search
           });
         }
       });
