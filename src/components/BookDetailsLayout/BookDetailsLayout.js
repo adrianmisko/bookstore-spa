@@ -64,7 +64,7 @@ const BookDetailsLayout = ({ description, images, bookInfo }) => {
                     margin: '5px auto 20px auto',
                     padding: 5,
                     maxHeight: 520,
-                    maxWidth: 300,
+                    maxWidth: 390,
                     minWidth: 70,
                     width: '100%',
                     height: '100%',

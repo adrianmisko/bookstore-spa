@@ -6,7 +6,13 @@ import { isEmpty } from 'lodash';
 import AnimatedNumber from 'react-animated-number';
 
 
-const ProductList = ({ queryInProgress, dataSet, ownProps, dispatch }) => {
+const ProductList = ({ search, ownProps, dispatch }) => {
+
+  console.log(isEmpty(ownProps));
+  console.log(search);
+
+  const queryInProgress = search.queryInProgress;
+  const dataSet = search.dataSet;
 
   const IconText = ({ type, text }) => (
     <span>
@@ -91,19 +97,19 @@ const ProductList = ({ queryInProgress, dataSet, ownProps, dispatch }) => {
       itemLayout="vertical"
       size="large"
       pagination={{
-        pageSize: 4,
+        pageSize: 3,
       }}
       dataSource={isEmpty(ownProps) ? dataSet : ownProps.books}
       renderItem={item => (
         <List.Item
           style={{
-            paddingTop: 16,
-            paddingBottom: 16,
+            paddingTop: 8,
+            paddingBottom: 0,
           }}
           key={item.title}
           actions={
             isEmpty(ownProps) ?
-              [<IconText type="shoppingCart" text="add to shopping cart"/>]
+              [<IconText type="shopping-cart" text="add to shopping cart"/>]
               :
               summaryActions(item)
           }

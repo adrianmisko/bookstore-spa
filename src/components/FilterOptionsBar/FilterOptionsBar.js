@@ -228,6 +228,7 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
             <Col span={8}>
               <Checkbox
                 checked={values.featured}
+                value={values.featured}
                 onChange={handleFeaturedSwitchChange}
               >
                 Featured
@@ -235,6 +236,7 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
             </Col>
             <Col span={8}>
               <Checkbox
+                checked={values.available}
                 value={values.available}
                 onChange={handleAvailableSwitchChange}
               >
@@ -242,7 +244,7 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
               </Checkbox>
             </Col>
           </Row>
-        </Checkbox.Group>,
+        </Checkbox.Group>
       </div>
       <Button
         style={{
