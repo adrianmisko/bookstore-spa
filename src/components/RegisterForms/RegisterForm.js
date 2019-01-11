@@ -30,6 +30,8 @@ class RegistrationForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
+        values.name = values.name[0].toUpperCase() + values.name.slice(0, values.name.length).toLowerCase();
+        values.surname = values.surname[0].toUpperCase() + values.surname.slice(0, values.surname.length).toLowerCase();
         this.props.dispatch({
           type: 'user/submitRegistrationForm',
           payload: { form: this.props.form, values }
@@ -182,6 +184,34 @@ class RegistrationForm extends React.Component {
               </AutoComplete>,
             )}
           </Spin>
+        </Form.Item>
+        <Form.Item
+          {...formItemLayout}
+          label="Name"
+        >
+          {getFieldDecorator('name', {
+            validateFirst: true,
+            validateTrigger: 'onBlur',
+            rules: [{
+              required: true, message: 'Please input your name',
+            }],
+          })(
+           <Input />
+          )}
+      </Form.Item>
+        <Form.Item
+          {...formItemLayout}
+          label="Surname"
+        >
+          {getFieldDecorator('surname', {
+            validateFirst: true,
+            validateTrigger: 'onBlur',
+            rules: [{
+              required: true, message: 'Please input your surname',
+            }],
+          })(
+            <Input />
+          )}
         </Form.Item>
         <Form.Item
           {...formItemLayout}

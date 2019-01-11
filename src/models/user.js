@@ -7,9 +7,11 @@ const validateCredentials = ({ userName, password }) => {
     .catch(_ => ({ status: 500 }));
 };
 
-const createNewAccount = ({ email, password, phone }) => {
+const createNewAccount = ({ email, name, surname, password, phone }) => {
   const body = JSON.stringify({
     email,
+    name,
+    surname,
     password,
     phone_number: phone,
   });
