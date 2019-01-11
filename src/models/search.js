@@ -154,7 +154,6 @@ export default {
       const values = yield select(({ search }) => search.values);
       yield call(updateQueryString, values);
       const result = yield call(fetchBooks, window.location.search);
-      console.log(result.data);
       switch(result.status) {
         case 200:
           yield put({ type: 'updateDataSet', payload: { dataSet: result.data } });

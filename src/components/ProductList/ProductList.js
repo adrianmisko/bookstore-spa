@@ -8,14 +8,11 @@ import AnimatedNumber from 'react-animated-number';
 
 const ProductList = ({ search, ownProps, dispatch }) => {
 
-  console.log(isEmpty(ownProps));
-  console.log(search);
-
   const queryInProgress = search.queryInProgress;
   const dataSet = search.dataSet;
 
-  const IconText = ({ type, text }) => (
-    <span>
+  const IconText = ({ type, text, click }) => (
+    <span onClick={click}>
       <Icon type={type} style={{ marginRight: 8 }}/>
       {text}
     </span>
@@ -104,12 +101,16 @@ const ProductList = ({ search, ownProps, dispatch }) => {
         <List.Item
           style={{
             paddingTop: 8,
-            paddingBottom: 0,
+            paddingBottom: 4,
           }}
           key={item.title}
           actions={
             isEmpty(ownProps) ?
-              [<IconText type="shopping-cart" text="add to shopping cart"/>]
+              [<IconText
+                type="shopping-cart"
+                text="add to shopping cart"
+                click={() => dispatch({ type: 'books/addToCart', payload: item.id })}
+              />]
               :
               summaryActions(item)
           }
