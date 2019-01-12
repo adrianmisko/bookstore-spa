@@ -1,18 +1,39 @@
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Radio, message } from 'antd';
 import React from 'react';
 import { connect } from 'dva';
 
 
 class LocationForm extends React.Component {
+  state = {
+    deliveryMethods: []
+  };
+
+  componentDidMount() {
+    fetch('https://bookstore-flask.herokuapp.com/api/delivery_methods',
+      { mode: 'cors', method: 'GET', headers: { 'Accept': 'Application/json' }})
+      .then(response => response.json())
+      .then(data => this.setState({ deliveryMethods: data }))
+      .catch(_ => message.error('Error :(', 1.5))
+  };
 
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        let location = values;
+        const location = {
+          place: values.place,
+          streetName: values.streetName,
+          streetNumber: values.streetNumber,
+          flatNumber: values.flatNumber,
+          zipCode: values.zipCode
+        };
         this.props.dispatch({
           type: 'order/saveLocation',
           payload: location
+        });
+        this.props.dispatch({
+          type: 'order/saveDeliveryMethod',
+          payload: this.state.deliveryMethods.filter(deliveryMethod => deliveryMethod.name === values.deliveryMethod)[0]
         });
         this.props.stepForward();
       }
@@ -133,6 +154,38 @@ class LocationForm extends React.Component {
             }],
           })(
             <Input/>,
+          )}
+        </Form.Item>
+        <Form.Item
+          labelCol={{
+            xs: { span: 24 },
+            sm: { span: 4, offset: 0 },
+          }}
+          wrapperCol={{
+            xs: { span: 24 },
+            sm: { span: 20 },
+          }}
+          label="Delivery methods"
+        >
+          {getFieldDecorator('deliveryMethod', {
+            initialValue: this.props.deliveryMethod.name,
+            validateTrigger: 'onBlur',
+            rules: [{
+              required: true, message: 'You need to choose delivery method',
+            }],
+          })(
+            <Radio.Group>
+              {this.state.deliveryMethods.map(deliveryMethod =>
+                <Radio.Button
+                  value={deliveryMethod.name}
+                  checked={deliveryMethod.name === this.props.deliveryMethod.name}
+                >
+                <span>
+                  {deliveryMethod.name} - ${deliveryMethod.cost}
+                </span>
+                </Radio.Button>
+              )}
+            </Radio.Group>
           )}
         </Form.Item>
         <Form.Item>

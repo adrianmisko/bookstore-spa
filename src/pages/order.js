@@ -8,11 +8,6 @@ import AnimatedNumber from 'react-animated-number';
 
 const Order = ({ ui, books, stepForward, stepBackward }) => {
 
-  console.log(ui);
-  console.log(books);
-  console.log(stepForward);
-  console.log(stepBackward);
-
   const { products, itemsInCart } = books;
   const { currentStep } = ui;
   const Step = Steps.Step;
@@ -41,7 +36,7 @@ const Order = ({ ui, books, stepForward, stepBackward }) => {
         />
     </div>
   }, {
-    title: 'Delivery',
+    title: 'Delivery & Payment methods',
     content: <div>
       <LocationForm
         stepForward={stepForward}
@@ -49,10 +44,10 @@ const Order = ({ ui, books, stepForward, stepBackward }) => {
       />
     </div>,
   }, {
-    title: 'Last',
+    title: 'Summary',
     content: 'Last-content',
   }, {
-    title: 'Last2',
+    title: 'Payment',
     content: 'Last-content2',
   }];
 
@@ -75,7 +70,7 @@ const Order = ({ ui, books, stepForward, stepBackward }) => {
         }}
       >
         <Button.Group>
-          {currentStep > 0 && steps[currentStep].title !== 'Delivery' &&
+          {currentStep > 0 && currentStep !== 1 &&
             (<Button
               style={{ minWidth: 100 }}
               htmlType="button"
@@ -83,7 +78,7 @@ const Order = ({ ui, books, stepForward, stepBackward }) => {
             >
               Previous
             </Button>)}
-          {currentStep < steps.length - 1 && steps[currentStep].title !== 'Delivery' &&
+          {currentStep < steps.length - 1 && currentStep !== 1  &&
           <Button
             type="primary"
             style={{ minWidth: 100 }}
