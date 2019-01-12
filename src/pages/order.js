@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Button, Steps } from 'antd';
 import CardCenteredLayout from '../components/CardCenteredLayout/CardCenteredLayout';
 import ProductList from '../components/ProductList/ProductList';
-import LocationForm from '../components/LocationForm/LocationForm';
+import LocationForm from '../components/OrderForm/OrderForm';
 import AnimatedNumber from 'react-animated-number';
 
 const Order = ({ ui, books, stepForward, stepBackward }) => {

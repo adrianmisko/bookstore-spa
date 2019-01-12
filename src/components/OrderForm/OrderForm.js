@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'dva';
 
 
-class LocationForm extends React.Component {
+class OrderForm extends React.Component {
   state = {
     deliveryMethods: []
   };
@@ -217,4 +217,4 @@ class LocationForm extends React.Component {
 }
 
 
-export default connect(({ order }) => order)(Form.create()(LocationForm));
+export default connect(({ order }) => order)(Form.create()(OrderForm));
