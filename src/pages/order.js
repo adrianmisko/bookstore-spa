@@ -6,7 +6,12 @@ import ProductList from '../components/ProductList/ProductList';
 import LocationForm from '../components/LocationForm/LocationForm';
 import AnimatedNumber from 'react-animated-number';
 
-const Order = ({ ui, books, dispatch }) => {
+const Order = ({ ui, books, stepForward, stepBackward }) => {
+
+  console.log(ui);
+  console.log(books);
+  console.log(stepForward);
+  console.log(stepBackward);
 
   const { products, itemsInCart } = books;
   const { currentStep } = ui;
@@ -36,9 +41,12 @@ const Order = ({ ui, books, dispatch }) => {
         />
     </div>
   }, {
-    title: 'Personal information',
+    title: 'Delivery',
     content: <div>
-      <LocationForm />
+      <LocationForm
+        stepForward={stepForward}
+        stepBackward={stepBackward}
+      />
     </div>,
   }, {
     title: 'Last',
@@ -67,35 +75,33 @@ const Order = ({ ui, books, dispatch }) => {
         }}
       >
         <Button.Group>
-          {currentStep > 0 &&
+          {currentStep > 0 && steps[currentStep].title !== 'Delivery' &&
             (<Button
               style={{ minWidth: 100 }}
               htmlType="button"
-              onClick={() => dispatch({ type: 'ui/stepBackward' })}
+              onClick={stepBackward}
             >
               Previous
             </Button>)}
-          {currentStep < steps.length - 1 &&
-            <Button
-              type="primary"
-              style={{ minWidth: 100 }}
-              htmlType="button"
-              onClick={() => dispatch({ type: 'ui/stepForward' })}
-            >
-              Next
-            </Button>}
-          {currentStep === steps.length - 1 &&
-            <Button
-              type="primary"
-              style={{ minWidth: 100 }}
-              htmlType="button"
-            >
-              Done
-            </Button>}
+          {currentStep < steps.length - 1 && steps[currentStep].title !== 'Delivery' &&
+          <Button
+            type="primary"
+            style={{ minWidth: 100 }}
+            htmlType="button"
+            onClick={stepForward}
+          >
+            Next
+          </Button>}
         </Button.Group>
       </div>
     </CardCenteredLayout>
   );
 };
 
-export default connect(({ books, ui }) => ({ books, ui }))(Order);
+export default connect(
+  ({ books, ui }) => ({ books, ui }),
+  dispatch => ({
+    stepForward: () => dispatch({ type: 'ui/stepForward' }),
+    stepBackward: () => dispatch({ type: 'ui/stepBackward' }),
+   }))
+(Order);

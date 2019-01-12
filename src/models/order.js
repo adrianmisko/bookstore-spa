@@ -6,7 +6,9 @@ export default {
     location: {}
   },
   reducers: {
-
+    saveLocation(state, { payload: location }) {
+      return { ...state, location }
+    }
   },
   effects: {
 
