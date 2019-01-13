@@ -1,19 +1,21 @@
-import { Form, Input, Button, Radio, message } from 'antd';
+import { Form, Input, Button, Radio, Tooltip } from 'antd';
 import React from 'react';
 import { connect } from 'dva';
 
 
 class OrderForm extends React.Component {
-  state = {
-    deliveryMethods: []
-  };
 
   componentDidMount() {
-    fetch('https://bookstore-flask.herokuapp.com/api/delivery_methods',
-      { mode: 'cors', method: 'GET', headers: { 'Accept': 'Application/json' }})
-      .then(response => response.json())
-      .then(data => this.setState({ deliveryMethods: data }))
-      .catch(_ => message.error('Error :(', 1.5))
+    if (this.props.deliveryMethodOptions.length === 0) {
+      this.props.dispatch({
+        type: 'order/fetchDeliveryMethodOptions',
+      });
+    }
+    if (this.props.paymentMethodOptions.length === 0) {
+      this.props.dispatch({
+        type: 'order/fetchPaymentMethodOptions',
+      });
+    }
   };
 
   handleSubmit = (e) => {
@@ -25,15 +27,19 @@ class OrderForm extends React.Component {
           streetName: values.streetName,
           streetNumber: values.streetNumber,
           flatNumber: values.flatNumber,
-          zipCode: values.zipCode
+          zipCode: values.zipCode,
         };
         this.props.dispatch({
           type: 'order/saveLocation',
-          payload: location
+          payload: location,
         });
         this.props.dispatch({
           type: 'order/saveDeliveryMethod',
-          payload: this.state.deliveryMethods.filter(deliveryMethod => deliveryMethod.name === values.deliveryMethod)[0]
+          payload: this.props.deliveryMethodOptions.filter(deliveryMethod => deliveryMethod.name === values.deliveryMethod)[0],
+        });
+        this.props.dispatch({
+          type: 'order/savePaymentMethod',
+          payload: this.props.paymentMethodOptions.filter(paymentMethod => paymentMethod.name === values.paymentMethod)[0],
         });
         this.props.stepForward();
       }
@@ -168,31 +174,72 @@ class OrderForm extends React.Component {
           label="Delivery methods"
         >
           {getFieldDecorator('deliveryMethod', {
-            initialValue: this.props.deliveryMethod.name,
+            initialValue: this.props.deliveryMethod !== null ? this.props.deliveryMethod.name : '',
             validateTrigger: 'onBlur',
             rules: [{
               required: true, message: 'You need to choose delivery method',
             }],
           })(
             <Radio.Group>
-              {this.state.deliveryMethods.map(deliveryMethod =>
+              {this.props.deliveryMethodOptions.map(deliveryMethod =>
                 <Radio.Button
                   value={deliveryMethod.name}
-                  checked={deliveryMethod.name === this.props.deliveryMethod.name}
+                  checked={this.props.deliveryMethod !== null && deliveryMethod.name === this.props.deliveryMethod.name}
                 >
                 <span>
                   {deliveryMethod.name} - ${deliveryMethod.cost}
                 </span>
-                </Radio.Button>
+                </Radio.Button>,
               )}
-            </Radio.Group>
+            </Radio.Group>,
+          )}
+        </Form.Item>
+        <Form.Item
+          labelCol={{
+            xs: { span: 24 },
+            sm: { span: 4, offset: 0 },
+          }}
+          wrapperCol={{
+            xs: { span: 24 },
+            sm: { span: 20 },
+          }}
+          label="Payment methods"
+        >
+          {getFieldDecorator('paymentMethod', {
+            initialValue: this.props.paymentMethod !== null ? this.props.paymentMethod.name : '',
+            validateTrigger: 'onBlur',
+            rules: [{
+              required: true, message: 'You need to choose payment method',
+            }],
+          })(
+            <Radio.Group>
+              {this.props.paymentMethodOptions.map(paymentMethod =>
+                <Radio.Button
+                  value={paymentMethod.name}
+                  checked={this.props.paymentMethod !== null && paymentMethod.name === this.props.paymentMethod.name}
+                >
+                  {paymentMethod.name === 'Przelew online' ?
+                  <Tooltip
+                    title='More options in "Order & Pay" step'
+                  >
+                    <span>
+                      {paymentMethod.name}
+                    </span>
+                  </Tooltip>
+                    :
+                  <span>
+                    {paymentMethod.name}
+                  </span>}
+                </Radio.Button>,
+              )}
+            </Radio.Group>,
           )}
         </Form.Item>
         <Form.Item>
           <Button.Group
             style={{
               float: 'right',
-              margin: '3em -1em 0.5em 0'
+              margin: '3em -1em 0.5em 0',
             }}
           >
             <Button

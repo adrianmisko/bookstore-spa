@@ -5,6 +5,7 @@ import CardCenteredLayout from '../components/CardCenteredLayout/CardCenteredLay
 import ProductList from '../components/ProductList/ProductList';
 import LocationForm from '../components/OrderForm/OrderForm';
 import AnimatedNumber from 'react-animated-number';
+import OrderSummary from '../components/OderSummary/OrderSummary';
 
 const Order = ({ ui, books, stepForward, stepBackward }) => {
 
@@ -45,9 +46,9 @@ const Order = ({ ui, books, stepForward, stepBackward }) => {
     </div>,
   }, {
     title: 'Summary',
-    content: 'Last-content',
+    content: <OrderSummary />
   }, {
-    title: 'Payment',
+    title: 'Order & Pay',
     content: 'Last-content2',
   }];
 
