@@ -7,6 +7,7 @@ import LocationForm from '../components/OrderForm/OrderForm';
 import AnimatedNumber from 'react-animated-number';
 import OrderSummary from '../components/OderSummary/OrderSummary';
 
+
 const Order = ({ ui, books, stepForward, stepBackward }) => {
 
   const { products, itemsInCart } = books;
@@ -23,8 +24,8 @@ const Order = ({ ui, books, stepForward, stepBackward }) => {
   const steps = [{
     title: <h4>Shopping cart summary</h4>,
     content:
-    <div>
-      <ProductList books={inCart} />
+      <div>
+        <ProductList books={inCart}/>
         <AnimatedNumber
           component="h2"
           value={inCart.reduce((acc, item) => acc + item.price * item.quantity, 0)}
@@ -35,7 +36,7 @@ const Order = ({ ui, books, stepForward, stepBackward }) => {
           duration={300}
           formatValue={n => 'Total price: ' + n.toFixed(2).toString()}
         />
-    </div>
+      </div>,
   }, {
     title: 'Delivery & Payment methods',
     content: <div>
@@ -46,7 +47,7 @@ const Order = ({ ui, books, stepForward, stepBackward }) => {
     </div>,
   }, {
     title: 'Summary',
-    content: <OrderSummary />
+    content: <OrderSummary/>,
   }, {
     title: 'Order & Pay',
     content: 'Last-content2',
@@ -59,7 +60,7 @@ const Order = ({ ui, books, stepForward, stepBackward }) => {
         <Steps current={currentStep}>
           {steps.map(item => <Step key={item.title} title={item.title}/>)}
         </Steps>
-        }
+      }
     >
       <div>
         {steps[currentStep].content}
@@ -67,19 +68,19 @@ const Order = ({ ui, books, stepForward, stepBackward }) => {
       <div
         style={{
           float: 'right',
-          margin: '3em -1em 0.5em 0'
+          margin: '3em -1em 0.5em 0',
         }}
       >
         <Button.Group>
           {currentStep > 0 && currentStep !== 1 &&
-            (<Button
-              style={{ minWidth: 100 }}
-              htmlType="button"
-              onClick={stepBackward}
-            >
-              Previous
-            </Button>)}
-          {currentStep < steps.length - 1 && currentStep !== 1  &&
+          (<Button
+            style={{ minWidth: 100 }}
+            htmlType="button"
+            onClick={stepBackward}
+          >
+            Previous
+          </Button>)}
+          {currentStep < steps.length - 1 && currentStep !== 1 &&
           <Button
             type="primary"
             style={{ minWidth: 100 }}
@@ -88,6 +89,14 @@ const Order = ({ ui, books, stepForward, stepBackward }) => {
           >
             Next
           </Button>}
+          {currentStep === steps.length - 1 &&
+            <Button
+              type="primary"
+              style={{ minWidth: 100 }}
+              htmlType="button"
+            >
+              Confirm
+            </Button>}
         </Button.Group>
       </div>
     </CardCenteredLayout>
@@ -99,5 +108,5 @@ export default connect(
   dispatch => ({
     stepForward: () => dispatch({ type: 'ui/stepForward' }),
     stepBackward: () => dispatch({ type: 'ui/stepBackward' }),
-   }))
+  }))
 (Order);
