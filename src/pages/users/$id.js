@@ -1,9 +1,11 @@
-import { Card } from 'antd';
 import React from 'react';
 import { connect } from 'dva';
 import CardCenteredLayout from '../../components/CardCenteredLayout/CardCenteredLayout';
 
-let UserPage = ({ currentTab, dispatch }) => {
+let UserPage = ({ dispatch, ui, user }) => {
+
+  const { currentTab } = ui;
+  const { name, surname } = user;
 
   const tabList = [{
     key: 'tab1',
@@ -22,7 +24,7 @@ let UserPage = ({ currentTab, dispatch }) => {
   return (
     <CardCenteredLayout
       maxWidth={1200}
-      title={'Hello, user 1'}
+      title={`Hello, ${name} ${surname}`}
       tabList={tabList}
       onTabChange={key => { dispatch({
         type: 'ui/changeTab',
@@ -36,4 +38,4 @@ let UserPage = ({ currentTab, dispatch }) => {
 };
 
 
-export default connect(({ ui }) => ui)(UserPage);
+export default connect(({ ui, user }) => ({ ui, user }))(UserPage);
