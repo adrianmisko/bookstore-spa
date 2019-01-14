@@ -30,6 +30,9 @@ export default {
     isLoggedIn: false,
     token: '',
     errorMessage: '',
+    name: '',
+    surname: '',
+    userId: '',
   },
   reducers: {
     showLoading(state) {
@@ -38,11 +41,9 @@ export default {
     hideLoading(state) {
       return { ...state, isLoading: false }
     },
-    saveToken(state, { payload: token }) {
-      return { ...state, token }
-    },
-    logUserIn(state) {
-      return { ...state, isLoggedIn: true }
+    logUserIn(state, { payload: userData }) {
+      return { ...state, isLoggedIn: true, userId: userData.id, name: userData.name,
+        surname: userData.surname, token: userData.token }
     },
     showErrorNotification(state, { payload: message }) {
       return { ...state, errorMessage: message }
@@ -60,9 +61,8 @@ export default {
       const result = yield call(validateCredentials, action.payload.values);
       yield put({ type: 'hideLoading' });
       if (result.status === 200) {
-        const token = yield result.json();
-        yield put({ type: 'saveToken', payload: token });
-        yield put({ type: 'logUserIn' });
+        const userData = yield result.json();
+        yield put({ type: 'logUserIn', payload: userData });
         yield put({ type: 'ui/hideLoginModal' });
         yield call(message.success, 'Welcome!', 1.2);
         yield call(action.payload.form.resetFields);

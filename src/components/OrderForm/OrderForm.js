@@ -41,6 +41,7 @@ class OrderForm extends React.Component {
           type: 'order/savePaymentMethod',
           payload: this.props.paymentMethodOptions.filter(paymentMethod => paymentMethod.name === values.paymentMethod)[0],
         });
+        this.props.freezeItems(this.props.inCart);
         this.props.stepForward();
       }
     });

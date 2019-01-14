@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Icon, Badge, Popover, Modal } from 'antd';
+import { Menu, Icon, Badge, Popover } from 'antd';
 import styles from './Nav.css';
 import SearchBar from '../SearchBar/SearchBar';
 import { Link } from 'react-router-dom';
@@ -7,7 +7,7 @@ import ShoppingCart from '../ShoppingCart/ShoppingCart';
 import { connect } from 'dva';
 
 
-let Nav = ({ currentKey, dispatch, history, isLoggedIn }) => {
+let Nav = ({ currentKey, dispatch, history, isLoggedIn, userId }) => {
 
   return (
     <Menu
@@ -47,7 +47,7 @@ let Nav = ({ currentKey, dispatch, history, isLoggedIn }) => {
               </a>
             }
           >
-            <Link to="/users/1">
+            <Link to={"/users/" + userId}>
               <Badge count={0} showZero={true} overflowCount={5} title={'Notifications'}
                      style={{ position: 'absolute', top: 6, backgroundColor: '#f44941' }}
               >

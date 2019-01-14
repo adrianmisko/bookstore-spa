@@ -6,12 +6,13 @@ import ProductList from '../components/ProductList/ProductList';
 import LocationForm from '../components/OrderForm/OrderForm';
 import AnimatedNumber from 'react-animated-number';
 import OrderSummary from '../components/OderSummary/OrderSummary';
+import OrderFullfilment from '../components/OrderFullfilment/OrderFullfilement';
 
-
-const Order = ({ ui, books, stepForward, stepBackward }) => {
+const Order = ({ ui, books, order, stepForward, stepBackward, freezeItems }) => {
 
   const { products, itemsInCart } = books;
   const { currentStep } = ui;
+  const { paymentMethod } = order;
   const Step = Steps.Step;
 
   const inCart = products.filter(product => {
@@ -38,20 +39,29 @@ const Order = ({ ui, books, stepForward, stepBackward }) => {
         />
       </div>,
   }, {
-    title: 'Delivery & Payment methods',
+    title: 'Delivery & Payment',
     content: <div>
       <LocationForm
         stepForward={stepForward}
         stepBackward={stepBackward}
+        freezeItems={freezeItems}
+        inCart={inCart}
       />
     </div>,
   }, {
     title: 'Summary',
     content: <OrderSummary/>,
-  }, {
-    title: 'Order & Pay',
-    content: 'Last-content2',
-  }];
+  },
+    (paymentMethod !== null && paymentMethod.name === 'Przelew online' ?
+      {
+        title: 'Pay & Order',
+        content: 'online',
+      }
+      :
+      {
+        title: 'Order',
+        content: <OrderFullfilment />
+      })];
 
   return (
     <CardCenteredLayout
@@ -90,13 +100,13 @@ const Order = ({ ui, books, stepForward, stepBackward }) => {
             Next
           </Button>}
           {currentStep === steps.length - 1 &&
-            <Button
-              type="primary"
-              style={{ minWidth: 100 }}
-              htmlType="button"
-            >
-              Confirm
-            </Button>}
+          <Button
+            type="primary"
+            style={{ minWidth: 100 }}
+            htmlType="button"
+          >
+            Done
+          </Button>}
         </Button.Group>
       </div>
     </CardCenteredLayout>
@@ -104,9 +114,10 @@ const Order = ({ ui, books, stepForward, stepBackward }) => {
 };
 
 export default connect(
-  ({ books, ui }) => ({ books, ui }),
+  ({ books, ui, order }) => ({ books, ui, order }),
   dispatch => ({
     stepForward: () => dispatch({ type: 'ui/stepForward' }),
     stepBackward: () => dispatch({ type: 'ui/stepBackward' }),
+    freezeItems: inCard => dispatch({ type: 'order/freezeItems', payload: inCard })
   }))
 (Order);
