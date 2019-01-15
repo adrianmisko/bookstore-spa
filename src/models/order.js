@@ -17,7 +17,7 @@ const fetchPaymentMethods = () => {
 };
 
 const makeOrder = (postDataJSON, userId) => {
-  const path = `https://bookstore-flask.herokuapp.com/api/user/${userId}/orders`;
+  const path = `https://bookstore-flask.herokuapp.com/api/users/${userId}/orders`;
   return fetch(path, {
     mode: 'cors', method: 'POST', body: postDataJSON, headers: {
       'Accept': 'application/json',
@@ -45,6 +45,7 @@ export default {
     resolving: false,
     orderMadeSuccessfully: undefined,
     errors: {},
+    fakeProgress: 0
   },
   reducers: {
     saveLocation(state, { payload: location }) {
@@ -76,6 +77,35 @@ export default {
     },
     orderFailure(state) {
       return { ...state, orderMadeSuccessfully: false };
+    },
+    bumpProgressToMax(state) {
+      return { ...state, fakeProgress: 100 }
+    },
+    increaseFakeProgress(state) {
+      return { ...state, fakeProgress: state.fakeProgress + 2 }
+    },
+    resetFakeProgress(state) {
+      return { ...state, fakeProgress: 0 }
+    },
+    clearData(state) {
+      return {
+        items: [],
+        location: {
+          place: '',
+          streetName: '',
+          streetNumber: '',
+          flatNumber: '',
+          zipCode: '',
+        },
+        deliveryMethod: '',
+        deliveryMethodOptions: [],
+        paymentMethod: '',
+        paymentMethodOptions: [],
+        resolving: false,
+        orderMadeSuccessfully: undefined,
+        errors: {},
+        fakeProgress: 0
+      }
     }
   },
   effects: {
@@ -89,24 +119,28 @@ export default {
     },
     * makeOrder(action, { call, put, select }) {
       yield put({ type: 'startResolving' });
-      //const user = yield select(({ user }) => user);
+      const user = yield select(({ user }) => user);
       const postData = yield select(({ order }) => ({
         location: {
           place: order.location.place,
           street_name: order.location.streetName,
           street_number: order.location.streetNumber,
           flat_number: order.location.flatNumber,
-          zip_node: order.location.zipCode,
+          zip_code: order.location.zipCode,
         },
         delivery_method: order.deliveryMethod.name,
         payment_method: order.paymentMethod.name,
         items: order.items.map(item => ({ id: item.id, quantity: item.quantity })),
       }));
+      console.log(postData)
       const postDataJSON = JSON.stringify(postData);
-      const result = yield call(makeOrder, postDataJSON, 1);
+      const result = yield call(makeOrder, postDataJSON, user.userId);
+      console.log(user.userId)
+      console.log(result)
       switch (result.status) {
         case 201:
           yield put({ type: 'orderSuccess' });
+          yield put({ type: 'bumpProgressToMax' });
           break;
         default:
           yield put({ type: 'orderFailure' })

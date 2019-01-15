@@ -241,6 +241,7 @@ class OrderForm extends React.Component {
             style={{
               float: 'right',
               margin: '3em -1em 0.5em 0',
+              transform: 'translate(-30px)'
             }}
           >
             <Button

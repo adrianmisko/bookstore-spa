@@ -8,7 +8,7 @@ class OrderFullfilment extends React.Component {
   startFilling = () => {
     if (this.props.fakeProgress < 100) {
       this.props.dispatch({
-        type: 'order/increaseFakeProgress'
+        type: 'order/increaseFakeProgress',
       });
     }
   };
@@ -18,7 +18,7 @@ class OrderFullfilment extends React.Component {
     this.interval = setInterval(this.startFilling.bind(this), 10);
     this.props.dispatch({
       type: 'order/makeOrder',
-    })
+    });
   }
 
   componentWillUnmount() {
@@ -26,34 +26,36 @@ class OrderFullfilment extends React.Component {
   }
 
   render() {
+    console.log(this.props.fakeProgress);
     return (
-      <div>
+      <div
+        style={{
+          width: 200,
+          height: 200,
+          margin: '50px auto 10px auto',
+          transform: 'translate(36px)',
+        }}
+      >
+        <Progress
+          type="circle"
+          percent={this.props.fakeProgress}
+          active
+          status={this.props.resolving ? null : (this.props.orderMadeSuccessfully ? 'success' : 'exception')}
+        />
         {this.props.resolving ?
-          <div
-            style={{
-              width: 200,
-              height: 200,
-              margin: '10vh auto 5vh auto',
-              transform: 'translate(5vw)'
-            }}
-          >
-            <Progress
-              type="circle"
-              percent={this.props.fakeProgress}
-              active
-            />
-            {this.props.fakeProgress < 100 ?
-            <h2 style={{ transform: 'translate(-0.2vw, 1.5vh)' }}>
-              Making order...
-            </h2>
-              :
-            <h2 style={{ transform: 'translate(3.3vw, 1.5vh)' }}>
-              Done
-            </h2> }
-          </div>
+          <h2 style={{ transform: 'translate(-5px, 15px)' }}>
+            Making order...
+          </h2>
           :
-          <div>{this.props.orderMadeSuccessfully === false ? <h1>no</h1> : <h1>yes</h1>}</div>
-        }
+          (this.props.orderMadeSuccessfully ?
+            <h2 style={{ transform: 'translate(30px, 15px)' }}>
+              Done
+            </h2>
+            :
+            <h2 style={{ transform: 'translate(30px, 15px)' }}>
+              Error :(
+            </h2>
+          )}
       </div>
     );
   };

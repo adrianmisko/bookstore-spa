@@ -7,12 +7,16 @@ import LocationForm from '../components/OrderForm/OrderForm';
 import AnimatedNumber from 'react-animated-number';
 import OrderSummary from '../components/OderSummary/OrderSummary';
 import OrderFullfilment from '../components/OrderFullfilment/OrderFullfilement';
+import Link from 'umi/link';
+import Redirect from 'umi/redirect';
 
-const Order = ({ ui, books, order, stepForward, stepBackward, freezeItems }) => {
+
+const Order = ({ ui, books, order, user, stepForward, stepBackward, freezeItems, clearOrderData, showLoginModal }) => {
 
   const { products, itemsInCart } = books;
   const { currentStep } = ui;
   const { paymentMethod } = order;
+  const { userId, isLoggedIn } = user;
   const Step = Steps.Step;
 
   const inCart = products.filter(product => {
@@ -60,64 +64,82 @@ const Order = ({ ui, books, order, stepForward, stepBackward, freezeItems }) => 
       :
       {
         title: 'Order',
-        content: <OrderFullfilment />
+        content: <OrderFullfilment/>,
       })];
 
+  if (!isLoggedIn) showLoginModal();
+
   return (
-    <CardCenteredLayout
-      maxWidth={1200}
-      title={
-        <Steps current={currentStep}>
-          {steps.map(item => <Step key={item.title} title={item.title}/>)}
-        </Steps>
-      }
-    >
-      <div>
-        {steps[currentStep].content}
-      </div>
-      <div
-        style={{
-          float: 'right',
-          margin: '3em -1em 0.5em 0',
-        }}
-      >
-        <Button.Group>
-          {currentStep > 0 && currentStep !== 1 &&
-          (<Button
-            style={{ minWidth: 100 }}
-            htmlType="button"
-            onClick={stepBackward}
+    <React.Fragment>
+      {isLoggedIn ?
+        <CardCenteredLayout
+          maxWidth={1200}
+          title={
+            <Steps current={currentStep}>
+              {steps.map(item => <Step key={item.title} title={item.title}/>)}
+            </Steps>
+          }
+        >
+          <div>
+            {steps[currentStep].content}
+          </div>
+          <div
+            style={{
+              float: 'right',
+              margin: '3em -1em 0.5em 0',
+            }}
           >
-            Previous
-          </Button>)}
-          {currentStep < steps.length - 1 && currentStep !== 1 &&
-          <Button
-            type="primary"
-            style={{ minWidth: 100 }}
-            htmlType="button"
-            onClick={stepForward}
-          >
-            Next
-          </Button>}
-          {currentStep === steps.length - 1 &&
-          <Button
-            type="primary"
-            style={{ minWidth: 100 }}
-            htmlType="button"
-          >
-            Done
-          </Button>}
-        </Button.Group>
-      </div>
-    </CardCenteredLayout>
+            <Button.Group
+              style={{
+                transform: 'translate(-30px)',
+              }}
+            >
+              {currentStep > 0 && currentStep !== 1 &&
+              (<Button
+                style={{ minWidth: 100 }}
+                htmlType="button"
+                onClick={stepBackward}
+              >
+                Previous
+              </Button>)}
+              {currentStep < steps.length - 1 && currentStep !== 1 &&
+              <Button
+                type="primary"
+                style={{ minWidth: 100 }}
+                htmlType="button"
+                onClick={stepForward}
+              >
+                Next
+              </Button>}
+              {currentStep === steps.length - 1 &&
+              <Link
+                to={'/users/' + userId}
+              >
+                <Button
+                  type="primary"
+                  style={{ minWidth: 100 }}
+                  htmlType="button"
+                  onClick={clearOrderData}
+                >
+                  Done
+                </Button>
+              </Link>}
+            </Button.Group>
+          </div>
+        </CardCenteredLayout>
+        :
+        <Redirect to={'/'}/>}
+    </React.Fragment>
   );
 };
 
 export default connect(
-  ({ books, ui, order }) => ({ books, ui, order }),
+  ({ books, ui, order, user }) => ({ books, ui, order, user }),
   dispatch => ({
     stepForward: () => dispatch({ type: 'ui/stepForward' }),
     stepBackward: () => dispatch({ type: 'ui/stepBackward' }),
-    freezeItems: inCard => dispatch({ type: 'order/freezeItems', payload: inCard })
+    freezeItems: inCard => dispatch({ type: 'order/freezeItems', payload: inCard }),
+    clearOrderData: () => dispatch({ type: 'order/clearData' }),
+    showLoginModal: () => dispatch({ type: 'ui/showLoginModal' }),
   }))
 (Order);

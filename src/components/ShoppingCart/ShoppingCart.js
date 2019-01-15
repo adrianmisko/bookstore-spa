@@ -7,7 +7,10 @@ import AnimatedNumber from 'react-animated-number';
 import TweenOne from 'rc-tween-one';
 
 
-const ShoppingCart = ({ dispatch, products, itemsInCart, restartAnimation, firstLoad }) => {
+const ShoppingCart = ({ dispatch, books, user }) => {
+
+  let { products, itemsInCart, restartAnimation, firstLoad } = books;
+  const { isLoggedIn } = user;
 
   itemsInCart = itemsInCart || [];
   products = products || [];
@@ -163,7 +166,17 @@ const ShoppingCart = ({ dispatch, products, itemsInCart, restartAnimation, first
             <br/>
             <div>
               <Link to={'/shoppingCart'}>See the details</Link>
-              <Link to={'/order'} style={{ float: 'right' }}>Buy »</Link>
+              <span onClick={() => dispatch({ type: 'order/clearData' })}>
+                {isLoggedIn ?
+                  <Link to={'/order'} style={{ float: 'right' }}>Buy »</Link>
+                  :
+                  <a
+                    style={{ float: 'right' }}
+                    onClick={() => dispatch({type: 'ui/showLoginModal'})}
+                  >
+                    Buy »
+                  </a>}
+              </span>
             </div>
           </React.Fragment>
           :
@@ -216,4 +229,4 @@ const ShoppingCart = ({ dispatch, products, itemsInCart, restartAnimation, first
   );
 };
 
-export default connect(({ books }) => books)(ShoppingCart);
+export default connect(({ books, user }) => ({books, user}))(ShoppingCart);
