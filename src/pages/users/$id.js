@@ -3,6 +3,8 @@ import { connect } from 'dva';
 import CardCenteredLayout from '../../components/CardCenteredLayout/CardCenteredLayout';
 import Redirect from 'umi/redirect';
 import ClientInfo from '../../components/ClientInfo/ClientInfo';
+import OrderList from '../../components/OrdersList/OrdersList';
+
 
 let UserPage = ({ dispatch, ui, user }) => {
 
@@ -18,8 +20,8 @@ let UserPage = ({ dispatch, ui, user }) => {
   }];
 
   const contentList = {
-    tab1: <ClientInfo client={user}/>,
-    tab2: <p>here be order history</p>,
+    tab1: <ClientInfo />,
+    tab2: <OrderList />
   };
 
 
@@ -38,7 +40,7 @@ let UserPage = ({ dispatch, ui, user }) => {
               payload: key,
             })
           }}
-          defaultActiveKey="tab2"
+          defaultActiveTabKey={currentTab}
         >
           <br/>
           {contentList[currentTab]}

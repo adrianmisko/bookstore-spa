@@ -27,7 +27,6 @@ const ClientInfo = ({ dispatch, userDetails, isLoading, locationTabIdx }) => {
             minHeight: 100,
             maxHeight: 200,
             height: '100%',
-            border: '2px solid rgba(0,0,0,0.1)',
           }}
           src={`https://www.gravatar.com/avatar/${MD5(userDetails.email)}?d=identicon&s=200`}
           shape={'circle'}

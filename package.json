@@ -36,6 +36,7 @@
     "history": "latest",
     "lodash": "^4.17.11",
     "lodash.throttle": "latest",
+    "moment": "latest",
     "nprogress": "^0.2.0",
     "path-to-regex": "^1.3.1",
     "prop-types": "latest",
@@ -52,7 +53,7 @@
     "react-router-dom": "latest",
     "react-split": "^2.0.4",
     "react-split-pane": "^0.1.85",
-    "styled-components": "^4.1.3",
-    "moment": "latest"
+    "redux-logger": "^3.0.6",
+    "styled-components": "^4.1.3"
   }
 }

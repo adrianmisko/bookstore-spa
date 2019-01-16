@@ -29,6 +29,18 @@ const fetchUserDetails = id => {
     .then(response => response)
 };
 
+const fetchOrders = id => {
+  const path = `https://bookstore-flask.herokuapp.com/api/users/${id}/orders`;
+  return fetch(path, { mode: 'cors', method: 'GET' })
+    .then(response => response)
+};
+
+const fetchOrder = (userId, orderId) => {
+  const path = `https://bookstore-flask.herokuapp.com/api/users/${userId}/orders/${orderId}`;
+  return fetch(path, { mode: 'cors', method: 'GET' })
+    .then(response => response)
+};
+
 export default {
   namespace: 'user',
   state: {
@@ -41,6 +53,8 @@ export default {
     userId: '',
     userDetails: {}, //some of data repeats, but object is more convenient
     locationTabIdx: '0',  //key has to be a string
+    orders: [],
+    order: {}
   },
   reducers: {
     showLoading(state) {
@@ -67,6 +81,12 @@ export default {
     },
     changeLocationTab(state, { payload: key }) {
       return { ...state, locationTabIdx: key }
+    },
+    updateOrders(state, { payload: orders }) {
+      return { ...state, orders }
+    },
+    updateOrder(state, { payload: order }) {
+      return { ...state, order }
     }
   },
   effects: {
@@ -136,7 +156,33 @@ export default {
           yield call(message.error, 'Error :(', 1.5)
       }
       yield put({ type: 'hideLoading' });
-    }
+    },
+    *getOrders(action, { call, put }) {
+      yield put({ type: 'showLoading' });
+      const result = yield call(fetchOrders, action.payload);
+      switch (result.status) {
+        case 200:
+          const orders = yield result.json();
+          yield put({ type: 'updateOrders', payload: orders });
+          break;
+        default:
+          yield call(message.error, 'Error :(', 1.5)
+      }
+      yield put({ type: 'hideLoading' });
+    },
+    *getOrderDetails(action, { call, put }) {
+      yield put({ type: 'showLoading' });
+      const result = yield call(fetchOrder, action.payload.userId, action.payload.orderId);
+      switch (result.status) {
+        case 200:
+          const order = yield result.json();
+          yield put({ type: 'updateOrder', payload: order });
+          break;
+        default:
+          yield call(message.error, 'Error :(', 1.5)
+      }
+      yield put({ type: 'hideLoading' });
+    },
   },
   subscriptions: {
     getDetails({ dispatch, history }) {
@@ -148,6 +194,26 @@ export default {
           dispatch({
             type: 'fetchUserDetails',
             payload: parseInt(matches[1], 10),
+          });
+          dispatch({
+            type: 'getOrders',
+            payload: parseInt(matches[1], 10),
+          });
+        }
+      });
+    },
+    getOrderDetails({ dispatch, history }) {
+      return history.listen(({ pathname }) => {
+        const pathToRegexp = require('path-to-regexp');
+        const re = pathToRegexp('/users/:id/orders/:id');
+        const matches = re.exec(pathname);
+        if (matches !== null) {
+          dispatch({
+            type: 'getOrderDetails',
+            payload: {
+              userId: parseInt(matches[1], 10),
+              orderId: parseInt(matches[2], 10)
+            }
           });
         }
       });

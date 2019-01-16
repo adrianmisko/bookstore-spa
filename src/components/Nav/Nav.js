@@ -67,7 +67,7 @@ let Nav = ({ currentKey, dispatch, history, isLoggedIn, userId }) => {
               </div>
           }
           >
-            <a>
+            <a onClick={() => dispatch({ type: 'ui/showLoginModal' })}>
               <Icon type="user" style={{ fontSize: 26, marginTop: 18, color: '#7f8287', fontWeight: 600 }}/>
             </a>
           </Popover>

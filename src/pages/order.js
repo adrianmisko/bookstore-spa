@@ -109,6 +109,7 @@ const Order = ({ ui, books, order, user, stepForward, stepBackward,
                 style={{ minWidth: 100 }}
                 htmlType="button"
                 onClick={stepForward}
+                disabled={inCart.length === 0}
               >
                 Next
               </Button>}
