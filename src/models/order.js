@@ -132,15 +132,14 @@ export default {
         payment_method: order.paymentMethod.name,
         items: order.items.map(item => ({ id: item.id, quantity: item.quantity })),
       }));
-      console.log(postData)
       const postDataJSON = JSON.stringify(postData);
       const result = yield call(makeOrder, postDataJSON, user.userId);
-      console.log(user.userId)
-      console.log(result)
       switch (result.status) {
         case 201:
           yield put({ type: 'orderSuccess' });
           yield put({ type: 'bumpProgressToMax' });
+          yield put({ type: 'books/clearCart' });
+          yield put({ type: 'ui/changeTab', payload: 'tab2' });
           break;
         default:
           yield put({ type: 'orderFailure' })

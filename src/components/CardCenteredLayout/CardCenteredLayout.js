@@ -2,7 +2,7 @@ import { Card } from 'antd';
 import React from 'react';
 
 
-const CardCenteredLayout = ({title, children, tabList, onTabChange, maxWidth}) => {
+const CardCenteredLayout = ({title, children, tabList, onTabChange, maxWidth, defaultActiveTabKey }) => {
 
   return (
       <Card
@@ -15,6 +15,7 @@ const CardCenteredLayout = ({title, children, tabList, onTabChange, maxWidth}) =
         title={title}
         tabList={tabList}
         onTabChange={onTabChange}
+        defaultActiveTabKey={defaultActiveTabKey}
       >
         {children}
       </Card>

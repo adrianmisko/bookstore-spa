@@ -33,6 +33,9 @@ export default {
     },
     stepBackward(state) {
       return { ...state, currentStep: state.currentStep - 1 }
+    },
+    resetSteps(state) {
+      return { ...state, currentStep: 0 }
     }
   },
 }

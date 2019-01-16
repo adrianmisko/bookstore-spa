@@ -23,6 +23,12 @@ const createNewAccount = ({ email, name, surname, password, phone }) => {
     .catch(_ => ({ status: 500 }));
 };
 
+const fetchUserDetails = id => {
+  const path = `https://bookstore-flask.herokuapp.com/api/users/${id}`;
+  return fetch(path, { mode: 'cors', method: 'GET' })
+    .then(response => response)
+};
+
 export default {
   namespace: 'user',
   state: {
@@ -33,6 +39,8 @@ export default {
     name: '',
     surname: '',
     userId: '',
+    userDetails: {}, //some of data repeats, but object is more convenient
+    locationTabIdx: '0',  //key has to be a string
   },
   reducers: {
     showLoading(state) {
@@ -51,9 +59,15 @@ export default {
     hideErrorNotification(state) {
       return { ...state, errorMessage: '' }
     },
-    resetState() {
+    resetState(state) {
       return { errorMessage: '', isLoading: false, isLoggedIn: false, token: ''  }
     },
+    updateUserDetails(state, { payload: userDetails }) {
+      return { ...state, userDetails }
+    },
+    changeLocationTab(state, { payload: key }) {
+      return { ...state, locationTabIdx: key }
+    }
   },
   effects: {
     *submitLoginForm(action, { call, put }) {
@@ -110,5 +124,33 @@ export default {
       yield call(message.success, 'You\'be been successfully logged out', 1.5);
       yield call(window.sessionStorage.clear());
     },
-  }
+    *fetchUserDetails(action, { call, put }) {
+      yield put({ type: 'showLoading' });
+      const result = yield call(fetchUserDetails, action.payload);
+      switch (result.status) {
+        case 200:
+          const userDetails = yield result.json();
+          yield put({ type: 'updateUserDetails', payload: userDetails });
+          break;
+        default:
+          yield call(message.error, 'Error :(', 1.5)
+      }
+      yield put({ type: 'hideLoading' });
+    }
+  },
+  subscriptions: {
+    getDetails({ dispatch, history }) {
+      return history.listen(({ pathname }) => {
+        const pathToRegexp = require('path-to-regexp');
+        const re = pathToRegexp('/users/:id');
+        const matches = re.exec(pathname);
+        if (matches !== null) {
+          dispatch({
+            type: 'fetchUserDetails',
+            payload: parseInt(matches[1], 10),
+          });
+        }
+      });
+    },
+  },
 }

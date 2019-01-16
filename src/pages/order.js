@@ -11,7 +11,8 @@ import Link from 'umi/link';
 import Redirect from 'umi/redirect';
 
 
-const Order = ({ ui, books, order, user, stepForward, stepBackward, freezeItems, clearOrderData, showLoginModal }) => {
+const Order = ({ ui, books, order, user, stepForward, stepBackward,
+                 freezeItems, clearOrderData, showLoginModal }) => {
 
   const { products, itemsInCart } = books;
   const { currentStep } = ui;
@@ -59,7 +60,7 @@ const Order = ({ ui, books, order, user, stepForward, stepBackward, freezeItems,
     (paymentMethod !== null && paymentMethod.name === 'Przelew online' ?
       {
         title: 'Pay & Order',
-        content: 'online',
+        content: '501- There would be an integration with external payment system',
       }
       :
       {
@@ -119,7 +120,6 @@ const Order = ({ ui, books, order, user, stepForward, stepBackward, freezeItems,
                   type="primary"
                   style={{ minWidth: 100 }}
                   htmlType="button"
-                  onClick={clearOrderData}
                 >
                   Done
                 </Button>
@@ -139,7 +139,6 @@ export default connect(
     stepForward: () => dispatch({ type: 'ui/stepForward' }),
     stepBackward: () => dispatch({ type: 'ui/stepBackward' }),
     freezeItems: inCard => dispatch({ type: 'order/freezeItems', payload: inCard }),
-    clearOrderData: () => dispatch({ type: 'order/clearData' }),
     showLoginModal: () => dispatch({ type: 'ui/showLoginModal' }),
   }))
 (Order);

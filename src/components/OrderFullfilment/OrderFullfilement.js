@@ -23,6 +23,12 @@ class OrderFullfilment extends React.Component {
 
   componentWillUnmount() {
     clearInterval(this.interval);
+    this.props.dispatch({
+      type: 'order/clearData'
+    });
+    this.props.dispatch({
+      type: 'ui/resetSteps'
+    });
   }
 
   render() {

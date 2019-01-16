@@ -3,6 +3,7 @@ import { connect } from 'dva';
 import React from 'react';
 import { MD5 } from 'crypto-js';
 import BookReviewForm from '../BookReviewForm/BookReviewForm';
+import moment from 'moment';
 
 const BookReviews = ({ reviews, loadingReviews }) => {
 
@@ -69,7 +70,11 @@ const BookReviews = ({ reviews, loadingReviews }) => {
                   author={item.author}
                   avatar={`https://www.gravatar.com/avatar/${MD5(item.author)}?d=identicon&s=50`}
                   content={item.body}
-                  datetime={item.posted_on}
+                  datetime={<Tooltip
+                    title={moment(item.posted_on).format('MMMM Do YYYY')}
+                  >
+                    {moment(item.posted_on, "YYYYMMDD").fromNow()}
+                  </Tooltip>}
                 />
               }
             />
