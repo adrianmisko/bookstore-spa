@@ -6,6 +6,7 @@ import moment from 'moment';
 import ItemsOrdered from '../../../../components/ItemsOrdered/ItemsOrdered';
 import AnimatedNumber from 'react-animated-number';
 import Link from 'umi/link';
+import styles from './$id.css';
 
 const Order = ({ order, isLoading, userId }) => {
 
@@ -54,17 +55,10 @@ const Order = ({ order, isLoading, userId }) => {
         title={<h2 style={{ marginBottom: 0 }}>Order ID: {order.id}</h2>}
       >
         <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            margin: '0 1.5em 1.5em 1.5em'
-          }}
+          className={styles['flex-container']}
         >
           <div
-            style={{
-              width: '30%',
-              marginTop: '2em'
-            }}
+            className={styles.timeline}
           >
             <Timeline
               pending={(!['SUCCESS', 'ERROR'].includes(order.status)) && messages[order.status]}
@@ -74,20 +68,18 @@ const Order = ({ order, isLoading, userId }) => {
             </Timeline>
           </div>
           <div
-            style={{
-              width: '70%',
-            }}
+            className={styles['items-ordered']}
           >
             <Card
               title="Books ordered"
               bordered={false}
             >
-              <ItemsOrdered
+              {order.items_ordered === undefined ? null : <ItemsOrdered
                 items={order.items_ordered.map(itemOrdered => ({
                   ...itemOrdered.book,
                   quantity: itemOrdered.quantity,
                 }))}
-              />
+              />}
             </Card>
           </div>
         </div>
@@ -99,6 +91,7 @@ const Order = ({ order, isLoading, userId }) => {
           }}
         >
           <h3>Total</h3>
+          {order.items_ordered === undefined ? <h2>Awaiting for items</h2> :
           <AnimatedNumber
             component="h2"
             value={order.items_ordered.map(itemOrdered => ({ ...itemOrdered.book, quantity: itemOrdered.quantity }))
@@ -109,7 +102,7 @@ const Order = ({ order, isLoading, userId }) => {
             }}
             duration={300}
             formatValue={n => '$' + n.toFixed(2).toString()}
-          />
+          /> }
         </div>
         <br/>
         <Card
@@ -123,7 +116,7 @@ const Order = ({ order, isLoading, userId }) => {
             style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', marginTop: '1em' }}
           >
             <div
-              style={{ marginBottom: '1em' }}
+              className={styles['details-item']}
             >
               <h3>Location</h3>
               <p style={{ marginBottom: 0 }}>Place: {order.location.place}</p>
@@ -135,19 +128,27 @@ const Order = ({ order, isLoading, userId }) => {
               <p style={{ marginBottom: 0 }}>Zip code: {order.location.zip_code}</p>
             </div>
             <br/>
-            <div>
+            <div
+              className={styles['details-item']}
+            >
               <h3>Delivery method</h3>
               <p>{order.delivery_method.name} ({order.delivery_method.cost})</p>
             </div>
-            <div>
+            <div
+              className={styles['details-item']}
+            >
               <h3>Payment method</h3>
               <p>{order.payment_method.name}</p>
             </div>
-            <div>
+            <div
+              className={styles['details-item']}
+            >
               <h3>Payment ID (external payment system)</h3>
               <p>{order.payment_id !== null ? <a>{order.payment_id}</a> : <span>None</span>}</p>
             </div>
-            <div>
+            <div
+              className={styles['details-item']}
+            >
               <h3>Payment method</h3>
               <p>{order.payment_method.name}</p>
             </div>

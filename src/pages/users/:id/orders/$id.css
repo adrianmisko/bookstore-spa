@@ -1,0 +1,31 @@
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 1.5em 1.5em 1.5em;
+}
+
+.timeline {
+  width: 30%;
+  margin-top: 2em;
+}
+
+.items-ordered {
+  width: 70%;
+}
+
+.details-item {
+  padding: 0.75em;
+  margin: 0.75em;
+}
+
+@media (max-width: 576px) {
+  .items-ordered {
+    width: 100%;
+  }
+  .timeline {
+    width: 100%;
+  }
+  .flex-container {
+    display: block;
+  }
+}
