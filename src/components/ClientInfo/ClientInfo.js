@@ -7,7 +7,6 @@ import moment from 'moment';
 
 const ClientInfo = ({ dispatch, userDetails, isLoading, locationTabIdx }) => {
 
-
   return (
     <CardCenteredLayout
       maxWidth={500}
@@ -57,7 +56,7 @@ const ClientInfo = ({ dispatch, userDetails, isLoading, locationTabIdx }) => {
             </Tooltip>
           </p>
         </Card>
-        {userDetails.locations !== undefined ?
+        {userDetails.locations && userDetails.locations.length > 0 ?
           <Card
             title="Recent orders' locations"
             style={{
@@ -66,6 +65,7 @@ const ClientInfo = ({ dispatch, userDetails, isLoading, locationTabIdx }) => {
             }}
             tabList={userDetails.locations.map((location, idx) => ({ key: idx.toString(), tab: location.place }))}
             onTabChange={key => dispatch({ type: 'user/changeLocationTab', payload: key })}
+            defaultActiveTabKey={'0'}
           >
             <p style={{ marginTop: 10 }}>
               Place:  <span style={{ color: 'black', marginLeft: 4 }}>{userDetails.locations[locationTabIdx].place}</span>
@@ -76,9 +76,9 @@ const ClientInfo = ({ dispatch, userDetails, isLoading, locationTabIdx }) => {
             <p style={{ marginTop: 10 }}>
               Street number:  <span style={{ color: 'black', marginLeft: 4 }}>{userDetails.locations[locationTabIdx].street_number}</span>
             </p>
-            {userDetails.locations[locationTabIdx].flat_number !== undefined ?
+            {userDetails.locations[locationTabIdx].flat_number ?
               <p style={{ marginTop: 10 }}>
-                Street number:  <span style={{ color: 'black', marginLeft: 4 }}>{userDetails.locations[locationTabIdx].flat_number}</span>
+                Flat number:  <span style={{ color: 'black', marginLeft: 4 }}>{userDetails.locations[locationTabIdx].flat_number}</span>
               </p>
               :
               null
