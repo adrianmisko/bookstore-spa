@@ -11,8 +11,8 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
       type: 'search/updateValue',
       payload: {
         optionName: 'genres',
-        newValues: values
-      }
+        newValues: values,
+      },
     });
   };
 
@@ -22,8 +22,8 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
         type: 'search/getAutocompleteOptions',
         payload: {
           optionName: 'genres',
-          searchBy: '' // no request args => GET all
-        }
+          searchBy: '', // no request args => GET all
+        },
       });
     }
   };
@@ -34,9 +34,9 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
       type: 'search/updateValue',
       payload: {
         optionName: 'authors_names',
-        newValues: values
-      }
-    })
+        newValues: values,
+      },
+    });
   };
 
   const handleAuthorsSearch = value => {
@@ -45,8 +45,8 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
         type: 'search/getAutocompleteOptions',
         payload: {
           optionName: 'authors_names',
-          searchBy: value
-        }
+          searchBy: value,
+        },
       });
     }
   };
@@ -56,8 +56,8 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
       type: 'search/updateValue',
       payload: {
         optionName: 'publishers',
-        newValues: values
-      }
+        newValues: values,
+      },
     });
   };
 
@@ -67,8 +67,8 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
         type: 'search/getAutocompleteOptions',
         payload: {
           optionName: 'publishers',
-          searchBy: ''
-        }
+          searchBy: '',
+        },
       });
     }
   };
@@ -78,8 +78,8 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
       type: 'search/updateValue',
       payload: {
         optionName: 'tags',
-        newValues: values
-      }
+        newValues: values,
+      },
     });
   };
 
@@ -89,8 +89,8 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
         type: 'search/getAutocompleteOptions',
         payload: {
           optionName: 'tags',
-          searchBy: ''
-        }
+          searchBy: '',
+        },
       });
     }
   };
@@ -100,8 +100,8 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
       type: 'search/updateValue',
       payload: {
         optionName: 'price',
-        newValues: values
-      }
+        newValues: values,
+      },
     });
   };
 
@@ -112,8 +112,8 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
       type: 'search/updateValue',
       payload: {
         optionName: 'available',
-        newValues: value
-      }
+        newValues: value,
+      },
     });
   };
 
@@ -124,8 +124,8 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
       type: 'search/updateValue',
       payload: {
         optionName: 'featured',
-        newValues: value
-      }
+        newValues: value,
+      },
     });
   };
 
@@ -212,6 +212,7 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
       <DatePicker.RangePicker
         style={{ width: '100%' }}
         size="large"
+        disabled
       />
       <div>Price:</div>
       <Slider
@@ -221,36 +222,33 @@ const FilterOptionList = ({ options, dispatch, dataSet, pricesRange, autocomplet
         max={pricesRange.max}
         onChange={handlePriceSliderChange}
         tipFormatter={value => `$${value}`}
+        disabled
       />
       <div style={{ marginTop: 20 }}>
-        <Checkbox.Group style={{ width: '100%', textAlign: 'center' }}>
-          <Row>
-            <Col span={8}>
-              <Checkbox
-                checked={values.featured}
-                value={values.featured}
-                onChange={handleFeaturedSwitchChange}
-              >
-                Featured
-              </Checkbox>
-            </Col>
-            <Col span={8}>
-              <Checkbox
-                checked={values.available}
-                value={values.available}
-                onChange={handleAvailableSwitchChange}
-              >
-                Available
-              </Checkbox>
-            </Col>
-          </Row>
-        </Checkbox.Group>
+        <Row>
+          <Col span={8}>
+            <Checkbox
+              checked={values.featured}
+              onChange={handleFeaturedSwitchChange}
+            >
+              Featured
+            </Checkbox>
+          </Col>
+          <Col span={8}>
+            <Checkbox
+              checked={values.available}
+              onChange={handleAvailableSwitchChange}
+            >
+              Available
+            </Checkbox>
+          </Col>
+        </Row>
       </div>
       <Button
         style={{
           margin: '30px auto 10px auto',
           width: '50%',
-          display: 'block'
+          display: 'block',
         }}
         onClick={handleSearch}
       >
