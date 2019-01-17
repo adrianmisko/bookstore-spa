@@ -60,7 +60,7 @@ const OrderList = ({ orders, isLoading, userId }) => {
                   <React.Fragment>
                     <span>Made on: {moment(order.order_date).format('MMMM Do YYYY')}</span>
                     {order.delivered_on !== null ?
-                    <span>Delivered on: {moment(order.delivered_on).format('MMMM Do YYYY')}</span>
+                    <span><br />Delivered on: {moment(order.delivered_on).format('MMMM Do YYYY')}</span>
                       : <React.Fragment><br/>Not yet delivered</React.Fragment>}
                   </React.Fragment>
                 }
