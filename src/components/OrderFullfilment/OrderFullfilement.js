@@ -32,7 +32,6 @@ class OrderFullfilment extends React.Component {
   }
 
   render() {
-    console.log(this.props.fakeProgress);
     return (
       <div
         style={{

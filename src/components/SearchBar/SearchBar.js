@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Icon, Input, AutoComplete, Skeleton } from 'antd';
 import { debounce } from 'lodash';
+import Link from 'umi/link';
 
 
 const SearchBar = ({ dispatch, booksFound, history, queryInProgress }) => {
@@ -41,7 +42,7 @@ const SearchBar = ({ dispatch, booksFound, history, queryInProgress }) => {
             </span>
         }
         <span>
-        {book.price}
+        ${book.price}
       </span>
       </div>
     </Option>);
@@ -95,7 +96,7 @@ const SearchBar = ({ dispatch, booksFound, history, queryInProgress }) => {
       placeholder="Title, author..."
       optionLabelProp={'value'}
     >
-      <Input suffix={<Icon type="search"/>}/>
+      <Input suffix={<Link to={'/search'}><Icon type="search"/></Link>}/>
     </AutoComplete>
   );
 };

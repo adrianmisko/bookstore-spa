@@ -129,7 +129,7 @@ const ShoppingCart = ({ dispatch, books, user }) => {
                                 transitionProperty: 'background-color, color, opacity',
                               }}
                               duration={300}
-                              formatValue={n => 'Price: ' + n.toFixed(2).toString()}
+                              formatValue={n => 'Price: $' + n.toFixed(2).toString()}
                             />
                           }
                         </span>
@@ -150,7 +150,7 @@ const ShoppingCart = ({ dispatch, books, user }) => {
                     transitionProperty: 'background-color, color, opacity',
                   }}
                   duration={300}
-                  formatValue={n => 'Total price: ' + n.toFixed(2).toString()}
+                  formatValue={n => 'Total price: $' + n.toFixed(2).toString()}
                 />
               </p>
               <Button

@@ -35,7 +35,7 @@ const OrderSummary = ({ location, deliveryMethod, paymentMethod, items }) => {
         <br/>
         <div>
           <h3>Delivery method</h3>
-          <p>{deliveryMethod.name} ({deliveryMethod.cost})</p>
+          <p>{deliveryMethod.name} (${deliveryMethod.cost})</p>
         </div>
         <div>
           <h3>Payment method</h3>
