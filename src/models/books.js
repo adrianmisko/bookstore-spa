@@ -1,5 +1,6 @@
-const fetchBooks = () => {
-  return fetch('https://bookstore-flask.herokuapp.com/api/books', { mode: 'cors', method: 'get' })
+const fetchFeatured = () => {
+  const path = 'https://bookstore-flask.herokuapp.com/api/books?featured=true';
+  return fetch(path, { mode: 'cors', method: 'get' })
     .then(response => response.json())
     .then(data => data)
     .catch(err => console.log(err));
@@ -47,9 +48,9 @@ export default {
     },
   },
   effects: {
-    * fetchBooks(action, { call, put }) {
+    * fetchFeatured(action, { call, put }) {
       yield put({ type: 'loadingOn' });
-      const result = yield call(fetchBooks);
+      const result = yield call(fetchFeatured);
       yield put({ type: 'update', payload: result });
       yield put({ type: 'loadingOff' });
       yield put({ type: 'completeFetch' });
@@ -66,7 +67,7 @@ export default {
     featured({ dispatch, history }) {
       return history.listen(({ pathname }) => {
         if (pathname === '/') {
-          dispatch({ type: 'fetchBooks' });
+          dispatch({ type: 'fetchFeatured' });
         }
       });
     },
