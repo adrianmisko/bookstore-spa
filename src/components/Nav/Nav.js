@@ -27,9 +27,6 @@ let Nav = ({ currentKey, dispatch, history, isLoggedIn, userId }) => {
       <Menu.Item key="main" className={styles['nav-button']}>
         <Link to='/'><Icon type="home"/>Home</Link>
       </Menu.Item>
-      <Menu.Item key="books" className={styles['nav-button']}>
-        <Link to='/books'><Icon type="book"/>Books</Link>
-      </Menu.Item>
       <div className={styles['filler-left']}> </div>
       <SearchBar history={history}/>
       <div className={styles.filler}> </div>
