@@ -82,7 +82,7 @@ const ProductList = ({ search, ownProps, dispatch }) => {
             transitionProperty: 'background-color, color, opacity',
           }}
           duration={300}
-          formatValue={n => 'Price: ' + n.toFixed(2).toString()}
+          formatValue={n => 'Price: $' + n.toFixed(2).toString()}
         />}
       </span>
     </span>
@@ -153,7 +153,7 @@ const ProductList = ({ search, ownProps, dispatch }) => {
           />
           <span>
             {isEmpty(ownProps) ?
-              <span>{item.price}</span>
+              <span>${item.price}</span>
               :
               summaryContent(item)
             }
