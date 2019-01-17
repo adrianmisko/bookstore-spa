@@ -5,7 +5,7 @@ import { MD5 } from 'crypto-js';
 import BookReviewForm from '../BookReviewForm/BookReviewForm';
 import moment from 'moment';
 
-const BookReviews = ({ reviews, loadingReviews }) => {
+const BookReviews = ({ reviews, loadingReviews, dispatch, liked, disliked }) => {
 
   const mock = Array(3).fill(0);
 
@@ -50,17 +50,21 @@ const BookReviews = ({ reviews, loadingReviews }) => {
                       style={{ fontSize: '1em', marginLeft: '-40px' }}
                     />,
                     <Divider type="vertical"/>,
-                    <span>
+                    <span
+                      onClick={() => dispatch({ type: 'book/upvoteReview', payload: item.id })}
+                    >
                       <Tooltip title="Like">
-                        <Icon type="like" style={{ marginLeft: 5 }} />
+                        <Icon type="like" style={{ marginLeft: 5 }} theme={liked.includes(item.id) ? 'filled' : 'outlined' }/>
                       </Tooltip>
                       <span style={{ paddingLeft: 8, cursor: 'auto' }}>
                         {item.upvotes}
                       </span>
                     </span>,
-                    <span>
+                    <span
+                      onClick={() => dispatch({ type: 'book/downvoteReview', payload: item.id })}
+                    >
                       <Tooltip title="Dislike">
-                        <Icon type="dislike"/>
+                        <Icon type="dislike" theme={disliked.includes(item.id) ? 'filled' : 'outlined'}/>
                       </Tooltip>
                       <span style={{ paddingLeft: 8, cursor: 'auto' }}>
                         {item.downvotes}

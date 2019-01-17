@@ -13,7 +13,7 @@ const getReviews = id => {
 };
 
 
-const postReview = (id, {author, body, mark }) => {
+const postReview = (id, { author, body, mark }) => {
   const postRequestBody = JSON.stringify({
     author,
     body,
@@ -29,6 +29,46 @@ const postReview = (id, {author, body, mark }) => {
     .then(response => response);
 };
 
+const upvoteReview = id => {
+  const path = `https://bookstore-flask.herokuapp.com/api/reviews/${id}/upvote`;
+  return fetch(path, {
+    mode: 'cors', method: 'POST', headers: {
+      'Accept': 'application/json',
+    },
+  })
+    .then(response => response);
+};
+
+const downvoteReview = id => {
+  const path = `https://bookstore-flask.herokuapp.com/api/reviews/${id}/downvote`;
+  return fetch(path, {
+    mode: 'cors', method: 'POST', headers: {
+      'Accept': 'application/json',
+    },
+  })
+    .then(response => response);
+};
+
+const cancelUpvote = id => {
+  const path = `https://bookstore-flask.herokuapp.com/api/reviews/${id}/cancel_upvote`;
+  return fetch(path, {
+    mode: 'cors', method: 'POST', headers: {
+      'Accept': 'application/json',
+    },
+  })
+    .then(response => response);
+};
+
+const cancelDownvote = id => {
+  const path = `https://bookstore-flask.herokuapp.com/api/reviews/${id}/cancel_downvote`;
+  return fetch(path, {
+    mode: 'cors', method: 'POST', headers: {
+      'Accept': 'application/json',
+    },
+  })
+    .then(response => response);
+};
+
 export default {
   namespace: 'book',
   state: {
@@ -37,6 +77,8 @@ export default {
     reviews: [],
     loadingReviews: false,
     reviewIsBeingSend: false,
+    liked: [],
+    disliked: [],
   },
   reducers: {
     showLoading(state) {
@@ -58,17 +100,65 @@ export default {
       return { ...state, reviews };
     },
     startSendingReview(state) {
-      return { ...state, reviewIsBeingSend: true}
+      return { ...state, reviewIsBeingSend: true };
     },
     stopSendingReview(state) {
-      return { ...state, reviewIsBeingSend: false }
+      return { ...state, reviewIsBeingSend: false };
     },
     appendReview(state, { payload: review }) {
-      return { ...state, reviews: [...state.reviews, review] }
+      return { ...state, reviews: [...state.reviews, review] };
+    },
+    incUpvoteCount(state, { payload: id }) {
+      const reviewIdx = state.reviews.findIndex(item => item.id === id);
+      const review = state.reviews[reviewIdx];
+      review.upvotes = review.upvotes + 1;
+      return {
+        ...state,
+        reviews: [...state.reviews.slice(0, reviewIdx), review, ...state.reviews.slice(reviewIdx + 1)],
+      };
+    },
+    incDownvoteCount(state, { payload: id }) {
+      const reviewIdx = state.reviews.findIndex(item => item.id === id);
+      const review = state.reviews[reviewIdx];
+      review.downvotes = review.downvotes + 1;
+      return {
+        ...state,
+        reviews: [...state.reviews.slice(0, reviewIdx), review, ...state.reviews.slice(reviewIdx + 1)],
+      };
+    },
+    decUpvoteCount(state, { payload: id }) {
+      const reviewIdx = state.reviews.findIndex(item => item.id === id);
+      const review = state.reviews[reviewIdx];
+      review.upvotes = review.upvotes - 1;
+      return {
+        ...state,
+        reviews: [...state.reviews.slice(0, reviewIdx), review, ...state.reviews.slice(reviewIdx + 1)],
+      };
+    },
+    decDownvoteCount(state, { payload: id }) {
+      const reviewIdx = state.reviews.findIndex(item => item.id === id);
+      const review = state.reviews[reviewIdx];
+      review.downvotes = review.downvotes - 1;
+      return {
+        ...state,
+        reviews: [...state.reviews.slice(0, reviewIdx), review, ...state.reviews.slice(reviewIdx + 1)],
+      };
+    },
+    markAsLiked(state, { payload: id }) {
+      return { ...state, liked: [...state.liked, id] };
+    },
+    markAsDisliked(state, { payload: id }) {
+      return { ...state, disliked: [...state.disliked, id] };
+    },
+    undoMarkAsLiked(state, { payload: id }) {
+      return { ...state, liked: state.liked.filter(item => item !== id) };
+    },
+    undoMarkAsDisliked(state, { payload: id }) {
+      return { ...state, disliked: state.disliked.filter(item => item !== id) };
     },
   },
   effects: {
-    *fetchBook(action, { call, put }) {
+    * fetchBook(action, { call, put }) {
       yield put({ type: 'update', payload: null });
       yield put({ type: 'showLoading' });
       const result = yield call(getBook, action.payload);
@@ -82,7 +172,7 @@ export default {
       }
       yield put({ type: 'stopLoading' });
     },
-    *fetchReviews(action, { call, put }) {
+    * fetchReviews(action, { call, put }) {
       if (action.payload.key.length) {
         yield put({ type: 'showLoadingReviews' });
         const result = yield call(getReviews, action.payload.id);
@@ -98,7 +188,7 @@ export default {
         yield put({ type: 'hideLoadingReviews' });
       }
     },
-    *sendReview(action, { call, put }) {
+    * sendReview(action, { call, put }) {
       yield put({ type: 'startSendingReview' });
       const result = yield call(postReview, action.payload.id, action.payload.values);
       yield put({ type: 'stopSendingReview' });
@@ -113,7 +203,39 @@ export default {
           yield call(message.error, 'Error :(', 1.5);
           break;
       }
-    }
+    },
+    * upvoteReview(action, { call, put, select }) {
+      let shouldCancel = false;
+      const liked = yield select(({ book }) => book.liked);
+      const disliked = yield select(({ book }) => book.disliked);
+      if (!liked.includes(action.payload)) {
+        yield put({ type: 'incUpvoteCount', payload: action.payload });
+        yield put({ type: 'markAsLiked', payload: action.payload });
+        if (disliked.includes(action.payload)) {
+          shouldCancel = true;
+          yield put({ type: 'undoMarkAsDisliked', payload: action.payload });
+          yield put({ type: 'decDownvoteCount', payload: action.payload });
+        }
+        yield call(upvoteReview, action.payload);
+        if (shouldCancel) yield call(cancelDownvote, action.payload);
+      }
+    },
+    * downvoteReview(action, { call, put, select }) {
+      let shouldCancel = false;
+      const liked = yield select(({ book }) => book.liked);
+      const disliked = yield select(({ book }) => book.disliked);
+      if (!disliked.includes(action.payload)) {
+        yield put({ type: 'incDownvoteCount', payload: action.payload });
+        yield put({ type: 'markAsDisliked', payload: action.payload });
+        if (liked.includes(action.payload)) {
+          shouldCancel = true;
+          yield put({ type: 'undoMarkAsLiked', payload: action.payload });
+          yield put({ type: 'decUpvoteCount', payload: action.payload });
+        }
+        yield call(downvoteReview, action.payload);
+        if (shouldCancel) yield call(cancelUpvote, action.payload);
+      }
+    },
   },
   subscriptions: {
     getDetails({ dispatch, history }) {
