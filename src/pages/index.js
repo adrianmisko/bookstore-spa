@@ -1,13 +1,40 @@
-import styles from '../components/ProductList/ProductListCardType.css';
+import styles from '../components/Carousel3D/Carousel3D.css';
 import React from 'react';
-import ProductListCardType from '../components/ProductList/ProductListCardType';
 import { connect } from 'dva';
+import Carousel3d from '../components/Carousel3D/Carousel3D';
+import ProductListCardType from '../components/ProductList/ProductListCardType';
+import Link from 'umi/link';
+
 
 const Index = ({ dispatch, products, loading }) => {
-  return(
+
+  return (
     <React.Fragment>
-      <h1 className={styles.featured}>Featured books</h1>
-      <ProductListCardType dispatch={dispatch} products={products} loading={loading}/>
+      <h1
+        style={{
+          textAlign: 'center',
+          fontSize: '3em'
+        }}
+      >
+        Featured books
+      </h1>
+      <div className={styles['carousel-demo-wrapper']}>
+        <Carousel3d className={styles['carousel-demo']} childMaxLength={6}>
+          {products.map((book, i) => (
+            <div
+              onClick={() => { window.location.href = `${window.location}books/${book.id}`}}
+              key={i.toString()}
+              className={styles['img-wrapper']}
+              style={{
+                backgroundImage: `url(${book.cover})`,
+              }}
+            >
+            </div>
+          ))}
+        </Carousel3d>
+      </div>
+      {products !==undefined ? <ProductListCardType dispatch={dispatch} products={products} loading={loading}/>
+        : null}
     </React.Fragment>
   );
 };
