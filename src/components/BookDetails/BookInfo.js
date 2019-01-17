@@ -18,7 +18,7 @@ const BookInfo = ({book, dispatch}) => {
             <Link
               to={'/search?publisher=' + publisher.name}
               style={{ color: 'rgba(0,0,0,0.9)',
-                fontWeight: 520 }}
+                fontWeight: 480 }}
             >
               {publisher.name}
             </Link>)
@@ -29,14 +29,14 @@ const BookInfo = ({book, dispatch}) => {
           {book.authors_names.map((author_name, idx) =>
             <Link
               to={'/search?authors_name=' + author_name.name}
-              style={{ color: 'rgba(0,0,0,0.9)', fontWeight: 520 }}
+              style={{ color: 'rgba(0,0,0,0.9)', fontWeight: 480 }}
             >
              {(idx ? ', ' : '')}{author_name.name}
             </Link>)
           }
         </div>
         <div>
-          {'Price: ' + book.price}
+          {'Price: $' + book.price}
         </div>
         <div>
           {'Release date: ' + book.release_date}
@@ -47,7 +47,7 @@ const BookInfo = ({book, dispatch}) => {
             <Tag>
               <Link
                 to={'/search?genre=' + genre.name}
-                style={{ color: 'rgba(0,0,0,0.8)', fontWeight: 500 }}
+                style={{ color: 'rgba(0,0,0,0.8)', fontWeight: 480 }}
               >
                 {genre.name}
               </Link>
