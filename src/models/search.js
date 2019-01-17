@@ -80,7 +80,7 @@ export default {
     autocompleteOptionStoppedLoading(state, { payload: optionName }) {
       return { ...state, autocompleteLoading: { ...state.autocompleteLoading, ...{ [optionName]: false } } };
     },
-    updateDataSet(state, { payload:  { dataSet: data } }) {
+    updateDataSet(state, { payload: { dataSet: data } }) {
       return { ...state, dataSet: data };
     },
     updateAutocompleteOption(state, { payload: { optionName, newOptions } }) {
@@ -137,24 +137,23 @@ export default {
       }
       yield put({ type: 'autocompleteOptionStoppedLoading', payload: action.payload.optionName });
     },
-    *parseQueryStringIntoValues(action, { put, call, select }) {
+    * parseQueryStringIntoValues(action, { put, call, select }) {
       let fromSearch = queryString.parse(action.payload);
       let values = yield select(({ search }) => search.values);
       Object.keys(fromSearch).forEach(key => {
         if (Array.isArray(values[key + 's']))
           values[key + 's'] = Array.isArray(fromSearch[key]) ? fromSearch[key] : [fromSearch[key]];
-        else
-          if (! Array.isArray(values[key]))
-            values[key] = fromSearch[key] === 'true';
+        else if (!Array.isArray(values[key]))
+          values[key] = fromSearch[key] === 'true';
       });
       yield put({ type: 'updateValues', payload: values });
     },
-    *search(action, { put, call, select }) {
+    * search(action, { put, call, select }) {
       yield put({ type: 'startQuery' });
       const values = yield select(({ search }) => search.values);
       yield call(updateQueryString, values);
       const result = yield call(fetchBooks, window.location.search);
-      switch(result.status) {
+      switch (result.status) {
         case 200:
           yield put({ type: 'updateDataSet', payload: { dataSet: result.data } });
           break;
@@ -162,7 +161,7 @@ export default {
           yield call(message.error, 'Error :(', 1.5);
       }
       yield put({ type: 'stopQuery' });
-    }
+    },
   },
   subscriptions: {
     keepURLandFilterOptionsInSync({ dispatch, history }) {
@@ -175,7 +174,7 @@ export default {
           });
           dispatch({
             type: 'search',
-            payload: window.location.search
+            payload: window.location.search,
           });
         }
       });
