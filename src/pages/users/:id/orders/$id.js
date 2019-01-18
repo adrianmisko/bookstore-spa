@@ -17,10 +17,10 @@ const Order = ({ order, isLoading, userId }) => {
     icon="arrow-left"
   /></Link>;
 
-  const ifPaid = (order.payment_date !== null ?
+  const ifPaid = (order ? (order.payment_date !== null ?
     <Timeline.Item>Online payment on {moment(order.payment_date).format('MMMM Do YYYY')}</Timeline.Item>
     :
-    null);
+    null) : null);
 
   const messages = {
     'IN_PREPARATION': 'Your order is being prepared',
@@ -28,7 +28,7 @@ const Order = ({ order, isLoading, userId }) => {
     'IN_DELIVERY': 'Your books are being delivered',
   };
 
-  const contents = {
+  const contents = (order ? {
     'IN_PREPARATION': <React.Fragment>
       {ifPaid}
     </React.Fragment>,
@@ -41,7 +41,7 @@ const Order = ({ order, isLoading, userId }) => {
       <Timeline.Item>Delivered on {moment(order.delivered_on).format('MMMM Do YYYY')}</Timeline.Item>],
     'ERROR':
       <Timeline.Item>An error has occured</Timeline.Item>
-  };
+  } : {});
 
   return (
     <Spin
@@ -59,13 +59,13 @@ const Order = ({ order, isLoading, userId }) => {
         >
           <div
             className={styles.timeline}
-          >
+          >{order ?
             <Timeline
               pending={(!['SUCCESS', 'ERROR'].includes(order.status)) && messages[order.status]}
             >
               <Timeline.Item>Ordered on {moment(order.order_date).format('MMMM Do YYYY')}</Timeline.Item>
               {contents[order.status]}
-            </Timeline>
+            </Timeline> : null}
           </div>
           <div
             className={styles['items-ordered']}
@@ -115,6 +115,7 @@ const Order = ({ order, isLoading, userId }) => {
           <div
             style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', marginTop: '1em' }}
           >
+            {order.location ?
             <div
               className={styles['details-item']}
             >
@@ -127,30 +128,27 @@ const Order = ({ order, isLoading, userId }) => {
                 : null}
               <p style={{ marginBottom: 0 }}>Zip code: {order.location.zip_code}</p>
             </div>
+              : null}
             <br/>
             <div
               className={styles['details-item']}
             >
               <h3>Delivery method</h3>
-              <p>{order.delivery_method.name} ({order.delivery_method.cost})</p>
+              {order.delivery_method ?
+              <p>{order.delivery_method.name} ({order.delivery_method.cost})</p> : null}
             </div>
             <div
               className={styles['details-item']}
             >
               <h3>Payment method</h3>
-              <p>{order.payment_method.name}</p>
+              {order.payment_method ?
+              <p>{order.payment_method.name}</p> : null}
             </div>
             <div
               className={styles['details-item']}
             >
               <h3>Payment ID (external payment system)</h3>
               <p>{order.payment_id !== null ? <a>{order.payment_id}</a> : <span>None</span>}</p>
-            </div>
-            <div
-              className={styles['details-item']}
-            >
-              <h3>Payment method</h3>
-              <p>{order.payment_method.name}</p>
             </div>
           </div>
         </Card>
