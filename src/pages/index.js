@@ -3,7 +3,6 @@ import React from 'react';
 import { connect } from 'dva';
 import Carousel3d from '../components/Carousel3D/Carousel3D';
 import ProductListCardType from '../components/ProductList/ProductListCardType';
-import Link from 'umi/link';
 
 
 const Index = ({ dispatch, products, loading }) => {
