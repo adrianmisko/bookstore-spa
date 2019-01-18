@@ -142,7 +142,7 @@ const ProductList = ({ search, ownProps, dispatch }) => {
               <React.Fragment>
                 {item.authors_names.map((author_name, idx) =>
                   <span>
-                    <Link to={'/search?author=' + author_name.name} style={{ color: 'rgba(0,0,0,0.70)' }}>
+                    <Link to={'/search?authors_name=' + author_name.name} style={{ color: 'rgba(0,0,0,0.70)' }}>
                      {(idx ? ', ' : '')}{author_name.name}
                     </Link>
                   </span>,
