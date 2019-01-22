@@ -1,7 +1,8 @@
 import styles from '../ProductList/ProductListCardType.css';
 import Link from 'umi/link';
-import { Card, Icon, Tag } from 'antd';
+import { Card, Icon, Tag, Popover } from 'antd';
 import React from 'react';
+import moment from 'moment';
 
 
 const BookCard = ({ book, dispatch }) => {
@@ -12,6 +13,7 @@ const BookCard = ({ book, dispatch }) => {
     'Bestseller': '#87d068',
     'Promotion': '#ffff',
   };
+
 
   return (
     <Card
@@ -41,6 +43,64 @@ const BookCard = ({ book, dispatch }) => {
                   {tag.tag}
                 </Tag>
               </Link>)}
+            {book.pricing.product_pricing_valid_until || book.pricing.category_discount_valid_until ?
+              <Popover
+                title={null}
+                placement="bottomLeft"
+                arrowPointAtCenter
+                content={<span>
+                    {book.pricing.product_pricing_valid_until ?
+                      <React.Fragment>
+                        {book.pricing.product_pricing_discount_percent !== 0 ?
+                          <span>
+                            {book.pricing.product_pricing_discount_percent}% discount
+                          </span> : null}
+                        {book.pricing.product_pricing_discount_percent !== 0 && book.pricing.product_pricing_discount_value !== 0 ?
+                          <br/> : null}
+                        {book.pricing.product_pricing_discount_value !== 0 ?
+                          <span>
+                            {book.pricing.product_pricing_discount_value}$ discount
+                          </span> : null}
+                        <span><br/> Valid until {moment(book.pricing.product_pricing_valid_until).format('MMMM Do YYYY')}</span>
+                      </React.Fragment>
+                      : null}
+                    {book.pricing.product_pricing_valid_until && book.pricing.category_discount_valid_until ?
+                      <div style={{ marginTop: '0.5em' }}> </div>
+                      : null}
+                    {book.pricing.category_discount_valid_until ?
+                      <React.Fragment>
+                        {book.pricing.category_discount_discount_percent !== 0 ?
+                          <span>
+                            {book.pricing.category_discount_discount_percent}% discount on {'{genres}'}
+                          </span> : null}
+                        {book.pricing.category_discount_discount_percent !== 0 && book.pricing.category_discount_discount_value !== 0 ?
+                          <br/> : null}
+                        {book.pricing.category_discount_discount_value !== 0 ?
+                          <span>
+                            {book.pricing.category_discount_discount_value}$ discount on {'{genres}'}
+                          </span> : null}
+                        <span><br/> Valid until {moment(book.pricing.category_discount_valid_until).format('MMMM Do YYYY')}</span>
+                      </React.Fragment> : null}
+                  </span>}
+              >
+                <Tag style={{
+                  position: 'absolute',
+                  top: 20 + 25 * book.tags.length,
+                  left: 3,
+                  backgroundColor: '#f50',
+                  borderColor: '#f50',
+                  color: 'white',
+                }}>
+                  <Icon
+                    type="tags"
+                    className={styles['discount-icon']}
+                  />
+                  Discount
+                </Tag>
+              </Popover>
+              :
+              null
+            }
           </div>
         </Link>
       }
@@ -76,9 +136,19 @@ const BookCard = ({ book, dispatch }) => {
                   </span>,
             )}
             <br/>
-            <span>
-                    ${book.price}
-                  </span>
+            {book.pricing.product_pricing_valid_until || book.pricing.category_discount_valid_until ?
+              <span>
+                <span style={{ textDecoration: 'line-through', marginRight: '0.5em' }}>
+                  ${book.pricing.base_price}
+                </span>
+                <span style={{ fontSize: '1.2em', color: 'rgba(0,0,0,0.7)' }}>
+                  ${book.pricing.price}
+                </span>
+              </span>
+              :
+              <span>
+                ${book.pricing.price}
+              </span>}
           </React.Fragment>
         }
       />

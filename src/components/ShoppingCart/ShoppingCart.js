@@ -123,7 +123,7 @@ const ShoppingCart = ({ dispatch, books, user }) => {
                           {
                             <AnimatedNumber
                               component="text"
-                              value={item.quantity * item.price}
+                              value={item.quantity * item.pricing.price}
                               style={{
                                 transition: '0.8s ease-out',
                                 transitionProperty: 'background-color, color, opacity',
@@ -144,7 +144,7 @@ const ShoppingCart = ({ dispatch, books, user }) => {
               <p style={{ fontSize: '1.15em' }}>
                 <AnimatedNumber
                   component="text"
-                  value={inCart.reduce((acc, item) => acc + item.price * item.quantity, 0)}
+                  value={inCart.reduce((acc, item) => acc + item.pricing.price * item.quantity, 0)}
                   style={{
                     transition: '0.8s ease-out',
                     transitionProperty: 'background-color, color, opacity',

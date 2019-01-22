@@ -45,7 +45,7 @@ const OrderSummary = ({ location, deliveryMethod, paymentMethod, items }) => {
           <h3>Total</h3>
           <AnimatedNumber
             component="h1"
-            value={items.reduce((acc, item) => acc + item.price * item.quantity, deliveryMethod.cost)}
+            value={items.reduce((acc, item) => acc + item.pricing.price * item.quantity, deliveryMethod.cost)}
             style={{
               transition: '0.8s ease-out',
               transitionProperty: 'background-color, color, opacity',

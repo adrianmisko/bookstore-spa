@@ -76,7 +76,7 @@ const ProductList = ({ search, ownProps, dispatch }) => {
       <span>
         {<AnimatedNumber
           component="text"
-          value={item.quantity * item.price}
+          value={item.quantity * item.pricing.price}
           style={{
             transition: '0.8s ease-out',
             transitionProperty: 'background-color, color, opacity',
@@ -153,7 +153,7 @@ const ProductList = ({ search, ownProps, dispatch }) => {
           />
           <span>
             {isEmpty(ownProps) ?
-              <span>${item.price}</span>
+              <span>${item.pricing.price}</span>
               :
               summaryContent(item)
             }

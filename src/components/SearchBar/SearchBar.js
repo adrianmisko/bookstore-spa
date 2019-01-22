@@ -42,7 +42,7 @@ const SearchBar = ({ dispatch, booksFound, history, queryInProgress }) => {
             </span>
         }
         <span>
-        ${book.price}
+        ${book.pricing.price}
       </span>
       </div>
     </Option>);

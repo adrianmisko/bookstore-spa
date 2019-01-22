@@ -36,7 +36,7 @@ const BookInfo = ({book, dispatch}) => {
           }
         </div>
         <div>
-          {'Price: $' + book.price}
+          {'Price: $' + book.pricing.price}
         </div>
         <div>
           {'Release date: ' + book.release_date}

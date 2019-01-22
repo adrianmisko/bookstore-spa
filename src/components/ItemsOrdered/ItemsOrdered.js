@@ -18,7 +18,7 @@ const ItemsOrdered = ({ items }) => {
               <span>Quantity: {item.quantity}</span>
             </div>}
           />
-          <span>Price: ${(item.quantity * item.price).toFixed(2)}</span>
+          <span>Price: ${(item.quantity * item.pricing.price).toFixed(2)}</span>
         </List.Item>
       )}
     />
