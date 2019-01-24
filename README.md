@@ -9,4 +9,4 @@ App is [deployed on Heroku](6).
 [3]: https://github.com/dvajs/dva
 [4]: https://umijs.org/
 [5]: https://ant.design/
-[6]: https://bookstore-spa.herokuapp.com
+[6]: https://bookstore-spa.herokuapp.com/
