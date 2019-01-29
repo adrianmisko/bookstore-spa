@@ -5,7 +5,7 @@ import { MD5 } from 'crypto-js';
 import BookReviewForm from '../BookReviewForm/BookReviewForm';
 import moment from 'moment';
 
-const BookReviews = ({ reviews, loadingReviews, dispatch, liked, disliked }) => {
+const BookReviews = ({ reviews, loadingReviews, dispatch, liked, disliked, pagination}) => {
 
   const mock = Array(3).fill(0);
 
@@ -36,8 +36,15 @@ const BookReviews = ({ reviews, loadingReviews, dispatch, liked, disliked }) => 
           :
           <React.Fragment>
             <List
+              pagination={{
+                size: 'small',
+                pageSize: pagination.pageSize,
+                current: pagination.current,
+                total: pagination.total,
+                onChange: (page, pageSize) => dispatch({ type: 'book/changePage', payload: page })
+              }}
               itemLayout="horizontal"
-              header={reviews.length + ' ' + (reviews.length === 1 ? 'review' : 'reviews')}
+              header={pagination.total + ' ' + (pagination.total === 1 ? 'review' : 'reviews')}
               dataSource={reviews}
               renderItem={item =>
                 <Comment

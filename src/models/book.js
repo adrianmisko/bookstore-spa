@@ -6,8 +6,8 @@ const getBook = id => {
     .then(response => response);
 };
 
-const getReviews = id => {
-  const path = 'https://bookstore-flask.herokuapp.com/api/books/' + id.toString() + '/reviews';
+const getReviews = (id, page) => {
+  const path = 'https://bookstore-flask.herokuapp.com/api/books/' + id.toString() + `/reviews?page=${page}`;
   return fetch(path, { method: 'GET', mode: 'cors' })
     .then(response => response);
 };
@@ -79,6 +79,11 @@ export default {
     reviewIsBeingSend: false,
     liked: [],
     disliked: [],
+    pagination: {
+      current: 1,
+      pageSize: 10,
+      total: 0,
+    }
   },
   reducers: {
     showLoading(state) {
@@ -156,6 +161,12 @@ export default {
     undoMarkAsDisliked(state, { payload: id }) {
       return { ...state, disliked: state.disliked.filter(item => item !== id) };
     },
+    updateTotal(state, { payload: total }) {
+      return { ...state, pagination: { ...state.pagination, total } }
+    },
+    updateCurrentPage(state, { payload: current }) {
+      return { ...state, pagination: { ...state.pagination, current } }
+    }
   },
   effects: {
     * fetchBook(action, { call, put }) {
@@ -172,14 +183,26 @@ export default {
       }
       yield put({ type: 'stopLoading' });
     },
-    * fetchReviews(action, { call, put }) {
-      if (action.payload.key.length) {
+    * changePage(action, { call, put }) {
+      yield put({ type: 'updateCurrentPage', payload: action.payload });
+      yield put({ type: 'fetchReviews', payload: action.payload });
+    },
+    * fetchReviews(action, { call, put, select }) {
+      if (!action.payload.key || action.payload.key.length) {
         yield put({ type: 'showLoadingReviews' });
-        const result = yield call(getReviews, action.payload.id);
+        const page = yield select(({ book }) => book.pagination.current);
+        console.log(page);
+        let id = action.payload.id;
+        console.log(id);
+        if (!id)
+          id = yield select(({ book }) => book.book.id);
+        console.log(id);
+        const result = yield call(getReviews, id, page);
         switch (result.status) {
           case 200:
             const data = yield result.json();
-            yield put({ type: 'updateReviews', payload: data });
+            yield put({ type: 'updateTotal', payload: data.total });
+            yield put({ type: 'updateReviews', payload: data.data });
             break;
           default:
             yield call(message.error, 'Error :(', 1.5);
