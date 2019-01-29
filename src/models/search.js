@@ -6,9 +6,8 @@ const fetchBooks = queryString => {
   const path = 'https://bookstore-flask.herokuapp.com/api/books' + queryString;
   return fetch(path,
     { mode: 'cors', method: 'GET', headers: { 'Accept': 'Application/json' } })
-    .then(response => response.json())
-    .then(data => ({ data, status: 200 }))
-    .catch(_ => ({ status: 500 }));
+    .then(response => response)
+    .catch(err => console.error(err));
 };
 
 const fetchAutocompleteOptions = ({ optionName, searchBy }) => {
@@ -58,11 +57,17 @@ export default {
       price: [],
       featured: false,
       available: true,
+      page: 1,
     },
     pricesRange: {
       min: 0,
       max: 100,
     },
+    pagination: {
+      total: 0,
+      current: 1,
+      pageSize: 10,
+    }
   },
   reducers: {
     startQuery(state) {
@@ -109,11 +114,23 @@ export default {
           price: [],
           featured: false,
           available: true,
+          page: 1,
         },
       };
     },
+    updateTotal(state, { payload: total }) {
+      return { ...state, pagination: { ...state.pagination, total } }
+    },
+    updateCurrentPage(state, { payload: current }) {
+      return { ...state, pagination: { ...state.pagination, current } }
+    },
   },
   effects: {
+    *changePage(action, { call, put }) {
+      yield put({ type: 'updateCurrentPage', payload: action.payload });
+      yield put({ type: 'updateValue', payload: { optionName: 'page', newValues: action.payload } });
+      yield put({ type: 'search' });
+    },
     * getAutocompleteOptions(action, { call, put }) {
       yield put({ type: 'autocompleteOptionIsLoading', payload: action.payload.optionName });
       const result = yield call(fetchAutocompleteOptions, action.payload);
@@ -155,7 +172,9 @@ export default {
       const result = yield call(fetchBooks, window.location.search);
       switch (result.status) {
         case 200:
-          yield put({ type: 'updateDataSet', payload: { dataSet: result.data } });
+          const { data, total } = yield result.json();
+          yield put({ type: 'updateTotal', payload: total });
+          yield put({ type: 'updateDataSet', payload: { dataSet: data } });
           break;
         default:
           yield call(message.error, 'Error :(', 1.5);

@@ -30,8 +30,8 @@ class RegistrationForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        values.name = values.name[0].toUpperCase() + values.name.slice(0, values.name.length).toLowerCase();
-        values.surname = values.surname[0].toUpperCase() + values.surname.slice(0, values.surname.length).toLowerCase();
+        values.name = values.name[0].toUpperCase() + values.name.slice(1, values.name.length).toLowerCase();
+        values.surname = values.surname[0].toUpperCase() + values.surname.slice(1, values.surname.length).toLowerCase();
         this.props.dispatch({
           type: 'user/submitRegistrationForm',
           payload: { form: this.props.form, values }

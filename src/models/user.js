@@ -29,8 +29,8 @@ const fetchUserDetails = id => {
     .then(response => response)
 };
 
-const fetchOrders = id => {
-  const path = `https://bookstore-flask.herokuapp.com/api/users/${id}/orders`;
+const fetchOrders = (id, page) => {
+  const path = `https://bookstore-flask.herokuapp.com/api/users/${id}/orders?page=${page}`;
   return fetch(path, { mode: 'cors', method: 'GET' })
     .then(response => response)
 };
@@ -54,6 +54,11 @@ export default {
     userDetails: {}, //some of data repeats, but object is more convenient
     locationTabIdx: '0',  //key has to be a string
     orders: [],
+    pagination: {
+      total: 0,
+      pageSize: 10,
+      current: 1,
+    },
     order: {}
   },
   reducers: {
@@ -74,7 +79,24 @@ export default {
       return { ...state, errorMessage: '' }
     },
     resetState(state) {
-      return { errorMessage: '', isLoading: false, isLoggedIn: false, token: ''  }
+      return {
+        isLoading: false,
+        isLoggedIn: false,
+        token: '',
+        errorMessage: '',
+        name: '',
+        surname: '',
+        userId: '',
+        userDetails: {},
+        locationTabIdx: '0',
+        orders: [],
+        pagination: {
+          total: 0,
+          pageSize: 10,
+          current: 1,
+        },
+        order: {}
+      }
     },
     updateUserDetails(state, { payload: userDetails }) {
       return { ...state, userDetails }
@@ -87,9 +109,19 @@ export default {
     },
     updateOrder(state, { payload: order }) {
       return { ...state, order }
+    },
+    updateTotal(state, { payload: total }) {
+      return { ...state, pagination: { ...state.pagination, total } }
+    },
+    updateCurrentPage(state, { payload: current }) {
+      return { ...state, pagination: { ...state.pagination, current } }
     }
   },
   effects: {
+    *changePage(action, { call, put }) {
+      yield put({ type: 'updateCurrentPage', payload: action.payload });
+      yield put({ type: 'getOrders' });
+    },
     *submitLoginForm(action, { call, put }) {
       yield put({ type: 'showLoading' });
       const result = yield call(validateCredentials, action.payload.values);
@@ -142,7 +174,7 @@ export default {
     *logOut(action, { call, put }) {
       yield put({ type: 'resetState' });
       yield call(message.success, 'You\'be been successfully logged out', 1.5);
-      yield call(window.sessionStorage.clear());
+      yield call(window.sessionStorage.clear);
     },
     *fetchUserDetails(action, { call, put }) {
       yield put({ type: 'showLoading' });
@@ -157,13 +189,18 @@ export default {
       }
       yield put({ type: 'hideLoading' });
     },
-    *getOrders(action, { call, put }) {
+    *getOrders(action, { call, put, select }) {
       yield put({ type: 'showLoading' });
-      const result = yield call(fetchOrders, action.payload);
+      let id = action.payload;
+      if (!id)
+        id = yield select(({ user }) => user.userId);
+      const page = yield select(({ user }) => user.pagination.current);
+      const result = yield call(fetchOrders, id, page);
       switch (result.status) {
         case 200:
-          const orders = yield result.json();
-          yield put({ type: 'updateOrders', payload: orders });
+          const data = yield result.json();
+          yield put({ type: 'updateOrders', payload: data.data });
+          yield put({ type: 'updateTotal', payload: data.total });
           break;
         default:
           yield call(message.error, 'Error :(', 1.5)
@@ -175,8 +212,8 @@ export default {
       const result = yield call(fetchOrder, action.payload.userId, action.payload.orderId);
       switch (result.status) {
         case 200:
-          const order = yield result.json();
-          yield put({ type: 'updateOrder', payload: order });
+          const data = yield result.json();
+          yield put({ type: 'updateOrder', payload: data });
           break;
         default:
           yield call(message.error, 'Error :(', 1.5)

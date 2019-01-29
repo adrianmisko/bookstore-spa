@@ -4,11 +4,13 @@ import Link from 'umi/link';
 import React from 'react';
 import { isEmpty } from 'lodash';
 import AnimatedNumber from 'react-animated-number';
+import BookPriceSpan from '../BookPriceSpan/BookPriceSpan';
+import DiscountTag from '../DisocuntTag/DiscountTag';
 
 
 const ProductList = ({ search, ownProps, dispatch }) => {
 
-  const queryInProgress = search.queryInProgress;
+  const { queryInProgress, pagination } = search;
   const dataSet = search.dataSet;
 
   const IconText = ({ type, text, click }) => (
@@ -24,8 +26,8 @@ const ProductList = ({ search, ownProps, dispatch }) => {
       style={{ fontSize: 18 }}
       onClick={() => {
         dispatch({
-          type: 'books/addItemToCart',
-          payload: item.id,
+          type: 'shoppingCart/add',
+          payload: item,
         });
       }}
     >
@@ -37,7 +39,7 @@ const ProductList = ({ search, ownProps, dispatch }) => {
       disabled={item.quantity === 1}
       onClick={() => {
         dispatch({
-          type: 'books/removeOneFromCart',
+          type: 'shoppingCart/removeOneFromCart',
           payload: item.id,
         });
       }}
@@ -49,7 +51,7 @@ const ProductList = ({ search, ownProps, dispatch }) => {
       style={{ fontSize: 18 }}
       onClick={() => {
         dispatch({
-          type: 'books/removeAllFromCart',
+          type: 'shoppingCart/removeAllFromCart',
           payload: item.id,
         });
       }}
@@ -74,7 +76,7 @@ const ProductList = ({ search, ownProps, dispatch }) => {
     <br/>
     <span>
       <span>
-        {<AnimatedNumber
+        <AnimatedNumber
           component="text"
           value={item.quantity * item.pricing.price}
           style={{
@@ -83,7 +85,7 @@ const ProductList = ({ search, ownProps, dispatch }) => {
           }}
           duration={300}
           formatValue={n => 'Price: $' + n.toFixed(2).toString()}
-        />}
+        />
       </span>
     </span>
   </div>;
@@ -92,9 +94,12 @@ const ProductList = ({ search, ownProps, dispatch }) => {
     <List
       loading={isEmpty(ownProps) ? queryInProgress : false}
       itemLayout="vertical"
-      size="large"
       pagination={{
-        pageSize: 3,
+        size: 'large',
+        pageSize: pagination.pageSize,
+        current: pagination.current,
+        total: pagination.total,
+        onChange: (page, pageSize) => dispatch({ type: 'search/changePage', payload: page })
       }}
       dataSource={isEmpty(ownProps) ? dataSet : ownProps.books}
       renderItem={item => (
@@ -109,7 +114,7 @@ const ProductList = ({ search, ownProps, dispatch }) => {
               [<IconText
                 type="shopping-cart"
                 text="add to shopping cart"
-                click={() => dispatch({ type: 'books/addToCart', payload: item.id })}
+                click={() => dispatch({ type: 'shoppingCart/add', payload: item })}
               />]
               :
               summaryActions(item)
@@ -153,11 +158,15 @@ const ProductList = ({ search, ownProps, dispatch }) => {
           />
           <span>
             {isEmpty(ownProps) ?
-              <span>${item.pricing.price}</span>
+              <BookPriceSpan book={item}/>
               :
               summaryContent(item)
             }
           </span>
+          <div>
+            {item.pricing.product_pricing_valid_until || item.pricing.category_discount_valid_until ?
+              <DiscountTag book={item}/> : null}
+          </div>
         </List.Item>
       )}
     />

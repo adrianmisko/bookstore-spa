@@ -5,7 +5,7 @@ import Carousel3d from '../components/Carousel3D/Carousel3D';
 import ProductListCardType from '../components/ProductList/ProductListCardType';
 
 
-const Index = ({ dispatch, products, loading }) => {
+const Index = ({ dispatch, products, featured, loading }) => {
 
   return (
     <React.Fragment>
@@ -19,7 +19,7 @@ const Index = ({ dispatch, products, loading }) => {
       </h1>
       <div className={styles['carousel-demo-wrapper']}>
         <Carousel3d className={styles['carousel-demo']} childMaxLength={6}>
-          {products.map((book, i) => (
+          {featured.slice(0, 6).map((book, i) => (
             <div
               onClick={() => { window.location.href = `${window.location}books/${book.id}`}}
               key={i.toString()}
@@ -32,7 +32,7 @@ const Index = ({ dispatch, products, loading }) => {
           ))}
         </Carousel3d>
       </div>
-      {products !==undefined ? <ProductListCardType dispatch={dispatch} products={products} loading={loading}/>
+      {products !== undefined ? <ProductListCardType dispatch={dispatch} products={products} loading={loading}/>
         : null}
     </React.Fragment>
   );

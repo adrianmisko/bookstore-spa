@@ -11,20 +11,16 @@ import Link from 'umi/link';
 import Redirect from 'umi/redirect';
 
 
-const Order = ({ ui, books, order, user, stepForward, stepBackward,
+const Order = ({ ui, shoppingCart, order, user, stepForward, stepBackward,
                  freezeItems, clearOrderData, showLoginModal }) => {
 
-  const { products, itemsInCart } = books;
+  const { itemsInCart } = shoppingCart;
   const { currentStep } = ui;
   const { paymentMethod } = order;
   const { userId, isLoggedIn } = user;
   const Step = Steps.Step;
 
-  const inCart = products.filter(product => {
-    return Object.keys(itemsInCart).includes(product.id.toString()) && itemsInCart[product.id] > 0;
-  }).map(item => {
-    return { ...item, ...{ quantity: itemsInCart[item.id] } };
-  });
+  const inCart = Object.values(itemsInCart);
 
 
   const steps = [{
@@ -135,7 +131,7 @@ const Order = ({ ui, books, order, user, stepForward, stepBackward,
 };
 
 export default connect(
-  ({ books, ui, order, user }) => ({ books, ui, order, user }),
+  ({ shoppingCart, ui, order, user }) => ({ shoppingCart, ui, order, user }),
   dispatch => ({
     stepForward: () => dispatch({ type: 'ui/stepForward' }),
     stepBackward: () => dispatch({ type: 'ui/stepBackward' }),

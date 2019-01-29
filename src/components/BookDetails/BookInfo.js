@@ -3,6 +3,7 @@ import { Tag, Divider, Button } from 'antd';
 import React from 'react';
 import { Icon } from 'antd';
 import DiscountTag from '../DisocuntTag/DiscountTag';
+import BookPriceSpan from '../BookPriceSpan/BookPriceSpan';
 
 const BookInfo = ({book, dispatch}) => {
 
@@ -37,7 +38,7 @@ const BookInfo = ({book, dispatch}) => {
           }
         </div>
         <div>
-          {'Price: $' + book.pricing.price}
+          Price: <BookPriceSpan book={book}/>
         </div>
         <div>
           {'Release date: ' + book.release_date}
@@ -98,8 +99,8 @@ const BookInfo = ({book, dispatch}) => {
           }}
           onClick={() => {
             dispatch({
-              type: 'books/addToCart',
-              payload: book.id,
+              type: 'shoppingCart/add',
+              payload: book,
             });
           }}
         >

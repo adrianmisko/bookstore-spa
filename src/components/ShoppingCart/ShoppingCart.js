@@ -7,21 +7,15 @@ import AnimatedNumber from 'react-animated-number';
 import TweenOne from 'rc-tween-one';
 
 
-const ShoppingCart = ({ dispatch, books, user }) => {
+const ShoppingCart = ({ dispatch, shoppingCart, user }) => {
 
-  let { products, itemsInCart, restartAnimation, firstLoad } = books;
+  let { itemsInCart, restartAnimation, firstLoad } = shoppingCart;
   const { isLoggedIn } = user;
-
-  itemsInCart = itemsInCart || [];
-  products = products || [];
 
   const title = <span>Your shopping cart</span>;
 
-  const inCart = products.filter(product => {
-    return Object.keys(itemsInCart).includes(product.id.toString()) && itemsInCart[product.id] > 0;
-  }).map(item => {
-    return { ...item, ...{ quantity: itemsInCart[item.id] } };
-  });
+  const inCart = Object.values(itemsInCart);
+  console.log(inCart)
 
   const p0 = 'M0,100 L25,100 C34,20 40,0 100,0';
   const p1 = 'M0,100 C5,120 25,130 25,100 C30,60 40,75 58,90 C69,98.5 83,99.5 100,100';
@@ -63,8 +57,8 @@ const ShoppingCart = ({ dispatch, books, user }) => {
                         style={{ fontSize: 18 }}
                         onClick={() => {
                           dispatch({
-                            type: 'books/addItemToCart',
-                            payload: item.id,
+                            type: 'shoppingCart/add',
+                            payload: item,
                           });
                         }}
                       >
@@ -76,7 +70,7 @@ const ShoppingCart = ({ dispatch, books, user }) => {
                         disabled={item.quantity === 1}
                         onClick={() => {
                           dispatch({
-                            type: 'books/removeOneFromCart',
+                            type: 'shoppingCart/removeOneFromCart',
                             payload: item.id,
                           });
                         }}
@@ -88,7 +82,7 @@ const ShoppingCart = ({ dispatch, books, user }) => {
                         style={{ fontSize: 18 }}
                         onClick={() => {
                           dispatch({
-                            type: 'books/removeAllFromCart',
+                            type: 'shoppingCart/removeAllFromCart',
                             payload: item.id,
                           });
                         }}
@@ -157,7 +151,7 @@ const ShoppingCart = ({ dispatch, books, user }) => {
                 type={'danger'}
                 style={{ marginLeft: 'auto', marginTop: -5 }}
                 onClick={() => dispatch({
-                  type: 'books/clearCart',
+                  type: 'shoppingCart/clearCart',
                 })}
               >
                 Remove all
@@ -204,7 +198,7 @@ const ShoppingCart = ({ dispatch, books, user }) => {
       >
         <a>
           <Badge
-            count={Object.values(itemsInCart).reduce((a, b) => a + b, 0)}
+            count={inCart.reduce((acc, item) => acc + item.quantity, 0)}
             showZero={true}
             overflowCount={10}
             title={'Items in cart'}
@@ -229,4 +223,4 @@ const ShoppingCart = ({ dispatch, books, user }) => {
   );
 };
 
-export default connect(({ books, user }) => ({books, user}))(ShoppingCart);
+export default connect(({ shoppingCart, user }) => ({shoppingCart, user}))(ShoppingCart);

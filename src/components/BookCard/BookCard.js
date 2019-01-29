@@ -3,6 +3,7 @@ import DiscountTag from '../DisocuntTag/DiscountTag';
 import Link from 'umi/link';
 import { Card, Icon, Tag } from 'antd';
 import React from 'react';
+import BookPriceSpan from '../BookPriceSpan/BookPriceSpan';
 
 
 const BookCard = ({ book, dispatch }) => {
@@ -13,7 +14,6 @@ const BookCard = ({ book, dispatch }) => {
     'Bestseller': '#87d068',
     'Promotion': '#ffff',
   };
-
 
   return (
     <Card
@@ -54,8 +54,8 @@ const BookCard = ({ book, dispatch }) => {
       actions={[
         <div onClick={() => {
           dispatch({
-            type: 'books/addToCart',
-            payload: book.id,
+            type: 'shoppingCart/add',
+            payload: book,
           });
         }
         }>
@@ -83,19 +83,7 @@ const BookCard = ({ book, dispatch }) => {
                   </span>,
             )}
             <br/>
-            {book.pricing.product_pricing_valid_until || book.pricing.category_discount_valid_until ?
-              <span>
-                <span style={{ textDecoration: 'line-through', marginRight: '0.5em' }}>
-                  ${book.pricing.base_price}
-                </span>
-                <span style={{ fontSize: '1.2em', color: 'rgba(0,0,0,0.7)' }}>
-                  ${book.pricing.price}
-                </span>
-              </span>
-              :
-              <span>
-                ${book.pricing.price}
-              </span>}
+            <BookPriceSpan book={book} />
           </React.Fragment>
         }
       />

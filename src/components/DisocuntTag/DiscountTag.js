@@ -14,7 +14,7 @@ const DiscountTag = ({ book, absolute }) => {
       borderColor: '#f50',
       color: 'white',
   } : {
-    marginTop: 5,
+    marginTop: 10,
     backgroundColor: '#f50',
     borderColor: '#f50',
     color: 'white',

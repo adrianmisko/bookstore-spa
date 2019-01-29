@@ -142,6 +142,8 @@ export default {
           yield put({ type: 'ui/changeTab', payload: 'tab2' });
           break;
         default:
+          const res = yield result.json();
+          console.log(res);
           yield put({ type: 'orderFailure' })
       }
       yield put({ type: 'stopResolving' });

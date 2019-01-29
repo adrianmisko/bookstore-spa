@@ -95,7 +95,7 @@ const Order = ({ order, isLoading, userId }) => {
           <AnimatedNumber
             component="h2"
             value={order.items_ordered.map(itemOrdered => ({ ...itemOrdered.book, quantity: itemOrdered.quantity }))
-              .reduce((acc, item) => acc + item.price * item.quantity, order.delivery_method.cost)}
+              .reduce((acc, item) => acc + item.pricing.price * item.quantity, order.delivery_method.cost)}
             style={{
               transition: '0.8s ease-out',
               transitionProperty: 'background-color, color, opacity',

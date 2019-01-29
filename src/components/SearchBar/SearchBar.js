@@ -3,6 +3,7 @@ import { connect } from 'dva';
 import { Icon, Input, AutoComplete, Skeleton } from 'antd';
 import { debounce } from 'lodash';
 import Link from 'umi/link';
+import BookPriceSpan from '../BookPriceSpan/BookPriceSpan';
 
 
 const SearchBar = ({ dispatch, booksFound, history, queryInProgress }) => {
@@ -41,11 +42,11 @@ const SearchBar = ({ dispatch, booksFound, history, queryInProgress }) => {
               {book.authors_names[0].name}
             </Link></span>}
       </span>
-        <span onClick={() => dispatch({ type:'books/addToCart', payload: book.id})}>
+        <span onClick={() => dispatch({ type:'shoppingCart/add', payload: book })}>
           <Icon type={'shopping-cart'} /> Add
         </span>
       <span>
-        ${book.pricing.price}
+        <BookPriceSpan book={book} />
       </span>
       </div>
     </Option>);

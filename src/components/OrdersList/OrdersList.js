@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Avatar, Icon, Spin, Tooltip, Button } from 'antd';
+import { List, Avatar, Icon, Spin, Tooltip } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import CardCenteredLayout from '../CardCenteredLayout/CardCenteredLayout';
@@ -11,7 +11,7 @@ import paymentIcon from '../../assets/credit-card.png';
 import preparingIcon from '../../assets/timeline.png';
 
 
-const OrderList = ({ orders, isLoading, userId }) => {
+const OrderList = ({ orders, isLoading, userId, dispatch, pagination }) => {
 
   const status = {
     'IN_PREPARATION': {
@@ -46,9 +46,15 @@ const OrderList = ({ orders, isLoading, userId }) => {
         spinning={isLoading}
       >
         <List
+          pagination={{
+            size: 'small',
+            pageSize: pagination.pageSize,
+            current: pagination.current,
+            total: pagination.total,
+            onChange: (page, pageSize) => dispatch({ type: 'user/changePage', payload: page })
+          }}
           itemLayout="horizontal"
           dataSource={orders}
-          pagination={{ perPage: 10 }}
           renderItem={order => (
             <List.Item>
               <List.Item.Meta
