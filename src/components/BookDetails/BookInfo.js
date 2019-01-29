@@ -2,6 +2,7 @@ import Link from 'umi/link';
 import { Tag, Divider, Button } from 'antd';
 import React from 'react';
 import { Icon } from 'antd';
+import DiscountTag from '../DisocuntTag/DiscountTag';
 
 const BookInfo = ({book, dispatch}) => {
 
@@ -53,8 +54,7 @@ const BookInfo = ({book, dispatch}) => {
               </Link>
             </Tag>)}
         </div>
-        {
-          book.tags.length > 0 ?
+        {book.tags.length > 0 ?
             <div style={{ padding: '5px 0 0 0' }}>
               {'Tags: '}
               {book.tags.map(tag =>
@@ -68,8 +68,10 @@ const BookInfo = ({book, dispatch}) => {
                 </Tag>)}
             </div>
             :
-            null
-        }
+            null}
+        {book.pricing.product_pricing_valid_until || book.pricing.category_discount_valid_until ?
+            <DiscountTag book={book} absolute={false}/>
+        : null}
       </div>
       <Divider/>
       <div style={{ fontSize: '1.2em' }}>

@@ -1,8 +1,8 @@
 import styles from '../ProductList/ProductListCardType.css';
+import DiscountTag from '../DisocuntTag/DiscountTag';
 import Link from 'umi/link';
-import { Card, Icon, Tag, Popover } from 'antd';
+import { Card, Icon, Tag } from 'antd';
 import React from 'react';
-import moment from 'moment';
 
 
 const BookCard = ({ book, dispatch }) => {
@@ -44,60 +44,7 @@ const BookCard = ({ book, dispatch }) => {
                 </Tag>
               </Link>)}
             {book.pricing.product_pricing_valid_until || book.pricing.category_discount_valid_until ?
-              <Popover
-                title={null}
-                placement="bottomLeft"
-                arrowPointAtCenter
-                content={<span>
-                    {book.pricing.product_pricing_valid_until ?
-                      <React.Fragment>
-                        {book.pricing.product_pricing_discount_percent !== 0 ?
-                          <span>
-                            {book.pricing.product_pricing_discount_percent}% discount
-                          </span> : null}
-                        {book.pricing.product_pricing_discount_percent !== 0 && book.pricing.product_pricing_discount_value !== 0 ?
-                          <br/> : null}
-                        {book.pricing.product_pricing_discount_value !== 0 ?
-                          <span>
-                            {book.pricing.product_pricing_discount_value}$ discount
-                          </span> : null}
-                        <span><br/> Valid until {moment(book.pricing.product_pricing_valid_until).format('MMMM Do YYYY')}</span>
-                      </React.Fragment>
-                      : null}
-                    {book.pricing.product_pricing_valid_until && book.pricing.category_discount_valid_until ?
-                      <div style={{ marginTop: '0.5em' }}> </div>
-                      : null}
-                    {book.pricing.category_discount_valid_until ?
-                      <React.Fragment>
-                        {book.pricing.category_discount_discount_percent !== 0 ?
-                          <span>
-                            {book.pricing.category_discount_discount_percent}% discount on {'{genres}'}
-                          </span> : null}
-                        {book.pricing.category_discount_discount_percent !== 0 && book.pricing.category_discount_discount_value !== 0 ?
-                          <br/> : null}
-                        {book.pricing.category_discount_discount_value !== 0 ?
-                          <span>
-                            {book.pricing.category_discount_discount_value}$ discount on {'{genres}'}
-                          </span> : null}
-                        <span><br/> Valid until {moment(book.pricing.category_discount_valid_until).format('MMMM Do YYYY')}</span>
-                      </React.Fragment> : null}
-                  </span>}
-              >
-                <Tag style={{
-                  position: 'absolute',
-                  top: 20 + 25 * book.tags.length,
-                  left: 3,
-                  backgroundColor: '#f50',
-                  borderColor: '#f50',
-                  color: 'white',
-                }}>
-                  <Icon
-                    type="tags"
-                    className={styles['discount-icon']}
-                  />
-                  Discount
-                </Tag>
-              </Popover>
+              <DiscountTag book={book} absolute/>
               :
               null
             }
@@ -113,7 +60,7 @@ const BookCard = ({ book, dispatch }) => {
         }
         }>
           <Icon type="shopping-cart"/>
-          <span> add to shopping cart</span>
+          <span> Add to shopping cart</span>
         </div>,
       ]}
     >

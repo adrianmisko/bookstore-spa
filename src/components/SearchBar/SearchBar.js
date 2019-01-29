@@ -21,27 +21,30 @@ const SearchBar = ({ dispatch, booksFound, history, queryInProgress }) => {
           alignItems: 'center',
         }}
       >
-        <img
-          src={book.cover}
-          style={{
-            width: 39,
-            height: 52,
-            borderRadius: 3,
-          }}
-          alt={'cover'}
-        />
+        <Link to={`/books/${book.id}`} style={{color: 'rgba(0,0,0,0.8)'}}>
+          <img
+            src={book.cover}
+            style={{
+              width: 39,
+              height: 52,
+              borderRadius: 3,
+            }}
+            alt={'cover'}
+          />
+        </Link>
         <span>
-        {book.title}
-      </span>
-        {
-          book.authors_names.length === 0 ?
+          <Link to={`/books/${book.id}`} style={{color: 'rgba(0,0,0,0.8)'}}>{book.title}</Link>
+          {book.authors_names.length === 0 ?
             null
             :
-            <span style={{ float: 'right' }}>
+            <span>, <Link to={`/search?authors_name=${book.authors_names[0].name}`} style={{color: 'rgba(0,0,0,0.8)'}}>
               {book.authors_names[0].name}
-            </span>
-        }
-        <span>
+            </Link></span>}
+      </span>
+        <span onClick={() => dispatch({ type:'books/addToCart', payload: book.id})}>
+          <Icon type={'shopping-cart'} /> Add
+        </span>
+      <span>
         ${book.pricing.price}
       </span>
       </div>
@@ -62,11 +65,6 @@ const SearchBar = ({ dispatch, booksFound, history, queryInProgress }) => {
     dispatch({ type: 'searchBar/clearDataSource' });
   };
 
-
-  const handleSelect = (value, option) => {
-    dispatch({ type: 'search/clearDataSource' });
-    history.push('/books/' + option.key);
-  };
 
   const handleChange = value => {
     if (value === '') {
@@ -90,7 +88,6 @@ const SearchBar = ({ dispatch, booksFound, history, queryInProgress }) => {
         width: '100%',
       }}
       onChange={debounce(handleChange, 300)}
-      onSelect={handleSelect}
       onBlur={handleBlur}
       notFoundContent={<span>No results </span>}
       placeholder="Title, author..."
