@@ -1,45 +1,7 @@
 import { message } from 'antd';
-
-const validateCredentials = ({ userName, password }) => {
-  const headers = { 'Authorization': `Basic ${btoa(userName + ':' + password)}` };
-  return fetch('https://bookstore-flask.herokuapp.com/api/token', { mode: 'cors', method: 'POST', headers: headers })
-    .then(response => response)
-    .catch(_ => ({ status: 500 }));
-};
-
-const createNewAccount = ({ email, name, surname, password, phone }) => {
-  const body = JSON.stringify({
-    email,
-    name,
-    surname,
-    password,
-    phone_number: phone,
-  });
-  return fetch('https://bookstore-flask.herokuapp.com/api/register', { mode: 'cors', method: 'POST', body, headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    }, })
-    .then(response => response)
-    .catch(_ => ({ status: 500 }));
-};
-
-const fetchUserDetails = id => {
-  const path = `https://bookstore-flask.herokuapp.com/api/users/${id}`;
-  return fetch(path, { mode: 'cors', method: 'GET' })
-    .then(response => response)
-};
-
-const fetchOrders = (id, page) => {
-  const path = `https://bookstore-flask.herokuapp.com/api/users/${id}/orders?page=${page}`;
-  return fetch(path, { mode: 'cors', method: 'GET' })
-    .then(response => response)
-};
-
-const fetchOrder = (userId, orderId) => {
-  const path = `https://bookstore-flask.herokuapp.com/api/users/${userId}/orders/${orderId}`;
-  return fetch(path, { mode: 'cors', method: 'GET' })
-    .then(response => response)
-};
+import { fetchUserDetails, fetchOrder, fetchOrders,
+         createNewAccount, validateCredentials
+} from '../services/user';
 
 export default {
   namespace: 'user',
@@ -51,7 +13,7 @@ export default {
     name: '',
     surname: '',
     userId: '',
-    userDetails: {}, //some of data repeats, but object is more convenient
+    userDetails: {}, //some of the data repeats, but object is more convenient
     locationTabIdx: '0',  //key has to be a string
     orders: [],
     pagination: {
@@ -172,7 +134,7 @@ export default {
       }
     },
     *logOut(action, { call, put }) {
-      yield put({ type: 'resetState' });
+      yield put({ type: 'resetState' });    // were not making a request to the server, because we use stateless jws
       yield call(message.success, 'You\'be been successfully logged out', 1.5);
       yield call(window.sessionStorage.clear);
     },
