@@ -106,7 +106,8 @@ export default {
         items: order.items.map(item => ({ id: item.id, quantity: item.quantity })),
       }));
       const postDataJSON = JSON.stringify(postData);
-      const result = yield call(makeOrder, postDataJSON, user.userId);
+      const token = user.token;
+      const result = yield call(makeOrder, postDataJSON, user.userId, token);
       switch (result.status) {
         case 201:
           yield put({ type: 'orderSuccess' });

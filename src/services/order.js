@@ -16,12 +16,13 @@ export const fetchPaymentMethods = () => {
     .catch(_ => message.error('Error :(', 1.5));
 };
 
-export const makeOrder = (postDataJSON, userId) => {
+export const makeOrder = (postDataJSON, userId, token) => {
   const path = `https://bookstore-flask.herokuapp.com/api/users/${userId}/orders`;
   return fetch(path, {
     mode: 'cors', method: 'POST', body: postDataJSON, headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
+      'Authorization': `Basic ${btoa(token + ':unused')}`
     },
   })
     .then(response => response)
