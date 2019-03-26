@@ -15,7 +15,6 @@ const ShoppingCart = ({ dispatch, shoppingCart, user }) => {
   const title = <span>Your shopping cart</span>;
 
   const inCart = Object.values(itemsInCart);
-  console.log(inCart)
 
   const p0 = 'M0,100 L25,100 C34,20 40,0 100,0';
   const p1 = 'M0,100 C5,120 25,130 25,100 C30,60 40,75 58,90 C69,98.5 83,99.5 100,100';
@@ -159,7 +158,6 @@ const ShoppingCart = ({ dispatch, shoppingCart, user }) => {
             </div>
             <br/>
             <div>
-              <Link to={'/shoppingCart'}>See the details</Link>
               <span onClick={() => dispatch({ type: 'order/clearData' })}>
                 {isLoggedIn ?
                   <Link to={'/order'} style={{ float: 'right' }}>Buy »</Link>
