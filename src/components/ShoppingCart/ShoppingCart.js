@@ -157,7 +157,9 @@ const ShoppingCart = ({ dispatch, shoppingCart, user }) => {
               </Button>
             </div>
             <br/>
-            <div>
+            <div style={{
+              height: '20px'
+            }}>
               <span onClick={() => dispatch({ type: 'order/clearData' })}>
                 {isLoggedIn ?
                   <Link to={'/order'} style={{ float: 'right' }}>Buy »</Link>
