@@ -81,7 +81,7 @@ const BookInfo = ({book, dispatch}) => {
         </div>
         <div>
           <br/>
-          <Icon style={{ fontSize: '1.4em' }} type="rocket"/> Order today, get tommorow!
+          <Icon style={{ fontSize: '1.4em' }} type="rocket"/> Order today, get tomorrow!
         </div>
       </div>
       <Divider/>
