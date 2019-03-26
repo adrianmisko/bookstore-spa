@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styles from './Carousel3D.css';
 
-// const currentDpr = window.devicePixelRatio;
-// const defaultDpr = 2; // sketch 里用的是 iphone 6 尺寸;
-const dpr = 0.5;// currentDpr / defaultDpr;
+// component from antd motion
+
+const dpr = 0.5;
 
 class Carousel3d extends React.PureComponent {
 
@@ -77,7 +77,7 @@ class Carousel3d extends React.PureComponent {
       return;
     }
     this.startX = e.pageX || e.touches[0].pageX;
-    this.startRotate = Math.round(this.state.rotate / this.angle) * this.angle; // 偏移修复;
+    this.startRotate = Math.round(this.state.rotate / this.angle) * this.angle;
   };
 
   onTouchMove = (e) => {
@@ -85,7 +85,7 @@ class Carousel3d extends React.PureComponent {
       return;
     }
     const x = e.pageX || e.touches[0].pageX;
-    const differ = (x - this.startX) * this.props.moveRange; // 幅度加大；
+    const differ = (x - this.startX) * this.props.moveRange;
     const rotate = this.startRotate + differ / this.w * this.angle;
     const r = (Math.abs(Math.ceil(this.state.rotate / 360)) * 360 - rotate) % 360;
     const current = Math.round(r / this.angle) % this.length;
