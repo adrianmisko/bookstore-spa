@@ -1,4 +1,4 @@
-import { fetchBooks, fetchFeatured } from '../services/bookService';
+import { fetchBooks, fetchFeatured } from '../services/book';
 
 export default {
   namespace: 'books',

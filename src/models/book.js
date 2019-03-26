@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import { getBook, getReviews, upvoteReview,
   downvoteReview, cancelDownvote, cancelUpvote, postReview
-} from '../services/bookService';
+} from '../services/book';
 
 
 export default {
