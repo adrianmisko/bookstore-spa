@@ -1,73 +1,8 @@
 import { message } from 'antd';
+import { getBook, getReviews, upvoteReview,
+  downvoteReview, cancelDownvote, cancelUpvote, postReview
+} from '../services/bookService';
 
-const getBook = id => {
-  const path = 'https://bookstore-flask.herokuapp.com/api/books/' + id.toString();
-  return fetch(path, { method: 'GET', mode: 'cors' })
-    .then(response => response);
-};
-
-const getReviews = (id, page) => {
-  const path = 'https://bookstore-flask.herokuapp.com/api/books/' + id.toString() + `/reviews?page=${page}`;
-  return fetch(path, { method: 'GET', mode: 'cors' })
-    .then(response => response);
-};
-
-
-const postReview = (id, { author, body, mark }) => {
-  const postRequestBody = JSON.stringify({
-    author,
-    body,
-    mark: mark * 2,
-  });
-
-  return fetch('https://bookstore-flask.herokuapp.com/api/books/' + id.toString() + '/reviews', {
-    mode: 'cors', method: 'POST', body: postRequestBody, headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
-  })
-    .then(response => response);
-};
-
-const upvoteReview = id => {
-  const path = `https://bookstore-flask.herokuapp.com/api/reviews/${id}/upvote`;
-  return fetch(path, {
-    mode: 'cors', method: 'POST', headers: {
-      'Accept': 'application/json',
-    },
-  })
-    .then(response => response);
-};
-
-const downvoteReview = id => {
-  const path = `https://bookstore-flask.herokuapp.com/api/reviews/${id}/downvote`;
-  return fetch(path, {
-    mode: 'cors', method: 'POST', headers: {
-      'Accept': 'application/json',
-    },
-  })
-    .then(response => response);
-};
-
-const cancelUpvote = id => {
-  const path = `https://bookstore-flask.herokuapp.com/api/reviews/${id}/cancel_upvote`;
-  return fetch(path, {
-    mode: 'cors', method: 'POST', headers: {
-      'Accept': 'application/json',
-    },
-  })
-    .then(response => response);
-};
-
-const cancelDownvote = id => {
-  const path = `https://bookstore-flask.herokuapp.com/api/reviews/${id}/cancel_downvote`;
-  return fetch(path, {
-    mode: 'cors', method: 'POST', headers: {
-      'Accept': 'application/json',
-    },
-  })
-    .then(response => response);
-};
 
 export default {
   namespace: 'book',

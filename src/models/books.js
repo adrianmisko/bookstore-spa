@@ -1,18 +1,4 @@
-const fetchFeatured = () => {
-  const path = 'https://bookstore-flask.herokuapp.com/api/books?featured=true';
-  return fetch(path, { mode: 'cors', method: 'get' })
-    .then(response => response.json())
-    .then(({ data, total }) => data)
-    .catch(err => console.log(err));
-};
-
-const fetchBooks = () => {
-  const path = 'https://bookstore-flask.herokuapp.com/api/books?page=2';
-  return fetch(path, { mode: 'cors', method: 'get' })
-    .then(response => response.json())
-    .then(({ data, total }) => data)
-    .catch(err => console.log(err));
-};
+import { fetchBooks, fetchFeatured } from '../services/bookService';
 
 export default {
   namespace: 'books',
