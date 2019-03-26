@@ -7,7 +7,8 @@ const PageSearchLayout = ({ FilterOptionsBar, ResultsList }) => {
     <div
       style={{
         minHeight: 600,
-        display: 'flex'
+        display: 'flex',
+        margin: '0 1em',
       }}
     >
       <Card
