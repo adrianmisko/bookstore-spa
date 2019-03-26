@@ -138,9 +138,10 @@ export default {
       yield call(message.success, 'You\'be been successfully logged out', 1.5);
       yield call(window.sessionStorage.clear);
     },
-    *fetchUserDetails(action, { call, put }) {
+    *fetchUserDetails(action, { call, put, select }) {
+      const token = yield select(({ user }) => user.token);
       yield put({ type: 'showLoading' });
-      const result = yield call(fetchUserDetails, action.payload);
+      const result = yield call(fetchUserDetails, action.payload, token);
       switch (result.status) {
         case 200:
           const userDetails = yield result.json();
@@ -157,7 +158,8 @@ export default {
       if (!id)
         id = yield select(({ user }) => user.userId);
       const page = yield select(({ user }) => user.pagination.current);
-      const result = yield call(fetchOrders, id, page);
+      const token = yield select(({ user }) => user.token);
+      const result = yield call(fetchOrders, id, page, token);
       switch (result.status) {
         case 200:
           const data = yield result.json();
@@ -169,9 +171,10 @@ export default {
       }
       yield put({ type: 'hideLoading' });
     },
-    *getOrderDetails(action, { call, put }) {
+    *getOrderDetails(action, { call, put, select }) {
       yield put({ type: 'showLoading' });
-      const result = yield call(fetchOrder, action.payload.userId, action.payload.orderId);
+      const token = yield select(({ user }) => user.token);
+      const result = yield call(fetchOrder, action.payload.userId, action.payload.orderId, token);
       switch (result.status) {
         case 200:
           const data = yield result.json();
