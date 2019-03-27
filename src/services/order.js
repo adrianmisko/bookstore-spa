@@ -1,7 +1,8 @@
 import { message } from 'antd';
+import config from '../config';
 
 export const fetchDeliveryMethods = () => {
-  return fetch('https://bookstore-flask.herokuapp.com/api/delivery_methods',
+  return fetch(`${config.DOMAIN}/api/delivery_methods`,
     { mode: 'cors', method: 'GET', headers: { 'Accept': 'Application/json' } })
     .then(response => response.json())
     .then(data => data)
@@ -9,7 +10,7 @@ export const fetchDeliveryMethods = () => {
 };
 
 export const fetchPaymentMethods = () => {
-  return fetch('https://bookstore-flask.herokuapp.com/api/payment_methods',
+  return fetch(`${config.DOMAIN}/api/payment_methods`,
     { mode: 'cors', method: 'GET', headers: { 'Accept': 'Application/json' } })
     .then(response => response.json())
     .then(data => data)
@@ -17,7 +18,7 @@ export const fetchPaymentMethods = () => {
 };
 
 export const makeOrder = (postDataJSON, userId, token) => {
-  const path = `https://bookstore-flask.herokuapp.com/api/users/${userId}/orders`;
+  const path = `${config.DOMAIN}/api/users/${userId}/orders`;
   return fetch(path, {
     mode: 'cors', method: 'POST', body: postDataJSON, headers: {
       'Accept': 'application/json',

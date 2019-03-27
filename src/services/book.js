@@ -1,12 +1,13 @@
+import config from '../config';
 
 export const getBook = id => {
-    const path = 'https://bookstore-flask.herokuapp.com/api/books/' + id.toString();
+    const path = `${config.DOMAIN}/api/books/${id.toString()}`;
     return fetch(path, { method: 'GET', mode: 'cors' })
       .then(response => response);
   };
 
 export const getReviews = (id, page) => {
-  const path = 'https://bookstore-flask.herokuapp.com/api/books/' + id.toString() + `/reviews?page=${page}`;
+  const path = `${config.DOMAIN}/api/books/${id.toString()}/reviews?page=${page}`;
   return fetch(path, { method: 'GET', mode: 'cors' })
     .then(response => response);
 };
@@ -19,7 +20,7 @@ export const postReview = (id, { author, body, mark }) => {
     mark: mark * 2,
   });
 
-  return fetch('https://bookstore-flask.herokuapp.com/api/books/' + id.toString() + '/reviews', {
+  return fetch(`${config.DOMAIN}/api/books/${id.toString()}/reviews`, {
     mode: 'cors', method: 'POST', body: postRequestBody, headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -29,7 +30,7 @@ export const postReview = (id, { author, body, mark }) => {
 };
 
 export const upvoteReview = id => {
-  const path = `https://bookstore-flask.herokuapp.com/api/reviews/${id}/upvote`;
+  const path = `${config.DOMAIN}/reviews/${id}/upvote`;
   return fetch(path, {
     mode: 'cors', method: 'POST', headers: {
       'Accept': 'application/json',
@@ -39,7 +40,7 @@ export const upvoteReview = id => {
 };
 
 export const downvoteReview = id => {
-  const path = `https://bookstore-flask.herokuapp.com/api/reviews/${id}/downvote`;
+  const path = `${config.DOMAIN}/api/reviews/${id}/downvote`;
   return fetch(path, {
     mode: 'cors', method: 'POST', headers: {
       'Accept': 'application/json',
@@ -49,7 +50,7 @@ export const downvoteReview = id => {
 };
 
 export const cancelUpvote = id => {
-  const path = `https://bookstore-flask.herokuapp.com/api/reviews/${id}/cancel_upvote`;
+  const path = `${config.DOMAIN}/api/reviews/${id}/cancel_upvote`;
   return fetch(path, {
     mode: 'cors', method: 'POST', headers: {
       'Accept': 'application/json',
@@ -59,7 +60,7 @@ export const cancelUpvote = id => {
 };
 
 export const cancelDownvote = id => {
-  const path = `https://bookstore-flask.herokuapp.com/api/reviews/${id}/cancel_downvote`;
+  const path = `${config.DOMAIN}/api/reviews/${id}/cancel_downvote`;
   return fetch(path, {
     mode: 'cors', method: 'POST', headers: {
       'Accept': 'application/json',
@@ -69,7 +70,7 @@ export const cancelDownvote = id => {
 };
 
 export const fetchFeatured = () => {
-  const path = 'https://bookstore-flask.herokuapp.com/api/books?featured=true';
+  const path = `${config.DOMAIN}/api/books?featured=true`;
   return fetch(path, { mode: 'cors', method: 'get' })
     .then(response => response.json())
     .then(({ data, total }) => data)
@@ -77,7 +78,7 @@ export const fetchFeatured = () => {
 };
 
 export const fetchBooks = () => {
-  const path = 'https://bookstore-flask.herokuapp.com/api/books?page=2';
+  const path = `${config.DOMAIN}/api/books?page=2`;
   return fetch(path, { mode: 'cors', method: 'get' })
     .then(response => response.json())
     .then(({ data, total }) => data)
