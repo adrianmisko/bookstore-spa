@@ -126,9 +126,7 @@ export default {
       if (!action.payload.key || action.payload.key.length) {
         yield put({ type: 'showLoadingReviews' });
         const page = yield select(({ book }) => book.pagination.current);
-        console.log(page);
         let id = action.payload.id;
-        console.log(id);
         if (!id)
           id = yield select(({ book }) => book.book.id);
         console.log(id);
