@@ -8,7 +8,13 @@ import ProductListCardType from '../components/ProductList/ProductListCardType';
 const Index = ({ dispatch, products, featured, loading }) => {
 
   return (
-    <React.Fragment>
+    <div
+      style={{
+        maxWidth: '900px',
+        width: '100%',
+        margin: '0 auto',
+      }}
+    >
       <h1
         style={{
           textAlign: 'center',
@@ -34,7 +40,7 @@ const Index = ({ dispatch, products, featured, loading }) => {
       </div>
       {products !== undefined ? <ProductListCardType dispatch={dispatch} products={products} loading={loading}/>
         : null}
-    </React.Fragment>
+    </div>
   );
 };
 
