@@ -39,7 +39,7 @@ const ClientInfo = ({ dispatch, userDetails, isLoading, locationTabIdx }) => {
           extra={<Tooltip title="Not yet implemented"> <a href={"#"}>Edit</a> </Tooltip>}
         >
           <p style={{ marginTop: 10 }}>
-            Name:  <span style={{ color: 'black', marginLeft: 4 }}>{userDetails.name + userDetails.surname}</span>
+            Name:  <span style={{ color: 'black', marginLeft: 4 }}>{userDetails.name + ' ' + userDetails.surname}</span>
           </p>
           <p style={{ marginTop: 10 }}>
             Email:  <span style={{ color: 'black', marginLeft: 4 }}>{userDetails.email}</span>
