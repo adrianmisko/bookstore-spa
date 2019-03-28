@@ -46,7 +46,7 @@ let Nav = ({ currentKey, dispatch, history, isLoggedIn, userId }) => {
           >
             <Link to={"/users/" + userId}>
               <Badge count={0} showZero={true} overflowCount={5} title={'Notifications'}
-                     style={{ position: 'absolute', top: 16, backgroundColor: '#f44941' }}
+                     style={{ position: 'absolute', top: 6, backgroundColor: '#f44941' }}
               >
                 <Icon type="user" style={{ fontSize: 26, marginTop: 18, color: '#7f8287', fontWeight: 600 }}/>
               </Badge>
