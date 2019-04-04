@@ -27,4 +27,4 @@ Authors with both pen names and real names can be only found by their real name.
 
 User gets logged out on refresh.
 ### Is there any test account?
-There will be tomorrow (april the 3rd), mark my words
+Try test@test.test & test
