@@ -27,4 +27,6 @@ Authors with both pen names and real names can be only found by their real name.
 
 User gets logged out on refresh.
 ### Is there any test account?
-Try test@test.test & test
+Yes!
+The email: test@test.test
+Password: test
