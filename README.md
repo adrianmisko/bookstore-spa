@@ -26,6 +26,8 @@ I'm going to learn Karma, Jasmine and other fronty test stuff along with Angular
 Authors with both pen names and real names can be only found by their real name.
 
 User gets logged out on refresh.
+
+Nav doesn't work well on mobile (I know)
 ### Is there any test account?
 Yes!
 The email: test@test.test
